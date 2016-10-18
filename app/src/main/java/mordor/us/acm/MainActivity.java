@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initWebView() {
-        webView = (WebView)findViewById(R.id.webview);
+        webView = (WebView) findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(ACM_ATTENDANCE_URL); //initial page load
 
@@ -34,4 +34,5 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebViewClient(new MyWebViewClient());
         return;
     }
+    
 }
