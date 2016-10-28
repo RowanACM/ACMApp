@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "536754237521",
+    "firebase_url": "https://rowan-acm.firebaseio.com",
+    "project_id": "rowan-acm",
+    "storage_bucket": "rowan-acm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536754237521:android:4c729e57e75b5d1c",
+        "android_client_info": {
+          "package_name": "mordor.us.acm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536754237521-a9rkp2tkatd0bioqegq9d4g0m70s0nbf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mordor.us.acm",
+            "certificate_hash": "9486C23330BC5B429052EE40599F7D000C998057"
+          }
+        },
+        {
+          "client_id": "536754237521-ioallp2ibqppaqn27pupvf8b9201mve4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnBqWyDRRjUudHdjJ-Tuk82DMutKwoefg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "536754237521-ioallp2ibqppaqn27pupvf8b9201mve4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
