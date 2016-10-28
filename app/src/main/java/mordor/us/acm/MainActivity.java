@@ -19,11 +19,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initWebView() {
-        webView = (WebView)findViewById(R.id.webview);
+        webView = (WebView) findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(ACM_ATTENDANCE_URL); //initial page load
 
-        //client overrides loadUrl after initial page load so new pages load in app, not browser
+        //client overrides loadUrl after initial page load so new pages load in app, not  browser
         class MyWebViewClient extends WebViewClient {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -34,5 +34,5 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebViewClient(new MyWebViewClient());
         return;
     }
-
+    
 }
