@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="1"
+    android:paddingBottom="5dp">
+
+
+
+        <TextView
+            android:text="committee head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/gro_View"
+            android:textStyle="normal|bold"
+            android:layout_gravity="start"
+            android:lines="1"
+            android:maxLines="1"
+            android:textColor="black"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="1dp" />
+
+        <TextView
+            android:text="anouncement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ano_View"
+            android:layout_gravity="start"
+            android:maxLines="1"
+            android:lines="1"
+            android:textColor="dark_grey"
+
+            android:layout_below="@+id/gro_View"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            />
+
+</LinearLayout>
