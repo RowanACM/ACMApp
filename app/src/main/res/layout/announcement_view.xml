@@ -17,7 +17,7 @@
             android:layout_gravity="start"
             android:lines="1"
             android:maxLines="1"
-            android:textColor="black"
+            android:textColor="@color/black"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:paddingBottom="1dp" />
@@ -30,7 +30,7 @@
             android:layout_gravity="start"
             android:maxLines="1"
             android:lines="1"
-            android:textColor="dark_grey"
+            android:textColor="@color/dark_grey"
 
             android:layout_below="@+id/gro_View"
             android:layout_alignParentLeft="true"
