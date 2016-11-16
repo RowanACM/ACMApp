@@ -9,10 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class AttendanceActivity extends AppCompatActivity {
 
-    private final static String attendanceFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLScgL5EttHTj4HblJrkIoSRo560gseCQFoypADL7qEd5UdJlnA/viewform";
+    private final static String defaultAttendanceFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLScgL5EttHTj4HblJrkIoSRo560gseCQFoypADL7qEd5UdJlnA/viewform";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +37,21 @@ public class AttendanceActivity extends AppCompatActivity {
         attendanceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openUrl(attendanceFormUrl);
+                openUrl(generateAttendanceUrl());
             }
         });
+    }
+
+    private String generateAttendanceUrl() {
+        String name = ((EditText) findViewById(R.id.name_exit_text)).getText().toString();
+        String email = ((EditText) findViewById(R.id.email_edit_text)).getText().toString();
+
+        if(name.length() == 0 && email.length() == 0)
+            return defaultAttendanceFormUrl;
+
+        name = name.replace(" ", "+");
+
+        return "https://docs.google.com/forms/d/e/1FAIpQLScgL5EttHTj4HblJrkIoSRo560gseCQFoypADL7qEd5UdJlnA/viewform?entry.319595206=" + name + "&entry.1988864937=" + email + "&entry.1997712893&entry.717459855&entry.405789413&entry.856944836";
     }
 
     private void openUrl(String url) {
