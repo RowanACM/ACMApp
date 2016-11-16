@@ -5,6 +5,11 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+
+/**
+ * The main activity of the app
+ * @author Rowan University Mobile Application Development
+ */
 public class MainActivity extends AppCompatActivity {
 
     private final static String ACM_ATTENDANCE_URL = "https://acm-attendance.firebaseapp.com/";
@@ -23,16 +28,13 @@ public class MainActivity extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(ACM_ATTENDANCE_URL); //initial page load
 
-        //client overrides loadUrl after initial page load so new pages load in app, not  browser
-        class MyWebViewClient extends WebViewClient {
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
             }
-        }
-        webView.setWebViewClient(new MyWebViewClient());
-        return;
+        });
     }
     
 }
