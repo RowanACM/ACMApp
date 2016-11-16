@@ -3,7 +3,7 @@
 [debug] CLI Version:  3.1.0
 [debug] Platform:     win32
 [debug] Node Version: v6.9.1
-[debug] Time:         Wed Nov 16 2016 15:43:57 GMT-0500 (Eastern Standard Time)
+[debug] Time:         Wed Nov 16 2016 15:47:58 GMT-0500 (Eastern Standard Time)
 [debug] ----------------------------------------------------------------------
 [debug] 
 [debug] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase"]
