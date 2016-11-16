@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">ACM</string>
+    <string name="title_activity_attendance">AttendanceActivity</string>
+    <string name="attendance">Attendance</string>
+    <string name="sign_in_to_the_meeting">Sign in to the meeting</string>
 </resources>

@@ -1,4 +1,3 @@
-*.iml
 .gradle
 /local.properties
 /.idea/workspace.xml
@@ -6,4 +5,20 @@
 .DS_Store
 /build
 /captures
-.externalNativeBuild
+app/src/main/res/values/ids.xml
+
+app/app-release.apk
+
+app/google-services.json
+
+app/app.iml
+
+.idea/dictionaries/Tyler.xml
+
+.idea/encodings.xml
+
+.idea/gradle.xml
+
+keys.json
+
+keystore.properties

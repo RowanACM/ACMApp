@@ -1,9 +1,12 @@
 package mordor.us.acm;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 
 
 /**
@@ -21,6 +24,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initWebView();
+
+        Button attendanceButton = (Button) findViewById(R.id.attendance_button);
+        attendanceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivity(AttendanceActivity.class);
+            }
+        });
     }
 
     private void initWebView() {
@@ -35,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void switchActivity(Class newActivity) {
+        Intent intent = new Intent(this, newActivity);
+        startActivity(intent);
     }
     
 }
