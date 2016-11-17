@@ -119,7 +119,7 @@ initApp = function() {
   }, function(error) {
     console.log(error);
   });
-
+  
   // the code above doesn't work. attempt 2: --(not working)
   var user = firebase.auth().currentUser;
 
