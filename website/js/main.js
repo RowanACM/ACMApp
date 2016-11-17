@@ -52,6 +52,9 @@ initApp = function() {
           providerData: providerData
         }, null, '  ');
       });
+
+
+      /*document.getElementById('navSelect').innerHTML = '<li><a href="index.html">Home</a></li><li><a href="login.html">Login</a></li><li><a href="register.html">Register</a></li>';*/
       /*
       // Nav bar
       document.getElementById('nav').innerHTML =
@@ -82,6 +85,7 @@ initApp = function() {
       document.getElementById('sign-in-status').textContent = 'Signed out';
       document.getElementById('sign-in').textContent = 'Sign in';
       document.getElementById('account-details').textContent = 'null';
+
       /*
       document.getElementById('nav').innerHTML =
           '<div class="container-fluid">' +
@@ -110,11 +114,21 @@ initApp = function() {
           '</div>' +
           '<!-- /.navbar-collapse -->' +
           '</div>' +
-          '<!-- /.container -->');*/
+          '<!-- /.container -->'); */
     }
   }, function(error) {
     console.log(error);
   });
+
+  // the code above doesn't work. attempt 2: --(not working)
+  var user = firebase.auth().currentUser;
+
+  if (user) {
+    // User is signed in.
+
+  } else {
+    // No user is signed in.
+  }
 };
 
 window.addEventListener('load', function() {
