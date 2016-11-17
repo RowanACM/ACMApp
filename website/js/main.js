@@ -28,7 +28,10 @@ var ui = new firebaseui.auth.AuthUI(firebase.auth());
 ui.start('#firebaseui-auth-container', uiConfig);
 
 
+
 initApp = function() {
+
+
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       // User is signed in.
@@ -54,7 +57,7 @@ initApp = function() {
       });
 
 
-      /*document.getElementById('navSelect').innerHTML = '<li><a href="index.html">Home</a></li><li><a href="login.html">Login</a></li><li><a href="register.html">Register</a></li>';*/
+      //document.getElementById('navSelect').innerHTML = '<ul class="nav navbar-nav navbar-right"><li><a href="index.html">Home</a></li><li><a href="login.html">Login</a></li><li><a href="register.html">Register</a></li></ul>';
       /*
       // Nav bar
       document.getElementById('nav').innerHTML =
@@ -119,16 +122,9 @@ initApp = function() {
   }, function(error) {
     console.log(error);
   });
-  
+
   // the code above doesn't work. attempt 2: --(not working)
-  var user = firebase.auth().currentUser;
 
-  if (user) {
-    // User is signed in.
-
-  } else {
-    // No user is signed in.
-  }
 };
 
 window.addEventListener('load', function() {
