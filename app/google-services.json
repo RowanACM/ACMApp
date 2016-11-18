@@ -49,6 +49,50 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536754237521:android:41b8529ee1947bf8",
+        "android_client_info": {
+          "package_name": "org.rowanacm.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536754237521-lvuf3fjt6mohg5dq6kepdqbr0v7sufil.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.rowanacm.android",
+            "certificate_hash": "D428766354982CBBEC770BAAB9BFCC2DB1162AC7"
+          }
+        },
+        {
+          "client_id": "536754237521-ioallp2ibqppaqn27pupvf8b9201mve4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnBqWyDRRjUudHdjJ-Tuk82DMutKwoefg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "536754237521-ioallp2ibqppaqn27pupvf8b9201mve4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"

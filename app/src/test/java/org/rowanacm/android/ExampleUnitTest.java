@@ -1,4 +1,4 @@
-package mordor.us.acm;
+package org.rowanacm.android;
 
 import org.junit.Test;
 
