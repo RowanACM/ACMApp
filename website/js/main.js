@@ -138,6 +138,4 @@ validateLogin = function(){
   * can hadle all of this, we will do this manually.
   */
   var email = document.getElementById('Email').value;
-
-
 }
