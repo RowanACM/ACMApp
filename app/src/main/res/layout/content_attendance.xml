@@ -13,10 +13,31 @@
     tools:context="mordor.us.acm.AttendanceActivity"
     tools:showIn="@layout/activity_attendance">
 
+    <EditText
+        android:id="@+id/name_exit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:inputType="textPersonName"/>
+
+
+    <EditText
+        android:id="@+id/email_edit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Rowan Email Address"
+        android:layout_below="@+id/name_exit_text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:inputType="textEmailAddress" />
+
     <Button
         android:id="@+id/attendance_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_in_to_the_meeting"/>
+        android:text="@string/sign_in_to_the_meeting"
+        android:layout_below="@+id/email_edit_text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
