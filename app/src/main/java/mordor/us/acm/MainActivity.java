@@ -21,6 +21,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        String section = intent.getStringExtra("section");
+        if(section != null && section.equals("attendance")) {
+            switchActivity(AttendanceActivity.class);
+        }
+
         setContentView(R.layout.activity_main);
 
         initWebView();
