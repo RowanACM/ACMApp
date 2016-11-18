@@ -130,3 +130,14 @@ initApp = function() {
 window.addEventListener('load', function() {
   initApp()
 });
+
+
+validateLogin = function(){
+  /*
+  * This function will demonstrate email validation. Until it's proven firebase
+  * can hadle all of this, we will do this manually.
+  */
+  var email = document.getElementById('Email').value;
+
+
+}

@@ -94,11 +94,11 @@
           </div>
             <div class="col-lg-6">
                 <h2>Login</h2>
-                <form name="sentMessage" id="contactForm" novalidate>
+                <form name="sentMessage" id="contactForm">
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
-                            <label>Username</label>
-                            <input type="tel" class="form-control" placeholder="Username" id="username" required data-validation-required-message="Please enter your username.">
+                            <label>Email</label>
+                            <input type="tel" class="form-control" placeholder="Email" id="Email" required data-validation-required-message="Please enter your email.">
                             <p class="help-block text-danger"></p>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                     <div id="success"></div>
                     <div class="row">
                         <div class="form-group col-xs-12">
-                            <button type="submit" class="btn btn-default">Login</button>
+                            <button type="submit" class="btn btn-default" onslick="validateLogin()">Login</button>
                         </div>
                     </div>
                 </form>
