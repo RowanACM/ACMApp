@@ -4,10 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.us.acm.R;
-import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -23,23 +24,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();
-        String section = intent.getStringExtra("section");
+        String section = getIntent().getStringExtra("section");
         if(section != null && section.equals("attendance")) {
             switchActivity(AttendanceActivity.class);
         }
 
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         initWebView();
+    }
 
-        Button attendanceButton = (Button) findViewById(R.id.attendance_button);
-        attendanceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivity(AttendanceActivity.class);
-            }
-        });
+    @OnClick(R.id.attendance_button)
+    protected void switchToAttendanceActivity() {
+        switchActivity(AttendanceActivity.class);
     }
 
     private void initWebView() {
