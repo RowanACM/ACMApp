@@ -1,8 +1,6 @@
 package org.rowanacm.android;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
+import android.widget.Button;
 
 import butterknife.ButterKnife;
 
@@ -68,7 +66,18 @@ public class MainScreenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main_screen, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_main_screen, container, false);
+
+        Button signInButton = (Button) rootView.findViewById(R.id.attendance_button);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivity(AttendanceActivity.class);
+            }
+        });
+
+
+        return rootView;
     }
 
     @Override
