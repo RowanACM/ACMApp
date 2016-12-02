@@ -10,7 +10,7 @@ firebase.initializeApp(config);
 
 // ANNOUNCEMENTS //
 var database = firebase.database();
-var announcementsRef = database.ref("announcements").orderByKey();
+var announcementsRef = database.ref("announcements").orderByKey().limitToLast(10);
 var announcementsList = document.getElementById('announcementsList');
 
 announcementsRef.once('value').then(function(snapshot) {
