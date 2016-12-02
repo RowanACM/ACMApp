@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+        <android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:weightSum="1"
-    android:paddingBottom="5dp">
-
-
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="4dp">
+        <RelativeLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:paddingLeft="15sp"
+            android:paddingRight="15dp"
+            android:paddingBottom="5dp">
 
         <TextView
             android:text="committee head"
@@ -15,8 +25,11 @@
             android:id="@+id/gro_View"
             android:textStyle="normal|bold"
             android:layout_gravity="start"
+            android:textAlignment="center"
             android:lines="1"
-            android:maxLines="1"
+
+            android:maxLines="2"
+            android:textSize="24dp"
             android:textColor="@color/black"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
@@ -29,12 +42,16 @@
             android:id="@+id/ano_View"
             android:layout_gravity="start"
             android:maxLines="1"
-            android:lines="1"
+            android:lines="2"
+            android:textSize="18dp"
+            android:ellipsize="end"
+
+            android:textAlignment="textStart"
             android:textColor="@color/dark_grey"
-
             android:layout_below="@+id/gro_View"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            />
+            android:layout_centerHorizontal="true"
 
-</LinearLayout>
+            />
+</RelativeLayout>
+        </android.support.v7.widget.CardView>
+
