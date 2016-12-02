@@ -9,18 +9,29 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.rowanacm.android.AnnouncementActivty">
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/committee_text_view"
-        android:layout_centerHorizontal="true"
-        android:textSize="24dp"
-        />
+        android:text="Committee"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="32dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Announcment Info"
+        
+        android:textColor="@color/dark_grey"
         android:id="@+id/announcement_text_view"
-        android:layout_below="@id/committee_text_view"
-        />
+        android:textSize="18dp"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/committee_text_view"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
