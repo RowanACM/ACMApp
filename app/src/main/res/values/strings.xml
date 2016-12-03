@@ -85,4 +85,9 @@
     <string name="title_activity_main_tab">MainTabActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="turn_on_nfc">Turn on NFC</string>
+    <string name="tag_written_toast">Tag written</string>
+    <string name="wait_write_dialog_title">Approach an NFC tag</string>
+    <string name="cancel">Cancel</string>
+    <string name="wait_write_dialog_text">Approach the NFC tag</string>
 </resources>
