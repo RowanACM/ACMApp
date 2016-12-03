@@ -165,7 +165,7 @@ public class AttendanceActivity extends AppCompatActivity {
     private void tagWasScanned(String tagId) {
         Log.d(TAG, "tagWasScanned() called with: tagId = [" + tagId + "]");
 
-        Toast.makeText(this, tagId, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, tagId, Toast.LENGTH_LONG).show();
 
 
         showCheckmarkToast();

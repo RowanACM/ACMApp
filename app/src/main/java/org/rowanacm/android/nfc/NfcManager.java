@@ -17,6 +17,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Handle reading and writing from NFC
@@ -146,10 +147,47 @@ public class NfcManager {
 
             Tag myTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             byte[] tagByteId = myTag.getId();
-
             String tagId = byteArrayToHexString(tagByteId);
 
-            onTagReadListener.onTagRead(tagId);
+            Log.d(LOG_TAG, "readTagFromIntent: " + Arrays.toString(myTag.getTechList()));
+
+            int size = -1;
+            boolean writable = false;
+            String type = "unknown";
+
+            // get NDEF tag details
+            Ndef ndefTag = Ndef.get(myTag);
+            if(ndefTag != null) {
+
+                size = ndefTag.getMaxSize();         // tag size
+                writable = ndefTag.isWritable(); // is tag writable?
+                type = ndefTag.getType();         // tag type
+
+
+                // get NDEF message details
+                NdefMessage ndefMesg = ndefTag.getCachedNdefMessage();
+                NdefRecord[] ndefRecords = ndefMesg.getRecords();
+                int len = ndefRecords.length;
+                String[] recTypes = new String[len];     // will contain the NDEF record types
+                for (int i = 0; i < len; i++) {
+                    recTypes[i] = new String(ndefRecords[i].getType());
+                    byte[] mesg = ndefRecords[i].getPayload();
+
+                    Log.d(LOG_TAG, "readTagFromIntent: MESSAGE " + Arrays.toString(mesg));
+                }
+            }
+
+
+
+            String output = "NFC SCANNED | "
+                    + "tagId="+tagId
+                    + " toString="+myTag.toString()
+                    + " describeContents="+myTag.describeContents()
+                    + " size="+size
+                    + " writable="+writable
+                    + " type="+type;
+
+            onTagReadListener.onTagRead(output);
         }
     }
 
