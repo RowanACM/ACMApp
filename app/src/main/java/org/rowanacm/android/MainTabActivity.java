@@ -21,6 +21,8 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import org.rowanacm.android.annoucement.AnnouncementListFragment;
+
 public class MainTabActivity extends AppCompatActivity {
 
     /**

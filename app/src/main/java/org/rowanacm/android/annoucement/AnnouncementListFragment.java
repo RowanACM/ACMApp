@@ -1,4 +1,4 @@
-package org.rowanacm.android;
+package org.rowanacm.android.annoucement;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -83,7 +83,7 @@ public class AnnouncementListFragment extends Fragment {
 
     public ChildEventListener announcementsListener() {
         try {
-            return mDatabase.child("announcements2").addChildEventListener(new ChildEventListener() {
+            return mDatabase.child("announcements").addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Announcement announcement = dataSnapshot.getValue(Announcement.class);

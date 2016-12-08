@@ -1,4 +1,4 @@
-package org.rowanacm.android;
+package org.rowanacm.android.annoucement;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -73,7 +73,7 @@ public class AnnouncementArrayAdapter extends BaseAdapter {
         TextView announcementTextView = (TextView) convertView.findViewById(R.id.ano_View);
         Announcement announcement = announcementArrayList.get(position);
         groupTextView.setText(announcement.getCommittee());
-        announcementTextView.setText(announcement.getMessage());
+        announcementTextView.setText(announcement.getText());
 
         return convertView;
     }
