@@ -1,4 +1,4 @@
-package org.rowanacm.android;
+package org.rowanacm.android.attendance;
 
 import android.content.Context;
 import android.content.Intent;
@@ -60,7 +60,11 @@ public class AttendanceActivity extends AppCompatActivity {
         attendanceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openUrl(generateAttendanceUrl());
+                User user = getUser();
+
+                String attendanceUrl = generateAttendanceUrl(user);
+
+                openUrl(attendanceUrl);
             }
         });
 
@@ -73,7 +77,7 @@ public class AttendanceActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 SharedPreferences prefs = AttendanceActivity.this.getSharedPreferences(
-                        "mordor.us.acm", Context.MODE_PRIVATE);
+                        "org.rowanacm.android", Context.MODE_PRIVATE);
 
                 prefs.edit().putString("name", charSequence.toString()).apply();
             }
@@ -92,7 +96,7 @@ public class AttendanceActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 SharedPreferences prefs = AttendanceActivity.this.getSharedPreferences(
-                        "mordor.us.acm", Context.MODE_PRIVATE);
+                        "org.rowanacm.android", Context.MODE_PRIVATE);
 
                 prefs.edit().putString("email", charSequence.toString()).apply();
             }
@@ -104,6 +108,17 @@ public class AttendanceActivity extends AppCompatActivity {
         });
 
     }
+
+    private User getUser() {
+        String name = ((EditText) findViewById(R.id.name_exit_text)).getText().toString();
+        String email = ((EditText) findViewById(R.id.email_edit_text)).getText().toString();
+
+        User user = new User(name, email);
+
+        return user;
+    }
+
+
 
     @Override
     public void onNewIntent(Intent intent) {
@@ -211,16 +226,13 @@ public class AttendanceActivity extends AppCompatActivity {
         return prefs.getString(key, ""); // the default value is an empty string
     }
 
-    private String generateAttendanceUrl() {
-        String name = ((EditText) findViewById(R.id.name_exit_text)).getText().toString();
-        String email = ((EditText) findViewById(R.id.email_edit_text)).getText().toString();
-
-        if(name.length() == 0 && email.length() == 0)
+    private String generateAttendanceUrl(User user) {
+        if(!user.isValid())
             return defaultAttendanceFormUrl;
 
-        name = name.replace(" ", "+");
+        String formattedName = user.getName().replace(" ", "+");
 
-        return "https://docs.google.com/forms/d/e/1FAIpQLScgL5EttHTj4HblJrkIoSRo560gseCQFoypADL7qEd5UdJlnA/viewform?entry.319595206=" + name + "&entry.1988864937=" + email + "&entry.1997712893&entry.717459855&entry.405789413&entry.856944836";
+        return "https://docs.google.com/forms/d/e/1FAIpQLScgL5EttHTj4HblJrkIoSRo560gseCQFoypADL7qEd5UdJlnA/viewform?entry.319595206=" + formattedName + "&entry.1988864937=" + user.getRowanEmailAddress() + "&entry.1997712893&entry.717459855&entry.405789413&entry.856944836";
     }
 
     /**

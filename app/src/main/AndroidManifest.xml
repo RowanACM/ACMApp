@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.rowanacm.android.AttendanceActivity"
+            android:name="org.rowanacm.android.attendance.AttendanceActivity"
             android:label="@string/title_activity_attendance"
             android:parentActivityName="org.rowanacm.android.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

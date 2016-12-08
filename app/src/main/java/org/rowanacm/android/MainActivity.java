@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.rowanacm.android.attendance.AttendanceActivity;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 

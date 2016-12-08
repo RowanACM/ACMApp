@@ -12,6 +12,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 
+import org.rowanacm.android.attendance.AttendanceActivity;
+
 import butterknife.ButterKnife;
 
 
