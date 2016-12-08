@@ -1,8 +1,6 @@
 package org.rowanacm.android;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,17 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-
-import butterknife.ButterKnife;
 
 import static org.rowanacm.android.UserData.mDatabase;
 
@@ -37,7 +30,7 @@ public class AnnouncementListFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     ListView listView;
-    AnnouncmentArrayAdapter adapter;
+    AnnouncementArrayAdapter adapter;
     public AnnouncementListFragment() {
         // Required empty public constructor
     }
@@ -56,13 +49,13 @@ public class AnnouncementListFragment extends Fragment {
     }
 
     public void buildListView(){
-        adapter = new AnnouncmentArrayAdapter(getContext());
+        adapter = new AnnouncementArrayAdapter(getContext());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-               Intent intent = new Intent(getContext(), AnnouncementActivty.class);
-                intent.putExtra("anouncment", (Announcement)adapter.getItem(position));
+               Intent intent = new Intent(getContext(), AnnouncementActivity.class);
+                intent.putExtra("announcement", (Announcement)adapter.getItem(position));
                 startActivity(intent);
             }
         });
