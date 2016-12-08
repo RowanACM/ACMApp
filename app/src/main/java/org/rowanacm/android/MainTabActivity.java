@@ -143,7 +143,7 @@ public class MainTabActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return MainScreenFragment.newInstance();
+                    return MainFragment.newInstance();
                 case 1:
                     return AnnouncementListFragment.newInstance();
 

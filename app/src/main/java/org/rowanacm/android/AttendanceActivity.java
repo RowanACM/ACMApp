@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.us.acm.R;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +23,9 @@ import org.rowanacm.android.nfc.NfcManager;
 
 import java.io.IOException;
 
+/**
+ * Sign a member in to the meeting
+ */
 public class AttendanceActivity extends AppCompatActivity {
 
     private static final String TAG = "AttendanceActivity";
@@ -110,16 +112,12 @@ public class AttendanceActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume() called");
-
         super.onResume();
         nfcManager.onActivityResume();
     }
 
     @Override
     protected void onPause() {
-        Log.d(TAG, "onPause() called");
-
         nfcManager.onActivityPause();
         super.onPause();
     }
@@ -145,9 +143,6 @@ public class AttendanceActivity extends AppCompatActivity {
      * Create the NFC Manager and the NFC listener
      */
     private void createNfcManager() {
-        Log.d(TAG, "createNfcManager() called");
-        Toast.makeText(this, "Create nfc manager", Toast.LENGTH_SHORT).show();
-
         nfcManager = new NfcManager(this);
         nfcManager.onActivityCreate();
         nfcManager.setOnTagReadListener(new NfcManager.TagReadListener() {
@@ -163,10 +158,7 @@ public class AttendanceActivity extends AppCompatActivity {
      * @param tagId The tag that was read
      */
     private void tagWasScanned(String tagId) {
-        Log.d(TAG, "tagWasScanned() called with: tagId = [" + tagId + "]");
-
         Toast.makeText(this, tagId, Toast.LENGTH_LONG).show();
-
 
         showCheckmarkToast();
         vibratePhone(200);
@@ -174,8 +166,11 @@ public class AttendanceActivity extends AppCompatActivity {
         sendTagsToServer();
     }
 
+    /**
+     * Vibrate the phone
+     * @param milliseconds The number of milliseconds to vibrate the phone
+     */
     private void vibratePhone(int milliseconds) {
-        Log.d(TAG, "vibratePhone() called with: milliseconds = [" + milliseconds + "]");
         ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(milliseconds);
     }
 
@@ -211,11 +206,10 @@ public class AttendanceActivity extends AppCompatActivity {
 
     private String readFromSharedPreferenceString(String key) {
         SharedPreferences prefs = AttendanceActivity.this.getSharedPreferences(
-                "mordor.us.acm", Context.MODE_PRIVATE);
+                "org.rowanacm.android", Context.MODE_PRIVATE);
 
         return prefs.getString(key, ""); // the default value is an empty string
     }
-
 
     private String generateAttendanceUrl() {
         String name = ((EditText) findViewById(R.id.name_exit_text)).getText().toString();
@@ -229,6 +223,10 @@ public class AttendanceActivity extends AppCompatActivity {
         return "https://docs.google.com/forms/d/e/1FAIpQLScgL5EttHTj4HblJrkIoSRo560gseCQFoypADL7qEd5UdJlnA/viewform?entry.319595206=" + name + "&entry.1988864937=" + email + "&entry.1997712893&entry.717459855&entry.405789413&entry.856944836";
     }
 
+    /**
+     * Open a url in a Chrome Custom Tab
+     * @param url the url to open
+     */
     private void openUrl(String url) {
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
         CustomTabsIntent customTabsIntent = builder.build();

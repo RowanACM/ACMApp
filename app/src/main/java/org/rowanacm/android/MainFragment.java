@@ -18,12 +18,12 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MainScreenFragment.OnFragmentInteractionListener} interface
+ * {@link MainFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link MainScreenFragment#newInstance} factory method to
+ * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainScreenFragment extends Fragment {
+public class MainFragment extends Fragment {
     private WebView webView;
     private final static String ACM_ATTENDANCE_URL = "https://acm-attendance.firebaseapp.com/";
 
@@ -32,9 +32,8 @@ public class MainScreenFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static MainScreenFragment newInstance() {
-        MainScreenFragment fragment = new MainScreenFragment();
-        return fragment;
+    public static MainFragment newInstance() {
+        return new MainFragment();
     }
 
 

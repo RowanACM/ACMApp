@@ -3,12 +3,21 @@ package org.rowanacm.android;
 import java.io.Serializable;
 
 /**
- * Created by John on 12/1/2016.
+ * An message by Rowan ACM.
+ * Contains a message and committee
  */
 
 public class Announcement implements Serializable {
     private String committee = "";
-    private String announcement = "";
+    private String message = "";
+
+    public Announcement() {
+    }
+
+    public Announcement(String committee, String message) {
+        this.committee = committee;
+        this.message = message;
+    }
 
     public String getCommittee() {
         return committee;
@@ -18,11 +27,11 @@ public class Announcement implements Serializable {
         this.committee = committee;
     }
 
-    public String getAnnouncement() {
-        return announcement;
+    public String getMessage() {
+        return message;
     }
 
-    public void setAnnouncement(String announcement) {
-        this.announcement = announcement;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

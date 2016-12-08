@@ -7,28 +7,25 @@ import android.us.acm.R;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by John on 12/1/2016.
  */
 
-public class AnnouncmentArrayAdapter extends BaseAdapter {
+public class AnnouncementArrayAdapter extends BaseAdapter {
 
-    LayoutInflater myInflater;
-    ArrayList<Announcement> announcementArrayList = new ArrayList<>();
+    private LayoutInflater myInflater;
+    private ArrayList<Announcement> announcementArrayList = new ArrayList<>();
 
-    public AnnouncmentArrayAdapter(Context c) {
+    public AnnouncementArrayAdapter(Context c) {
         myInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public void add(Announcement a) {
-
         announcementArrayList.add(a);
         this.notifyDataSetChanged();
     }
@@ -40,7 +37,6 @@ public class AnnouncmentArrayAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-
         return announcementArrayList.get(i);
     }
 
@@ -77,8 +73,7 @@ public class AnnouncmentArrayAdapter extends BaseAdapter {
         TextView announcementTextView = (TextView) convertView.findViewById(R.id.ano_View);
         Announcement announcement = announcementArrayList.get(position);
         groupTextView.setText(announcement.getCommittee());
-        announcementTextView.setText(announcement.getAnnouncement());
-
+        announcementTextView.setText(announcement.getMessage());
 
         return convertView;
     }
