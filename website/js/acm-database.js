@@ -9,17 +9,25 @@ var config = {
 firebase.initializeApp(config);
 
 // ANNOUNCEMENTS //
-var database = firebase.database();
-var announcementsRef = database.ref("announcements").orderByKey().limitToLast(10);
-var announcementsList = document.getElementById('announcementsList');
+var announcementsRef_all = firebase.database().ref("announcements").orderByKey();
+var announcementsRef_10 = announcementsRef_all.limitToLast(10);
+var announcementsList_all = document.getElementById('announcementsList_all');
+var announcementsList_10 = document.getElementById('announcementsList_10');
 
-announcementsRef.once('value').then(function(snapshot) {
+
+announcementsRef_10.once('value').then(function(snapshot) {
   snapshot.forEach(function(childSnapshot) {
-    addPost(childSnapshot.val().title, childSnapshot.val().subj, childSnapshot.val().text, childSnapshot.val().author, childSnapshot.val().date);
+    addPost(childSnapshot.val().title, childSnapshot.val().subj, childSnapshot.val().text, childSnapshot.val().author, childSnapshot.val().date, announcementsList_10);
   });
 });
 
-function addPost(title, subject, text, author, date) {
+announcementsRef_all.once('value').then(function(snapshot) {
+  snapshot.forEach(function(childSnapshot) {
+    addPost(childSnapshot.val().title, childSnapshot.val().subj, childSnapshot.val().text, childSnapshot.val().author, childSnapshot.val().date, announcementsList_all);
+  });
+});
+
+function addPost(title, subject, text, author, date, announcementsList) {
   //console.log(title + ' ' + subject + ' ' + text);
   announcementsList.insertAdjacentHTML('afterbegin',
   '<div class="post-preview">' +
