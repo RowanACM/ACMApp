@@ -10,7 +10,7 @@
     <meta name="author" content="">
 
     <title>Rowan ACM</title>
-    
+
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -206,6 +206,12 @@
       firebase.initializeApp(config);
     </script>
     <script>
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        window.location = "index.html";
+      }
+    });
+
       var register = function() {
         var firstname = $("#firstname").val();
         var lastname = $("#lastname").val();
