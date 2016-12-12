@@ -14,7 +14,7 @@ install:
     - pip install --user html5validator
     
 script:
-    - html5validator --root _build/
+    - html5validator --root website/
 
 after_success:
     - cd website
