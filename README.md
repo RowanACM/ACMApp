@@ -1,2 +1,2 @@
-# ACM_Site
-This is the ACM website members of the web development committee are working on.
+# Rowan ACM Website
+This is the website of Rowan ACM. It is being developed by members of the web development committee.
