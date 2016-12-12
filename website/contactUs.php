@@ -42,7 +42,7 @@
                     <span class="sr-only">Toggle navigation</span>
                     Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="register.html">Become A Member</a>
+                <a class="navbar-brand" href="index.html">Become A Member</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -57,13 +57,8 @@
                     <li>
                         <a href="register.html">Register</a>
                     </li>
-					
-					<!-- TODO - Jatin ---------------------------------->
 					<li>
                         <a href="committees.html">Committees</a>
-                    </li>
-					<li>
-                        <!-- <a href="eboard.html">Eboard</a> -->
                     </li>
 					<li>
                         <a href="contactUs.php">Contact Us</a>
@@ -78,33 +73,45 @@
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
     <header class="intro-header" style="background-image: url('img/banner.png')">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="site-heading">
-                        <img src='img/ACM-logo.png' height='140px' width='510px'></img>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                  <div class="post-heading">
+                      <h1>Contact Us</h1>
+                      <h2 class="subheading">Subtitle of announcement </h2>
+                      <!-- <span class="meta">Posted by <a href="#">AUTHOR</a> on DATE</span> -->
+                  </div>
+              </div>
+          </div>
+      </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="row">
-            <div id="announcementsList_10" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+	<form class="email" action="mailer.php" method="post">
+		<p>Name:</p>
+		<input type="text" name="name" />
+		<p>E-mail:</p>
+		<input type="text" name="email" />
+		<p>Subject:</p>
+		<input type="text" name="subject" />
+		<p>Message:</p>
+		<textarea name="message"></textarea></p>
+		<input class="send" type="submit" value="Send">
+	</form>
 
-              <!-- Posts go here -->
+	<!-- old php code -->
+	<?php
 
-                <!-- Pager -->
-                <ul class="pager">
-                    <li class="next">
-                        <a href="events.html">More &rarr;</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+		// user's IP Address
+		echo "Your IP Address is: " . $_SERVER["REMOTE_ADDR"];
+
+		// old Date/time format (from May)
+		// echo "<p> Current Date & Time: " . date("F j, Y, g:i a") . "</p>";
+
+		// new Date/time format
+		date_default_timezone_set("America/New_York");
+		echo "<p> Current Date & Time: " . date("m/d/y : H:i:s", time()) . "</p>";
+		echo "<p> <b> Thanks for visiting! </b> </p>";
+	?>
 
     <hr>
 
@@ -131,7 +138,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="https://github.com/rowanacm">
+                            <a href="#">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-github fa-stack-1x fa-inverse"></i>
@@ -165,3 +172,4 @@
 </body>
 
 </html>
+
