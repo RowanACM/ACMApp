@@ -86,7 +86,7 @@
       </div>
     </header>
 
-	<form class="email" action="mailer.php" method="post">
+	<form class="email" action="contactUsMailer.php" method="post">
 		<p>Name:</p>
 		<input type="text" name="name" />
 		<p>E-mail:</p>
