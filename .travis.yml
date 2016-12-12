@@ -18,4 +18,5 @@ script:
 
 after_success:
     - cd website
-    - firebase deploy --token $FIREBASE_TOKEN
+    # To deploy to Firebase automatically, uncomment the line below 
+    # - firebase deploy --token $FIREBASE_TOKEN
