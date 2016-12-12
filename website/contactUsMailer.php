@@ -43,8 +43,8 @@
 	/* Send the message using mail() function */
 	mail($myemail, $subject, $message, $emailHeaders);
 
-	/* Redirect visitor to the thank you page */
-	header('Location: thanks.html');
+	/* Redirect visitor to the home page */
+	header('Location: index.html');
 	exit();
 
 	/* Functions we used */
@@ -67,7 +67,7 @@
 		<body>
 
 		<p>Please correct the following error:</p>
-		<strong><?php echo $myError; ?></strong>
+		<strong> <?php echo $myError; ?> </strong>
 		<p>Hit the back button and try again</p>
 
 		</body>
