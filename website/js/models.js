@@ -1,13 +1,7 @@
-//initialize firebase
-var config = {
-  apiKey: "AIzaSyD52Hpo4RJkxLhHPcRRw9HXd-thHVYD_O0",
-  authDomain: "rowan-acm.firebaseapp.com",
-  databaseURL: "https://rowan-acm.firebaseio.com",
-  storageBucket: "rowan-acm.appspot.com",
-  messagingSenderId: "536754237521"
-};
-firebase.initializeApp(config);
-
+/*
+*This file will represent the interaction with our firebase as a data source.
+*Eventually this will become much more modular.
+*/
 // ANNOUNCEMENTS //
 var announcementsRef_all = firebase.database().ref("announcements").orderByKey();
 var announcementsRef_10 = announcementsRef_all.limitToLast(10);
