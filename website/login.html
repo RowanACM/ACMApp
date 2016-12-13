@@ -92,18 +92,21 @@
     <!-- Main Content -->
     <div class="container">
         <div class="row">
-          <div class="col-lg-6">
+
+            <div class="col-lg-6">
                 <h2>Login</h2>
                 <form name="sentMessage" id="contactForm">
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Email</label>
-                            <input type="text" class="form-control" placeholder="Email" id="email">                        </div>
+                            <input type="text" class="form-control" placeholder="Email" id="email">
+                          </div>
                     </div>
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Password</label>
-                            <input type="password" class="form-control" placeholder="Pasword" id="password">                        </div>
+                            <input type="password" class="form-control" placeholder="Pasword" id="password">
+                          </div>
                     </div>
                     <br>
                     <div class="row">
@@ -118,6 +121,7 @@
                 <div id="firebaseui-auth-container"></div>
             </div>
         </div>
+
     </div>
 
     <hr>
@@ -173,48 +177,10 @@
     <!-- Theme JavaScript -->
     <script src="js/clean-blog.min.js"></script>
 
-    <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyD52Hpo4RJkxLhHPcRRw9HXd-thHVYD_O0",
-        authDomain: "rowan-acm.firebaseapp.com",
-        databaseURL: "https://rowan-acm.firebaseio.com",
-        storageBucket: "rowan-acm.appspot.com",
-        messagingSenderId: "536754237521"
-      };
-      firebase.initializeApp(config);
-    </script>
-    <script>
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        window.location = "index.html";
-      }
-    });
-
-      var login = function() {
-        var email = $("#email").val();
-        var password = $("#password").val();
-
-        if (email == "") {
-          showError("Email is empty.");
-        } else if (password == "") {
-          showError("Password is empty.");
-        } else {
-          firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-
-            showError("Email or password incorrect.");
-          });
-          $("#prob-alert").hide();
-        }
-      };
-
-      var showError = function(message) {
-        $("#prob-alert").html(message);
-        $("#prob-alert").show();
-      };
-    </script>
+    <!--this should change-->
+    <script src="js/main.js"></script>
+    <script src="js/models.js"></script>
+    <script src="js/users.js"></script>
 
 
 </body>
