@@ -77,7 +77,7 @@ initApp = function() {
             '<li>' +
                 '<a href="index.html" onclick="signOut();">Sign out</a>' +
             '</li>' +
-        '</ul>'
+        '</ul>'+
         '</div>';
     } else {
       var navBar = document.getElementById("navContainer");
@@ -154,5 +154,5 @@ window.addEventListener('load', function() {
 
 var signOut = function() {
   firebase.auth().signOut();
-  location.reload();
+
 };
