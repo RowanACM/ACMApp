@@ -28,6 +28,8 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="https://www.gstatic.com/firebasejs/ui/live/1.0/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/1.0/firebase-ui-auth.css" />
 
 </head>
 
@@ -35,34 +37,8 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    Menu <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand" href="register.html">Become A Member</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="index.html">Home</a>
-                    </li>
-                    <li>
-                        <a href="login.html">Login</a>
-                    </li>
-                    <li>
-                        <a href="register.html">Register</a>
-                    </li>
-                    <li>
-                        <a href="committees.html">Committees</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+        <div id="navContainer" class="container-fluid">
+            
         </div>
         <!-- /.container -->
     </nav>
@@ -176,9 +152,10 @@
     <!-- Theme JavaScript -->
     <script src="js/clean-blog.min.js"></script>
 
-    <script src="js/main.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.6.1/firebase.js"></script>
-    <script src="js/acm-database.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/models.js"></script>
+    <script src="js/users.js"></script>
 
 </body>
 
