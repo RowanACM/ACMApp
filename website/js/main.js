@@ -15,7 +15,7 @@ firebase.initializeApp(config);
 
 
 initApp = function() {
-
+  
 
   firebase.auth().onAuthStateChanged(function(user) {
 
