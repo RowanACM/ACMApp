@@ -28,8 +28,6 @@ initApp = function() {
   //this should become more dynamic, with more intuitive control/interfacing.
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-
-
         // User is signed in. Below are properties of the user.
         var displayName = user.displayName;
         var email = user.email;
