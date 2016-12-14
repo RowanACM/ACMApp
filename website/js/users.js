@@ -6,7 +6,7 @@
 
 // FirebaseUI config.
 var uiConfig = {
-  'signInSuccessUrl': '<url-to-redirect-to-on-success>',
+  'signInSuccessUrl': '/index.html',
   'signInOptions': [
     // Leave the lines as is for the providers you want to offer your users.
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -29,31 +29,17 @@ initApp = function() {
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
         // User is signed in. Below are properties of the user.
-        var displayName = user.displayName;
-        var email = user.email;
-        var emailVerified = user.emailVerified;
-        var photoURL = user.photoURL;
-        var uid = user.uid;
-        var providerData = user.providerData;
+        displayName = user.displayName;
+        email = user.email;
+        emailVerified = user.emailVerified;
+        photoURL = user.photoURL;
+        uid = user.uid;
+        providerData = user.providerData;
 
         // this is for more user/site control
-        user.getToken().then(function(accessToken) {
-          document.getElementById('sign-in-status').textContent = 'Signed in';
-          document.getElementById('sign-in').textContent = 'Sign out';
-
-          // keep if needed
-          document.getElementById('account-details').textContent = JSON.stringify({
-
-            displayName: displayName,
-            email: email,
-            emailVerified: emailVerified,
-            photoURL: photoURL,
-            uid: uid,
-            accessToken: accessToken,
-            providerData: providerData
-          }, null, '  ');
+          user.getToken().then(function(accessToken) {
+          document.getElementById("email_test").innerHTML= "email: <u>" + email + "</u>";
         });
-
         // update navbar
         var navBar = document.getElementById("navContainer");
         navBar.innerHTML =
@@ -62,7 +48,7 @@ initApp = function() {
                 '<span class="sr-only">Toggle navigation</span>' +
                 'Menu <i class="fa fa-bars"></i>' +
             '</button>' +
-            '<a class="navbar-brand" href="index.html">Dashboard</a>' +
+            '<a class="navbar-brand" href="dashboard.html">Dashboard</a>' +
         '</div>' +
         '<div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">' +
         '<ul class="nav navbar-nav navbar-right">' +
@@ -152,5 +138,9 @@ window.addEventListener('load', function() {
 
 var signOut = function() {
   firebase.auth().signOut();
+
+};
+
+var getUser = function() {
 
 };

@@ -21,7 +21,7 @@ announcementsRef_all.once('value').then(function(snapshot) {
   });
 });
 
-function addPost(title, subject, text, author, date, announcementsList) {
+var addPost = function(title, subject, text, author, date, announcementsList) {
   //console.log(title + ' ' + subject + ' ' + text);
   announcementsList.insertAdjacentHTML('afterbegin',
   '<div class="post-preview">' +
@@ -32,4 +32,4 @@ function addPost(title, subject, text, author, date, announcementsList) {
   '    <p class="post-meta">Posted by <a href="#">' + author + '</a> on ' + date + '</p>' +
   '</div>' +
   '<hr>');
-}
+};
