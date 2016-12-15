@@ -1,6 +1,5 @@
 /*
-*For the site to work with an object oriented design, we will consider rowan-acm
-*as an app (object). This object will consist of other objects, i.e. users, models, etc.
+*UNDER CONSTRUCTION -- TEMP
 */
 
 // Initialize Firebase

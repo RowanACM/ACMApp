@@ -1,6 +1,5 @@
 /*
-*This file will represent the interaction with our firebase as a data source.
-*Eventually this will become much more modular.
+*UNDER CONSTRUCTION -- TEMP
 */
 // ANNOUNCEMENTS //
 var announcementsRef_all = firebase.database().ref("announcements").orderByKey();

@@ -1,9 +1,6 @@
 /*
-*The idea is to manage data and the site using object oriented design. This
-*file represents what will become the user object and all the relative functions.
+*UNDER CONSTRUCTION -- TEMP
 */
-
-
 // FirebaseUI config.
 var uiConfig = {
   'signInSuccessUrl': '/index.html',
@@ -110,7 +107,9 @@ var login = function(){
     var errorMessage = error.message;
     showError(errorMessage);
   });
-  $("#prob-alert").hide();
+  $("#prob-alert").html("You're now logged in (testing)");
+  $("#prob-alert").show();
+
 
 };
 
@@ -142,7 +141,8 @@ var register = function() {
       var errorMessage = error.message;
       showError(errorMessage);
     });
-    $("#prob-alert").hide();
+    $("#prob-alert").html("You're now registered (testing)");
+    $("#prob-alert").show();
   }
 };
 
