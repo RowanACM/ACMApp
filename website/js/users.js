@@ -40,6 +40,7 @@ initApp = function() {
           user.getToken().then(function(accessToken) {
           document.getElementById("email_test").innerHTML= "email: <u>" + email + "</u>";
         });
+
         // update navbar
         var navBar = document.getElementById("navContainer");
         navBar.innerHTML =
@@ -63,6 +64,8 @@ initApp = function() {
             '</li>' +
         '</ul>'+
         '</div>';
+
+        // if !user
     } else {
       var navBar = document.getElementById("navContainer");
       navBar.innerHTML =
@@ -90,10 +93,27 @@ initApp = function() {
           '</ul>' +
       '</div>';
     }
+    // catch error
   }, function(error) {
     console.log(error);
   });
 };
+
+// login function
+var login = function(){
+  var email = $("#email_login").val();
+  var password = $("#password_login").val();
+
+  firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+    // catch error
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    showError(errorMessage);
+  });
+  $("#prob-alert").hide();
+
+};
+
 
 var register = function() {
   var firstname = $("#firstname").val();
