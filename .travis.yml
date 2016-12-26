@@ -14,7 +14,7 @@ install:
     - pip install --user html5validator
     
 script:
-    - html5validator --root website/
+    - html5validator --root website/ --ignore-re "events.html.*iframe"
 
 after_success:
     - cd website
