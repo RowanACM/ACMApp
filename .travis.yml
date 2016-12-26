@@ -18,5 +18,5 @@ script:
 
 after_success:
     - cd website
-    # To deploy to Firebase automatically, uncomment the line below 
-    - firebase deploy --token $FIREBASE_TOKEN
+    # Deploy to Firebase
+    - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then firebase deploy --token $FIREBASE_TOKEN; fi'
