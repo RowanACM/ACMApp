@@ -66,6 +66,12 @@ public class AboutActivity extends MaterialAboutActivity {
         authorCardBuilder.addItem(new MaterialAboutActionItem.Builder()
                 .text("Rowan Mobile App Committee")
                 .icon(R.drawable.ic_settings_black_48dp)
+                .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
+                    @Override
+                    public void onClick() {
+                        openUrl("https://rowanacm.org/committees.html");
+                    }
+                })
                 .build());
 
         authorCardBuilder.addItem(new MaterialAboutActionItem.Builder()
