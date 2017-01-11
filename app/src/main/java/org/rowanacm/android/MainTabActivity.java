@@ -25,6 +25,8 @@ import org.rowanacm.android.annoucement.AnnouncementListFragment;
 
 public class MainTabActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainTabActivity";
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -85,9 +87,9 @@ public class MainTabActivity extends AppCompatActivity {
             case R.id.settings:
                 switchActivity(SettingsActivity.class);
                 return true;
-            //case R.id.help:
-            //    startActivity(new Intent(this, Help.class));
-            //    return true;
+            case R.id.about:
+                startActivity(new Intent(this, AboutActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
