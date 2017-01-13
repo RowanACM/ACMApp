@@ -1,5 +1,7 @@
 package org.rowanacm.android.annoucement;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
@@ -7,7 +9,7 @@ import java.io.Serializable;
  * Contains a message and committee
  */
 
-public class Announcement implements Serializable {
+public class Announcement implements Serializable, Comparable<Announcement> {
     private String author;
     private String committee;
     private String date;
@@ -83,5 +85,10 @@ public class Announcement implements Serializable {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    @Override
+    public int compareTo(@NonNull Announcement announcement) {
+        return ((Long)announcement.timestamp).compareTo(timestamp);
     }
 }

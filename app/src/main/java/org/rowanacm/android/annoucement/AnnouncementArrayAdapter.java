@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by John on 12/1/2016.
@@ -27,6 +28,7 @@ public class AnnouncementArrayAdapter extends BaseAdapter {
 
     public void add(Announcement a) {
         announcementArrayList.add(a);
+        Collections.sort(announcementArrayList);
         this.notifyDataSetChanged();
     }
 
