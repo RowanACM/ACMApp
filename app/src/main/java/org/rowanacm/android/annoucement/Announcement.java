@@ -14,17 +14,19 @@ public class Announcement implements Serializable {
     private String subject;
     private String text;
     private String title;
+    private long timestamp;
 
     public Announcement() {
     }
 
-    public Announcement(String author, String committee, String date, String subject, String text, String title) {
+    public Announcement(String author, String committee, String date, String subject, String text, String title, long timestamp) {
         this.author = author;
         this.committee = committee;
         this.date = date;
         this.subject = subject;
         this.text = text;
         this.title = title;
+        this.timestamp = timestamp;
     }
 
     public String getAuthor() {
@@ -73,5 +75,13 @@ public class Announcement implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }
