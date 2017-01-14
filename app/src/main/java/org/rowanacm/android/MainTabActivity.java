@@ -161,7 +161,7 @@ public class MainTabActivity extends AppCompatActivity {
                         String message = ((EditText)dialogView.findViewById(R.id.message_edit_text)).getText().toString();
                         String committee = ((Spinner)dialogView.findViewById(R.id.committee_spinner)).getSelectedItem().toString();
 
-                        long timestamp = new Date().getTime();
+                        long timestamp = new Date().getTime() / 1000;
 
                         String date = DateFormat.getDateTimeInstance().format(new Date());
 
