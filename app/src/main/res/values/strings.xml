@@ -91,4 +91,13 @@
     <string name="cancel">Cancel</string>
     <string name="wait_write_dialog_text">Approach the NFC tag</string>
     <string name="title_activity_about">AboutActivity</string>
+
+    <string-array name="committee_array">
+        <item>Everyone</item>
+        <item>RU MAD</item>
+        <item>AI</item>
+        <item>Robot</item>
+        <item>Animation/Game</item>
+        <item>Web Dev</item>
+    </string-array>
 </resources>
