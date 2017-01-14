@@ -7,17 +7,53 @@
 
     tools:context="org.rowanacm.android.MainActivity">
 
-    <Button
-        android:id="@+id/attendance_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/attendance"/>
-
-    <WebView
-        android:id="@+id/webview"
+    <RelativeLayout
+        android:id="@+id/attendance_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/attendance_button" />
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/attendance_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="Attendance"/>
+
+        <Button
+            android:id="@+id/account_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/attendance_textview"
+            android:text="Account sign in"/>
+
+        <Button
+            android:id="@+id/attendance_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/account_button"
+            android:text="Meeting sign in"/>
+
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/attendance_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="What is ACM?"/>
+
+
+    </RelativeLayout>
+
+
+
+
 </RelativeLayout>

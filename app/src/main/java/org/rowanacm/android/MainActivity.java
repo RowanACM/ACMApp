@@ -8,12 +8,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import org.rowanacm.android.attendance.AttendanceActivity;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 /**
@@ -36,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        initWebView();
     }
 
     /**
@@ -74,27 +70,6 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         //FirebaseMessaging.getInstance().subscribeToTopic("test_notifications");
-    }
-
-    @OnClick(R.id.attendance_button)
-    protected void switchToAttendanceActivity() {
-        switchActivity(AttendanceActivity.class);
-    }
-
-
-
-    private void initWebView() {
-        webView = (WebView) findViewById(R.id.webview);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl(ACM_ATTENDANCE_URL); //initial page load
-
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-        });
     }
 
     private void switchActivity(Class newActivity) {

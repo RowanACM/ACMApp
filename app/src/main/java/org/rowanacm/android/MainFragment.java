@@ -3,31 +3,38 @@ package org.rowanacm.android;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.us.acm.R;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.rowanacm.android.attendance.AttendanceActivity;
 
+import java.util.Iterator;
+
 import butterknife.ButterKnife;
 
+import static android.content.ContentValues.TAG;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MainFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MainFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class MainFragment extends Fragment {
-    private WebView webView;
     private final static String ACM_ATTENDANCE_URL = "https://acm-attendance.firebaseapp.com/";
+
+    boolean haveISignedInAlready;
+    String currentMeeting;
 
 
     /**
@@ -36,29 +43,6 @@ public class MainFragment extends Fragment {
      */
     public static MainFragment newInstance() {
         return new MainFragment();
-    }
-
-
-    private void initWebView() {
-        webView = (WebView) getActivity().findViewById(R.id.webview);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setBuiltInZoomControls(false);
-        webView.setVerticalScrollBarEnabled(true);
-        webView.getSettings().setSupportZoom(true);
-        webView.loadUrl(ACM_ATTENDANCE_URL); //initial page load
-
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-        });
     }
 
 
@@ -84,12 +68,85 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        getView().findViewById(R.id.attendance_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(haveISignedInAlready) {
+                    Snackbar.make(getView(), "You already signed in to the meeting", Snackbar.LENGTH_SHORT).show();
+                }
+                else {
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                    DatabaseReference attendance = FirebaseDatabase.getInstance().getReference("attendance").child(currentMeeting);
+                    attendance.child(currentUser.getUid()).setValue(currentUser.getDisplayName());
+                    Snackbar.make(getView(), "Signing in...", Snackbar.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+
+        getView().findViewById(R.id.account_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivity(AttendanceActivity.class);
+            }
+        });
+
         String section = getActivity().getIntent().getStringExtra("section");
         if(section != null && section.equals("attendance")) {
             switchActivity(AttendanceActivity.class);
         }
         ButterKnife.bind(getActivity());
-        initWebView();
+
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        database.child("attendance").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean attendanceEnabled = (boolean) dataSnapshot.child("enabled").getValue();
+                if(attendanceEnabled) {
+                    getView().findViewById(R.id.attendance_layout).setVisibility(View.VISIBLE);
+                    TextView attendanceTextView = (TextView) getView().findViewById(R.id.attendance_textview);
+                    haveISignedInAlready = false;
+
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    if(currentUser == null) {
+                        haveISignedInAlready = false;
+                        // prompt user to sign in to their google account
+
+                        attendanceTextView.setText("Sign in to your google account");
+                    }
+                    else {
+                        String uid = currentUser.getUid();
+
+                        currentMeeting = (String) dataSnapshot.child("current").getValue();
+                        Iterable<DataSnapshot> children = dataSnapshot.child(currentMeeting).getChildren();
+                        Iterator<DataSnapshot> iter = children.iterator();
+                        while (iter.hasNext()) {
+                            DataSnapshot snapshot = iter.next();
+                            Log.d(TAG, "onDataChange: " + snapshot.getKey());
+                            if(snapshot.getKey().equals(uid)) {
+                                haveISignedInAlready = true;
+                                // tell the user that they already signed in
+                                attendanceTextView.setText("You already signed in to the meeting");
+                                return;
+                            }
+                        }
+                        haveISignedInAlready = false;
+                        // The user is signed into their google account but not to the meeting
+                        attendanceTextView.setText("Sign in to the meeting");
+                    }
+
+                }
+                else {
+                    // Don't show anything related to the attendance
+                    getView().findViewById(R.id.attendance_layout).setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
 
