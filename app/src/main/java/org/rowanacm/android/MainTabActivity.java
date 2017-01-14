@@ -162,6 +162,11 @@ public class MainTabActivity extends AppCompatActivity {
                     }
                 });
 
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                if(currentUser != null) {
+                    EditText nameEditText = (EditText) dialogView.findViewById(R.id.author_edit_text);
+                    nameEditText.setText(currentUser.getDisplayName());
+                }
 
 
                 Spinner spinner = (Spinner) dialogView.findViewById(R.id.committee_spinner);
@@ -180,40 +185,22 @@ public class MainTabActivity extends AppCompatActivity {
     }
 
     public void adminListener(final String userid) {
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         mDatabase.child("admins").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                Log.d(TAG, "onChildAdded: " + s);
-
                 if(((String)dataSnapshot.getValue()).equalsIgnoreCase(userid)){
                     admin = true;
                 }
-                else {
-                    admin = false;
-                }
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+            public void onCancelled(DatabaseError databaseError) {}
         });
     }
 
