@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,8 +28,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import org.rowanacm.android.annoucement.Announcement;
 import org.rowanacm.android.annoucement.AnnouncementListFragment;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 import static org.rowanacm.android.UserData.mDatabase;
 
@@ -85,14 +92,10 @@ public class MainTabActivity extends AppCompatActivity {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     adminListener(user.getUid());
                     fab.show();
-
-
-
-
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
-                    fab.show(); //fab.hide();
+                    fab.hide();
                 }
             }
         };
@@ -102,6 +105,9 @@ public class MainTabActivity extends AppCompatActivity {
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainTabActivity.this);
                 alertDialogBuilder.setTitle("Create announcement");
+                final View dialogView = getLayoutInflater().inflate(R.layout.create_announcement_view, null);
+                alertDialogBuilder.setView(dialogView);
+
                 alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -112,16 +118,24 @@ public class MainTabActivity extends AppCompatActivity {
                 alertDialogBuilder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        
+                        String author = ((EditText)dialogView.findViewById(R.id.author_edit_text)).getText().toString();
+                        String subject = ((EditText)dialogView.findViewById(R.id.subject_edit_text)).getText().toString();
+                        String message = ((EditText)dialogView.findViewById(R.id.message_edit_text)).getText().toString();
+                        String committee = ((Spinner)dialogView.findViewById(R.id.committee_spinner)).getSelectedItem().toString();
 
-                        //dialogInterface
+                        long timestamp = new Date().getTime();
+
+                        String date = DateFormat.getDateTimeInstance().format(new Date());
+
+                        Announcement announcement = new Announcement(author, committee, date, subject, message, subject, timestamp);
+
+                        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference newRef = database.child("announcements").push();
+                        newRef.setValue(announcement);
                     }
                 });
 
-                View dialogView = getLayoutInflater().inflate(R.layout.create_announcement_view, null);
 
-
-                alertDialogBuilder.setView(dialogView);
 
                 Spinner spinner = (Spinner) dialogView.findViewById(R.id.committee_spinner);
 // Create an ArrayAdapter using the string array and a default spinner layout
