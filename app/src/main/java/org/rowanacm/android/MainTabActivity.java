@@ -2,6 +2,8 @@ package org.rowanacm.android;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -20,8 +22,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +39,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.rowanacm.android.annoucement.Announcement;
 import org.rowanacm.android.annoucement.AnnouncementListFragment;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -118,6 +128,7 @@ public class MainTabActivity extends AppCompatActivity {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     adminListener(user.getUid());
+                    new RetrieveFeedTask().execute("");
                     //fab.show();
                 } else {
                     // User is signed out
@@ -288,6 +299,88 @@ public class MainTabActivity extends AppCompatActivity {
     private void switchActivity(Class newActivity) {
         Intent intent = new Intent(this, newActivity);
         startActivity(intent);
+    }
+
+    private void slack() throws IOException {
+        String fullString = "";
+        URL url = new URL("https://slack.com/api/users.list?token=xoxp-26077152839-31389996641-126972648977-83be1e847fc3c476ee7a03ecbfb0f205&pretty=1");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            fullString += line;
+        }
+        reader.close();
+
+        if(fullString.contains(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
+            Toast.makeText(this, "You are already on slack", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "You are not on slack", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    class RetrieveFeedTask extends AsyncTask<String, Void, Boolean> {
+
+        private Exception exception;
+
+        protected Boolean doInBackground(String... urls) {
+            String fullString = "";
+            URL url = null;
+            try {
+                //TODO Find a way to commit the token
+                url = new URL("https://slack.com/api/users.list?token=abc123");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                fullString += line;
+            }
+            reader.close();
+
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                if(currentUser == null || currentUser.getEmail() == null)
+                    return false;
+                return fullString.contains(currentUser.getEmail());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            TextView slackTextView = (TextView) findViewById(R.id.slack_textview);
+            Button slackSignUpButton = (Button) findViewById(R.id.slack_sign_up_button);
+            slackSignUpButton.setVisibility(View.VISIBLE);
+            slackTextView.setVisibility(View.VISIBLE);
+
+            if(result) {
+                slackTextView.setText("You are on slack ✓");
+                slackSignUpButton.setText("Open Slack");
+
+
+
+                slackSignUpButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse("slack://open");
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                });
+            }
+            else {
+                slackTextView.setText("You are not on slack");
+                slackSignUpButton.setText("Sign Up");
+                slackSignUpButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Utils.openUrl(MainTabActivity.this, "https://rowanacm.slack.com/signup");
+                    }
+                });
+            }
+        }
     }
 
 }

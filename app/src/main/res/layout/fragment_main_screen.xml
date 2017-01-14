@@ -11,6 +11,7 @@
         android:id="@+id/attendance_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:background="@color/colorPrimary">
 
         <TextView
@@ -48,9 +49,28 @@
         android:layout_below="@id/attendance_layout">
 
         <TextView
+            android:id="@+id/about_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="What is ACM?"/>
+
+
+        <TextView
+            android:id="@+id/slack_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/about_text_view"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/slack_sign_up_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/slack_textview"
+            android:layout_toRightOf="@id/slack_textview"
+            android:visibility="gone"/>
+
+
 
 
     </RelativeLayout>
