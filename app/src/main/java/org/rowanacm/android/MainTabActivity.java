@@ -61,6 +61,7 @@ public class MainTabActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private boolean admin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,32 @@ public class MainTabActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                if(position == 0) {
+                    fab.hide();
+                }
+                else if(position == 1) {
+                    if(admin) {
+                        fab.show();
+                    }
+                    else {
+                        fab.hide();
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
@@ -91,7 +118,7 @@ public class MainTabActivity extends AppCompatActivity {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     adminListener(user.getUid());
-                    fab.show();
+                    //fab.show();
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -161,10 +188,10 @@ public class MainTabActivity extends AppCompatActivity {
                 Log.d(TAG, "onChildAdded: " + s);
 
                 if(((String)dataSnapshot.getValue()).equalsIgnoreCase(userid)){
-                    fab.show();
+                    admin = true;
                 }
                 else {
-                    fab.hide();
+                    admin = false;
                 }
             }
 
