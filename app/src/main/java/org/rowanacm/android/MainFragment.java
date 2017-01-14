@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -106,7 +108,11 @@ public class MainFragment extends Fragment {
                 boolean attendanceEnabled = (boolean) dataSnapshot.child("enabled").getValue();
                 if(attendanceEnabled) {
                     getView().findViewById(R.id.attendance_layout).setVisibility(View.VISIBLE);
+
                     TextView attendanceTextView = (TextView) getView().findViewById(R.id.attendance_textview);
+                    Button meetingButton =(Button)getView().findViewById(R.id.attendance_button);
+                    Button accountButton =(Button)getView().findViewById(R.id.account_button);
+
                     haveISignedInAlready = false;
 
                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -115,6 +121,8 @@ public class MainFragment extends Fragment {
                         // prompt user to sign in to their google account
 
                         attendanceTextView.setText("Sign in to your google account");
+                        accountButton.setVisibility(View.VISIBLE);
+                        meetingButton.setVisibility(View.GONE);
                     }
                     else {
                         String uid = currentUser.getUid();
@@ -129,12 +137,18 @@ public class MainFragment extends Fragment {
                                 haveISignedInAlready = true;
                                 // tell the user that they already signed in
                                 attendanceTextView.setText("You already signed in to the meeting");
+                                meetingButton.setVisibility(View.GONE);
                                 return;
                             }
                         }
                         haveISignedInAlready = false;
                         // The user is signed into their google account but not to the meeting
                         attendanceTextView.setText("Sign in to the meeting");
+
+                        accountButton.setVisibility(View.VISIBLE);
+                        meetingButton.setVisibility(View.VISIBLE);
+                        Animation pulse = AnimationUtils.loadAnimation(getActivity(), R.anim.pulse);
+                        meetingButton.startAnimation(pulse);
                     }
 
                 }
