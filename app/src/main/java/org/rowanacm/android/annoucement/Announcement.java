@@ -13,7 +13,7 @@ public class Announcement implements Serializable, Comparable<Announcement> {
     private String author;
     private String committee;
     private String date;
-    private String subject;
+    private String subj;
     private String text;
     private String title;
     private long timestamp;
@@ -21,11 +21,11 @@ public class Announcement implements Serializable, Comparable<Announcement> {
     public Announcement() {
     }
 
-    public Announcement(String author, String committee, String date, String subject, String text, String title, long timestamp) {
+    public Announcement(String author, String committee, String date, String subj, String text, String title, long timestamp) {
         this.author = author;
         this.committee = committee;
         this.date = date;
-        this.subject = subject;
+        this.subj = subj;
         this.text = text;
         this.title = title;
         this.timestamp = timestamp;
@@ -55,12 +55,12 @@ public class Announcement implements Serializable, Comparable<Announcement> {
         this.date = date;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getSubj() {
+        return subj;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setSubj(String subj) {
+        this.subj = subj;
     }
 
     public String getText() {

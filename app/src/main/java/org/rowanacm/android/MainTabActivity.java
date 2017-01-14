@@ -1,15 +1,16 @@
 package org.rowanacm.android;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.us.acm.R;
@@ -18,14 +19,23 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import org.rowanacm.android.annoucement.Announcement;
 import org.rowanacm.android.annoucement.AnnouncementListFragment;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 import static org.rowanacm.android.UserData.mDatabase;
 
@@ -82,10 +92,6 @@ public class MainTabActivity extends AppCompatActivity {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     adminListener(user.getUid());
                     fab.show();
-
-
-
-
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -96,8 +102,51 @@ public class MainTabActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Create an announcement (Coming soon)", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainTabActivity.this);
+                alertDialogBuilder.setTitle("Create announcement");
+                final View dialogView = getLayoutInflater().inflate(R.layout.create_announcement_view, null);
+                alertDialogBuilder.setView(dialogView);
+
+                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                alertDialogBuilder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String author = ((EditText)dialogView.findViewById(R.id.author_edit_text)).getText().toString();
+                        String subject = ((EditText)dialogView.findViewById(R.id.subject_edit_text)).getText().toString();
+                        String message = ((EditText)dialogView.findViewById(R.id.message_edit_text)).getText().toString();
+                        String committee = ((Spinner)dialogView.findViewById(R.id.committee_spinner)).getSelectedItem().toString();
+
+                        long timestamp = new Date().getTime();
+
+                        String date = DateFormat.getDateTimeInstance().format(new Date());
+
+                        Announcement announcement = new Announcement(author, committee, date, subject, message, subject, timestamp);
+
+                        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                        DatabaseReference newRef = database.child("announcements").push();
+                        newRef.setValue(announcement);
+                    }
+                });
+
+
+
+                Spinner spinner = (Spinner) dialogView.findViewById(R.id.committee_spinner);
+// Create an ArrayAdapter using the string array and a default spinner layout
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(MainTabActivity.this,
+                        R.array.committee_array, android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+                spinner.setAdapter(adapter);
+
+                alertDialogBuilder.create().show();
             }
         });
 
