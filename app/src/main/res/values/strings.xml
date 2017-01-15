@@ -94,10 +94,11 @@
 
     <string-array name="committee_array">
         <item>Everyone</item>
-        <item>RU MAD</item>
-        <item>AI</item>
-        <item>Robot</item>
         <item>Animation/Game</item>
         <item>Web Dev</item>
+        <item>RU MAD (App)</item>
+        <item>AI</item>
+        <item>Robotics</item>
+        <item>ACM-W</item>
     </string-array>
 </resources>
