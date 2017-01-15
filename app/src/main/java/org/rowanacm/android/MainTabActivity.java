@@ -26,7 +26,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,6 +34,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.rowanacm.android.annoucement.Announcement;
 import org.rowanacm.android.annoucement.AnnouncementListFragment;
@@ -128,7 +128,31 @@ public class MainTabActivity extends AppCompatActivity {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     adminListener(user.getUid());
-                    new RetrieveFeedTask().execute("");
+
+                    FirebaseDatabase.getInstance().getReference("slack").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                            if(currentUser != null) {
+                                String email = currentUser.getEmail();
+
+
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    if (((String) snapshot.getValue()).equalsIgnoreCase(email)) {
+                                        updateSlackViews(true);
+                                        return;
+                                    }
+                                }
+                                updateSlackViews(false);
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {}
+                    });
+
                     //fab.show();
                 } else {
                     // User is signed out
@@ -301,24 +325,6 @@ public class MainTabActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void slack() throws IOException {
-        String fullString = "";
-        URL url = new URL("https://slack.com/api/users.list?token=xoxp-26077152839-31389996641-126972648977-83be1e847fc3c476ee7a03ecbfb0f205&pretty=1");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            fullString += line;
-        }
-        reader.close();
-
-        if(fullString.contains(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
-            Toast.makeText(this, "You are already on slack", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Toast.makeText(this, "You are not on slack", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     class RetrieveFeedTask extends AsyncTask<String, Void, Boolean> {
 
         private Exception exception;
@@ -350,36 +356,39 @@ public class MainTabActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(Boolean result) {
-            TextView slackTextView = (TextView) findViewById(R.id.slack_textview);
-            Button slackSignUpButton = (Button) findViewById(R.id.slack_sign_up_button);
-            slackSignUpButton.setVisibility(View.VISIBLE);
-            slackTextView.setVisibility(View.VISIBLE);
-
-            if(result) {
-                slackTextView.setText("You are on slack ✓");
-                slackSignUpButton.setText("Open Slack");
+            updateSlackViews(result);
+        }
+    }
 
 
+    private void updateSlackViews(boolean onSlack) {
+        TextView slackTextView = (TextView) findViewById(R.id.slack_textview);
+        Button slackSignUpButton = (Button) findViewById(R.id.slack_sign_up_button);
+        slackSignUpButton.setVisibility(View.VISIBLE);
+        slackTextView.setVisibility(View.VISIBLE);
 
-                slackSignUpButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Uri uri = Uri.parse("slack://open");
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                    }
-                });
-            }
-            else {
-                slackTextView.setText("You are not on slack");
-                slackSignUpButton.setText("Sign Up");
-                slackSignUpButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Utils.openUrl(MainTabActivity.this, "https://rowanacm.slack.com/signup");
-                    }
-                });
-            }
+        if(onSlack) {
+            slackTextView.setText("You are on slack ✓");
+            slackSignUpButton.setText("Open Slack");
+
+            slackSignUpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri uri = Uri.parse("slack://open");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+            });
+        }
+        else {
+            slackTextView.setText("You are not on slack");
+            slackSignUpButton.setText("Sign Up");
+            slackSignUpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Utils.openUrl(MainTabActivity.this, "https://rowanacm.slack.com/signup");
+                }
+            });
         }
     }
 
