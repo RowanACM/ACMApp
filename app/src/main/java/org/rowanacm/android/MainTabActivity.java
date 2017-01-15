@@ -29,7 +29,6 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -220,20 +219,14 @@ public class MainTabActivity extends AppCompatActivity {
     }
 
     public void adminListener(final String userid) {
-        mDatabase.child("admins").addChildEventListener(new ChildEventListener() {
+        mDatabase.child("admins").child(userid).child("admin").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if(((String)dataSnapshot.getValue()).equalsIgnoreCase(userid)){
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(((boolean)dataSnapshot.getValue())){
                     admin = true;
                 }
             }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
