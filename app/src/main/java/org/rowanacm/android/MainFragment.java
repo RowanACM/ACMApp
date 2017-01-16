@@ -1,6 +1,5 @@
 package org.rowanacm.android;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -34,6 +33,8 @@ import static android.content.ContentValues.TAG;
 public class MainFragment extends Fragment {
     private final static String ACM_ATTENDANCE_URL = "https://acm-attendance.firebaseapp.com/";
 
+    private enum AttendanceMode {HIDDEN, PROMPT_GOOGLE, PROMPT_MEETING, SIGNED_IN}
+
     boolean haveISignedInAlready;
     String currentMeeting;
 
@@ -47,13 +48,10 @@ public class MainFragment extends Fragment {
     }
 
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_screen, container, false);
-
 
 
 
@@ -90,22 +88,13 @@ public class MainFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean attendanceEnabled = (boolean) dataSnapshot.child("enabled").getValue();
                 if(attendanceEnabled) {
-                    getView().findViewById(R.id.attendance_layout).setVisibility(View.VISIBLE);
-
-                    TextView attendanceTextView = (TextView) getView().findViewById(R.id.attendance_textview);
-                    Button meetingButton =(Button)getView().findViewById(R.id.attendance_button);
-                    SignInButton googleSignInButton =(SignInButton) getView().findViewById(R.id.sign_in_google_button);
 
                     haveISignedInAlready = false;
 
                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                     if(currentUser == null) {
                         haveISignedInAlready = false;
-                        // prompt user to sign in to their google account
-                        attendanceTextView.setVisibility(View.VISIBLE);
-                        attendanceTextView.setText("Sign in to your google account before you can sign in to the meeting");
-                        googleSignInButton.setVisibility(View.VISIBLE);
-                        meetingButton.setVisibility(View.GONE);
+                        updateAttendanceViews(AttendanceMode.PROMPT_GOOGLE);
                     }
                     else {
                         String uid = currentUser.getUid();
@@ -119,26 +108,18 @@ public class MainFragment extends Fragment {
                             if(snapshot.getKey().equals(uid)) {
                                 haveISignedInAlready = true;
                                 // tell the user that they already signed in
-                                attendanceTextView.setVisibility(View.VISIBLE);
-                                attendanceTextView.setText("You are signed in to the meeting");
-                                meetingButton.setAnimation(null);
-                                meetingButton.setVisibility(View.GONE);
+                                updateAttendanceViews(AttendanceMode.SIGNED_IN);
                                 return;
                             }
                         }
                         haveISignedInAlready = false;
                         // The user is signed into their google account but not to the meeting
-                        attendanceTextView.setVisibility(View.GONE);
-                        googleSignInButton.setVisibility(View.VISIBLE);
-                        meetingButton.setVisibility(View.VISIBLE);
-                        Animation pulse = AnimationUtils.loadAnimation(getActivity(), R.anim.pulse);
-                        meetingButton.startAnimation(pulse);
+                        updateAttendanceViews(AttendanceMode.PROMPT_MEETING);
                     }
 
                 }
                 else {
-                    // Don't show anything related to the attendance
-                    getView().findViewById(R.id.attendance_layout).setVisibility(View.GONE);
+                    updateAttendanceViews(AttendanceMode.HIDDEN);
                 }
             }
 
@@ -147,9 +128,40 @@ public class MainFragment extends Fragment {
         });
     }
 
+    private void updateAttendanceViews(AttendanceMode attendanceMode) {
+        ViewGroup attendanceLayout = (ViewGroup) getView().findViewById(R.id.attendance_layout);
+        TextView attendanceTextView = (TextView) getView().findViewById(R.id.attendance_textview);
+        Button meetingButton =(Button)getView().findViewById(R.id.attendance_button);
+        SignInButton googleSignInButton =(SignInButton) getView().findViewById(R.id.sign_in_google_button);
 
-    private void switchActivity(Class newActivity) {
-        Intent intent = new Intent(getContext(), newActivity);
-        startActivity(intent);
+        switch (attendanceMode) {
+            case HIDDEN:
+                attendanceLayout.setVisibility(View.GONE);
+                attendanceTextView.setVisibility(View.GONE);
+                meetingButton.setVisibility(View.GONE);
+                break;
+            case PROMPT_GOOGLE:
+                attendanceLayout.setVisibility(View.VISIBLE);
+                attendanceTextView.setVisibility(View.VISIBLE);
+                attendanceTextView.setText("Sign in to your google account before you can sign in to the meeting");
+                googleSignInButton.setVisibility(View.VISIBLE);
+                meetingButton.setVisibility(View.GONE);
+                break;
+            case SIGNED_IN:
+                attendanceLayout.setVisibility(View.VISIBLE);
+                attendanceTextView.setVisibility(View.VISIBLE);
+                attendanceTextView.setText("You are signed in to the meeting ✓");
+                meetingButton.setAnimation(null);
+                meetingButton.setVisibility(View.GONE);
+                break;
+            case PROMPT_MEETING:
+                attendanceLayout.setVisibility(View.VISIBLE);
+                attendanceTextView.setVisibility(View.GONE);
+                googleSignInButton.setVisibility(View.VISIBLE);
+                meetingButton.setVisibility(View.VISIBLE);
+                Animation pulse = AnimationUtils.loadAnimation(getActivity(), R.anim.pulse);
+                meetingButton.startAnimation(pulse);
+                break;
+        }
     }
 }

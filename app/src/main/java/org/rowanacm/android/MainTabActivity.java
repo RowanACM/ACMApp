@@ -3,7 +3,6 @@ package org.rowanacm.android;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -51,11 +50,6 @@ import com.google.firebase.database.ValueEventListener;
 import org.rowanacm.android.annoucement.Announcement;
 import org.rowanacm.android.annoucement.AnnouncementListFragment;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -322,6 +316,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
 
     @OnClick(R.id.sign_in_google_button)
     public void signInGoogle() {
+        Toast.makeText(this, "Select your Rowan account", Toast.LENGTH_LONG).show();
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -409,7 +404,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+            // Number of pages.
             return 2;
         }
 
@@ -427,41 +422,6 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
     private void switchActivity(Class newActivity) {
         Intent intent = new Intent(this, newActivity);
         startActivity(intent);
-    }
-
-    class RetrieveFeedTask extends AsyncTask<String, Void, Boolean> {
-
-        private Exception exception;
-
-        protected Boolean doInBackground(String... urls) {
-            String fullString = "";
-            URL url = null;
-            try {
-                //TODO Find a way to commit the token
-                url = new URL("https://slack.com/api/users.list?token=abc123");
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                fullString += line;
-            }
-            reader.close();
-
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                if(currentUser == null || currentUser.getEmail() == null)
-                    return false;
-                return fullString.contains(currentUser.getEmail());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return false;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            updateSlackViews(result);
-        }
     }
 
 
