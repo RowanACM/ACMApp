@@ -2,7 +2,6 @@ package org.rowanacm.android;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -21,10 +20,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -104,20 +101,6 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                // ...
-            }
-        };
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -161,6 +144,8 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         mAuth = FirebaseAuth.getInstance();
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -169,37 +154,12 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     adminListener(user.getUid());
-
-                    FirebaseDatabase.getInstance().getReference("slack").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                            if(currentUser != null) {
-                                String email = currentUser.getEmail();
-
-
-                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                    if (((String) snapshot.getValue()).equalsIgnoreCase(email)) {
-                                        updateSlackViews(true);
-                                        return;
-                                    }
-                                }
-                                updateSlackViews(false);
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {}
-                    });
-
-                    //fab.show();
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                     fab.hide();
                 }
+
             }
         };
         fab.setOnClickListener(new View.OnClickListener() {
@@ -425,35 +385,6 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
     }
 
 
-    private void updateSlackViews(boolean onSlack) {
-        TextView slackTextView = (TextView) findViewById(R.id.slack_textview);
-        Button slackSignUpButton = (Button) findViewById(R.id.slack_sign_up_button);
-        slackSignUpButton.setVisibility(View.VISIBLE);
-        slackTextView.setVisibility(View.VISIBLE);
 
-        if(onSlack) {
-            slackTextView.setText("You are on slack ✓");
-            slackSignUpButton.setText("Open Slack");
-
-            slackSignUpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Uri uri = Uri.parse("slack://open");
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
-                }
-            });
-        }
-        else {
-            slackTextView.setText("You are not on slack");
-            slackSignUpButton.setText("Sign Up");
-            slackSignUpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Utils.openUrl(MainTabActivity.this, "https://rowanacm.slack.com/signup");
-                }
-            });
-        }
-    }
 
 }

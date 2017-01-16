@@ -1,6 +1,9 @@
 package org.rowanacm.android;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -32,6 +35,9 @@ import static android.content.ContentValues.TAG;
 
 public class MainFragment extends Fragment {
     private final static String ACM_ATTENDANCE_URL = "https://acm-attendance.firebaseapp.com/";
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseAuth mAuth;
+    private ValueEventListener attendanceListener;
 
     private enum AttendanceMode {HIDDEN, PROMPT_GOOGLE, PROMPT_MEETING, SIGNED_IN}
 
@@ -62,6 +68,8 @@ public class MainFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mAuth = FirebaseAuth.getInstance();
+
         getView().findViewById(R.id.attendance_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,8 +90,37 @@ public class MainFragment extends Fragment {
 
         ButterKnife.bind(getActivity());
 
+        attendanceListener = attendanceListener();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+
+                    String email = user.getEmail();
+                    Log.d(TAG, "onAuthStateChanged: " +  email);
+
+                    if(email != null)
+                        slackListener(email);
+
+                    DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                    database.removeEventListener(attendanceListener);
+                    attendanceListener = attendanceListener();
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+            }
+        };
+    }
+
+    private ValueEventListener attendanceListener() {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        database.child("attendance").addValueEventListener(new ValueEventListener() {
+        return database.child("attendance").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean attendanceEnabled = (boolean) dataSnapshot.child("enabled").getValue();
@@ -126,6 +163,74 @@ public class MainFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    private void slackListener(final String email) {
+        Log.d(TAG, "slackListener() called with: email = [" + email + "]");
+        FirebaseDatabase.getInstance().getReference("slack").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange() called with: dataSnapshot = [" + dataSnapshot + "]");
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if (((String) snapshot.getValue()).equalsIgnoreCase(email)) {
+                        updateSlackViews(true);
+                        return;
+                    }
+                }
+                updateSlackViews(false);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    private void updateSlackViews(boolean onSlack) {
+        Log.d(TAG, "updateSlackViews() called with: onSlack = [" + onSlack + "]");
+
+        TextView slackTextView = (TextView) getView().findViewById(R.id.slack_textview);
+        Button slackSignUpButton = (Button) getView().findViewById(R.id.slack_sign_up_button);
+        slackSignUpButton.setVisibility(View.VISIBLE);
+        slackTextView.setVisibility(View.VISIBLE);
+
+        if(onSlack) {
+            slackTextView.setText("You are on slack ✓");
+            slackSignUpButton.setText("Open Slack");
+
+            slackSignUpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Uri uri = Uri.parse("slack://open");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+            });
+        }
+        else {
+            slackTextView.setText("You are not on slack");
+            slackSignUpButton.setText("Sign Up");
+            slackSignUpButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Utils.openUrl(getActivity(), "https://rowanacm.slack.com/signup");
+                }
+            });
+        }
     }
 
     private void updateAttendanceViews(AttendanceMode attendanceMode) {
