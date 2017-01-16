@@ -12,7 +12,6 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import org.rowanacm.android.attendance.AttendanceActivity;
 
 import static com.google.android.gms.internal.zzs.TAG;
 
@@ -52,7 +51,7 @@ public class MessagingService extends FirebaseMessagingService {
         Log.d(TAG, "onMessageReceived: " + openSection);
 
         if(openSection != null && openSection.equals("attendance")) {
-            resultIntent = new Intent(this, AttendanceActivity.class);
+            resultIntent = new Intent(this, MainTabActivity.class);
 
             Log.d(TAG, "onMessageReceived: ATTENDANCE");
             //resultIntent.putExtra("activity", "attendance");

@@ -23,8 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.rowanacm.android.attendance.AttendanceActivity;
-
 import java.util.Iterator;
 
 import butterknife.ButterKnife;
@@ -55,13 +53,7 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_screen, container, false);
 
-        Button signInButton = (Button) rootView.findViewById(R.id.attendance_button);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivity(AttendanceActivity.class);
-            }
-        });
+
 
 
         return rootView;
@@ -88,17 +80,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        getView().findViewById(R.id.account_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchActivity(AttendanceActivity.class);
-            }
-        });
 
-        String section = getActivity().getIntent().getStringExtra("section");
-        if(section != null && section.equals("attendance")) {
-            switchActivity(AttendanceActivity.class);
-        }
         ButterKnife.bind(getActivity());
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
