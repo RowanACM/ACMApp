@@ -384,6 +384,10 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         startActivity(intent);
     }
 
+    protected GoogleApiClient getGoogleApiClient() {
+        return mGoogleApiClient;
+    }
+
 
 
 

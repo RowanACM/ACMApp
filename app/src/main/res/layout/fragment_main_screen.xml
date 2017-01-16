@@ -83,6 +83,23 @@
                 android:layout_toRightOf="@id/slack_textview"
                 android:visibility="gone"/>
 
+            <TextView
+                android:id="@+id/google_sign_out_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/slack_textview"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:visibility="gone"
+                android:text="You are signed into your Google Account"/>
+
+            <Button
+                android:id="@+id/google_sign_out_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/google_sign_out_textview"
+                android:visibility="gone"
+                android:text="Sign Out"/>
+
 
         </RelativeLayout>
 

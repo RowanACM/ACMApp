@@ -16,8 +16,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -59,9 +64,34 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_screen, container, false);
 
-
+        rootView.findViewById(R.id.google_sign_out_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                revokeAccess();
+            }
+        });
 
         return rootView;
+    }
+
+    private void revokeAccess() {
+        GoogleApiClient googleApiClient = ((MainTabActivity) getActivity()).getGoogleApiClient();
+        if(!googleApiClient.isConnected()) {
+            Toast.makeText(getActivity(), "You are not signed in. Unable to sign out", Toast.LENGTH_LONG).show();
+        }
+        else {
+
+            Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(@NonNull Status status) {
+                            // ...
+                            //updateGoogleSignInButtons(false);
+                            FirebaseAuth.getInstance().signOut();
+                            Toast.makeText(getActivity(), "Signed out", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
     @Override
@@ -96,9 +126,11 @@ public class MainFragment extends Fragment {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    updateGoogleSignInButtons(true);
 
                     String email = user.getEmail();
                     Log.d(TAG, "onAuthStateChanged: " +  email);
@@ -113,6 +145,7 @@ public class MainFragment extends Fragment {
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
+                    updateGoogleSignInButtons(false);
                 }
             }
         };
@@ -267,6 +300,23 @@ public class MainFragment extends Fragment {
                 Animation pulse = AnimationUtils.loadAnimation(getActivity(), R.anim.pulse);
                 meetingButton.startAnimation(pulse);
                 break;
+        }
+    }
+
+    private void updateGoogleSignInButtons(boolean currentlySignedIn) {
+        SignInButton googleSignInButton =(SignInButton) getView().findViewById(R.id.sign_in_google_button);
+        TextView signOutTextView = (TextView) getView().findViewById(R.id.google_sign_out_textview);
+        Button signOutButton = (Button) getView().findViewById(R.id.google_sign_out_button);
+
+        if(currentlySignedIn) {
+            googleSignInButton.setVisibility(View.GONE);
+            signOutTextView.setVisibility(View.VISIBLE);
+            signOutButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            googleSignInButton.setVisibility(View.VISIBLE);
+            signOutTextView.setVisibility(View.GONE);
+            signOutButton.setVisibility(View.GONE);
         }
     }
 }
