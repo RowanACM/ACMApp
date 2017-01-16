@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.common.SignInButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -67,7 +68,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(haveISignedInAlready) {
-                    Snackbar.make(getView(), "You already signed in to the meeting", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(getView(), "You already signed in to the meeting ✓", Snackbar.LENGTH_SHORT).show();
                 }
                 else {
                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -93,7 +94,7 @@ public class MainFragment extends Fragment {
 
                     TextView attendanceTextView = (TextView) getView().findViewById(R.id.attendance_textview);
                     Button meetingButton =(Button)getView().findViewById(R.id.attendance_button);
-                    Button accountButton =(Button)getView().findViewById(R.id.account_button);
+                    SignInButton googleSignInButton =(SignInButton) getView().findViewById(R.id.sign_in_google_button);
 
                     haveISignedInAlready = false;
 
@@ -101,9 +102,9 @@ public class MainFragment extends Fragment {
                     if(currentUser == null) {
                         haveISignedInAlready = false;
                         // prompt user to sign in to their google account
-
-                        attendanceTextView.setText("Sign in to your google account");
-                        accountButton.setVisibility(View.VISIBLE);
+                        attendanceTextView.setVisibility(View.VISIBLE);
+                        attendanceTextView.setText("Sign in to your google account before you can sign in to the meeting");
+                        googleSignInButton.setVisibility(View.VISIBLE);
                         meetingButton.setVisibility(View.GONE);
                     }
                     else {
@@ -118,16 +119,17 @@ public class MainFragment extends Fragment {
                             if(snapshot.getKey().equals(uid)) {
                                 haveISignedInAlready = true;
                                 // tell the user that they already signed in
-                                attendanceTextView.setText("You already signed in to the meeting");
+                                attendanceTextView.setVisibility(View.VISIBLE);
+                                attendanceTextView.setText("You are signed in to the meeting");
+                                meetingButton.setAnimation(null);
                                 meetingButton.setVisibility(View.GONE);
                                 return;
                             }
                         }
                         haveISignedInAlready = false;
                         // The user is signed into their google account but not to the meeting
-                        attendanceTextView.setText("Sign in to the meeting");
-
-                        accountButton.setVisibility(View.VISIBLE);
+                        attendanceTextView.setVisibility(View.GONE);
+                        googleSignInButton.setVisibility(View.VISIBLE);
                         meetingButton.setVisibility(View.VISIBLE);
                         Animation pulse = AnimationUtils.loadAnimation(getActivity(), R.anim.pulse);
                         meetingButton.startAnimation(pulse);
