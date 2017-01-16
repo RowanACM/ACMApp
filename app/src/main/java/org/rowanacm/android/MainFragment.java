@@ -127,6 +127,10 @@ public class MainFragment extends Fragment {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
+                // Refresh the attendance status
+                FirebaseDatabase.getInstance().getReference().removeEventListener(attendanceListener);
+                attendanceListener = attendanceListener();
+
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
@@ -138,14 +142,12 @@ public class MainFragment extends Fragment {
                     if(email != null)
                         slackListener(email);
 
-                    DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                    database.removeEventListener(attendanceListener);
-                    attendanceListener = attendanceListener();
-
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                     updateGoogleSignInButtons(false);
+
+
                 }
             }
         };
@@ -267,15 +269,19 @@ public class MainFragment extends Fragment {
     }
 
     private void updateAttendanceViews(AttendanceMode attendanceMode) {
-        ViewGroup attendanceLayout = (ViewGroup) getView().findViewById(R.id.attendance_layout);
-        TextView attendanceTextView = (TextView) getView().findViewById(R.id.attendance_textview);
-        Button meetingButton =(Button)getView().findViewById(R.id.attendance_button);
-        SignInButton googleSignInButton =(SignInButton) getView().findViewById(R.id.sign_in_google_button);
+        View rootView = getView();
+        if(rootView == null)
+            return;
+        ViewGroup attendanceLayout = (ViewGroup) rootView.findViewById(R.id.attendance_layout);
+        TextView attendanceTextView = (TextView) rootView.findViewById(R.id.attendance_textview);
+        Button meetingButton = (Button) rootView.findViewById(R.id.attendance_button);
+        SignInButton googleSignInButton =(SignInButton) rootView.findViewById(R.id.sign_in_google_button);
 
         switch (attendanceMode) {
             case HIDDEN:
                 attendanceLayout.setVisibility(View.GONE);
                 attendanceTextView.setVisibility(View.GONE);
+                meetingButton.setAnimation(null);
                 meetingButton.setVisibility(View.GONE);
                 break;
             case PROMPT_GOOGLE:
@@ -283,6 +289,7 @@ public class MainFragment extends Fragment {
                 attendanceTextView.setVisibility(View.VISIBLE);
                 attendanceTextView.setText("Sign in to your google account before you can sign in to the meeting");
                 googleSignInButton.setVisibility(View.VISIBLE);
+                meetingButton.setAnimation(null);
                 meetingButton.setVisibility(View.GONE);
                 break;
             case SIGNED_IN:
@@ -295,7 +302,6 @@ public class MainFragment extends Fragment {
             case PROMPT_MEETING:
                 attendanceLayout.setVisibility(View.VISIBLE);
                 attendanceTextView.setVisibility(View.GONE);
-                googleSignInButton.setVisibility(View.VISIBLE);
                 meetingButton.setVisibility(View.VISIBLE);
                 Animation pulse = AnimationUtils.loadAnimation(getActivity(), R.anim.pulse);
                 meetingButton.startAnimation(pulse);
