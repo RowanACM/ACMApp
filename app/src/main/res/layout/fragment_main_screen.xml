@@ -28,7 +28,7 @@
                 android:id="@+id/attendance_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Attendance"
+                android:text="@string/attendance"
                 android:textColor="@color/white"/>
 
             <Button
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/attendance_textview"
                 android:layout_centerHorizontal="true"
-                android:text="Meeting sign in"/>
+                android:text="@string/meeting_sign_in"/>
 
 
         </RelativeLayout>
@@ -90,7 +90,7 @@
                 android:layout_below="@id/slack_textview"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:visibility="gone"
-                android:text="You are signed into your Google Account"/>
+                android:text="@string/you_are_signed_into_your_google_account"/>
 
             <Button
                 android:id="@+id/google_sign_out_button"
@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/google_sign_out_textview"
                 android:visibility="gone"
-                android:text="Sign Out"/>
+                android:text="@string/sign_out"/>
 
 
         </RelativeLayout>

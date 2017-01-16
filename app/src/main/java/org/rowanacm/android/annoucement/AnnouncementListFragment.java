@@ -15,8 +15,7 @@ import android.widget.ListView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-
-import static org.rowanacm.android.UserData.mDatabase;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 /**
@@ -27,10 +26,9 @@ import static org.rowanacm.android.UserData.mDatabase;
  * create an instance of this fragment.
  */
 public class AnnouncementListFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    ListView listView;
-    AnnouncementArrayAdapter adapter;
+    private ListView listView;
+    private AnnouncementArrayAdapter adapter;
+
     public AnnouncementListFragment() {
         // Required empty public constructor
     }
@@ -41,11 +39,8 @@ public class AnnouncementListFragment extends Fragment {
      *
      * @return A new instance of fragment AnnouncementListFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static AnnouncementListFragment newInstance() {
-        AnnouncementListFragment fragment = new AnnouncementListFragment();
-
-        return fragment;
+        return new AnnouncementListFragment();
     }
 
     public void buildListView(){
@@ -83,7 +78,7 @@ public class AnnouncementListFragment extends Fragment {
 
     public ChildEventListener announcementsListener() {
         try {
-            return mDatabase.child("announcements").addChildEventListener(new ChildEventListener() {
+            return FirebaseDatabase.getInstance().getReference().child("announcements").addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Announcement announcement = dataSnapshot.getValue(Announcement.class);

@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-        <android.support.v7.widget.CardView
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_view"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            card_view:cardCornerRadius="4dp">
-        <RelativeLayout
-            android:orientation="vertical" android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1"
-            android:paddingLeft="15sp"
-            android:paddingRight="15dp"
-            android:paddingBottom="5dp">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    card_view:cardCornerRadius="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15sp"
+        android:paddingRight="15dp"
+        android:weightSum="1">
 
         <TextView
-            android:text="committee head"
+            android:id="@+id/gro_View"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/gro_View"
-            android:textStyle="normal|bold"
-            android:layout_gravity="start"
-            android:textAlignment="center"
-            android:lines="1"
-
-            android:maxLines="2"
-            android:textSize="24dp"
-            android:textColor="@color/black"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:paddingBottom="1dp" />
+            android:layout_gravity="start"
+            android:lines="1"
+            android:maxLines="2"
+
+            android:paddingBottom="1dp"
+            android:text="@string/committee_head"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="normal|bold"/>
 
         <TextView
-            android:text="anouncement"
+            android:id="@+id/ano_View"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/ano_View"
-            android:layout_gravity="start"
-            android:maxLines="1"
-            android:lines="2"
-            android:textSize="18dp"
-            android:ellipsize="end"
-
-            android:textAlignment="textStart"
-            android:textColor="@color/dark_grey"
             android:layout_below="@+id/gro_View"
             android:layout_centerHorizontal="true"
+            android:layout_gravity="start"
+            android:ellipsize="end"
+            android:lines="2"
+            android:maxLines="1"
 
-            />
-</RelativeLayout>
-        </android.support.v7.widget.CardView>
+            android:text="@string/announcement"
+            android:textAlignment="textStart"
+            android:textColor="@color/dark_grey"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
 

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:text="Author"/>
+        android:text="@string/author"/>
 
     <TextView
         android:id="@+id/prompt_subject"
@@ -24,7 +24,7 @@
         android:textSize="20sp"
         android:layout_below="@+id/prompt_author"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:text="Subject"/>
+        android:text="@string/subject"/>
 
     <TextView
         android:id="@+id/prompt_text"
@@ -35,7 +35,7 @@
         android:layout_below="@+id/prompt_subject"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:textSize="20sp"
-        android:text="Text"/>
+        android:text="@string/text"/>
 
     <TextView
         android:id="@+id/prompt_committee"
@@ -45,7 +45,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/prompt_text"
         android:textSize="20sp"
-        android:text="Committee"/>
+        android:text="@string/committee"/>
 
     <EditText
         android:id="@+id/author_edit_text"
@@ -53,6 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/prompt_author"
         android:layout_alignTop="@id/prompt_author"
+        android:inputType="textPersonName"
         android:layout_alignParentRight="true"/>
 
 
@@ -62,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/prompt_subject"
         android:layout_alignTop="@id/prompt_subject"
+        android:inputType="textCapWords"
         android:layout_alignParentRight="true"/>
 
 
@@ -71,6 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/prompt_text"
         android:layout_alignTop="@id/prompt_text"
+        android:inputType="text"
         android:layout_alignParentRight="true"/>
 
     <Spinner

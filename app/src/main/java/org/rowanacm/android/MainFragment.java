@@ -35,24 +35,22 @@ import java.util.Iterator;
 
 import butterknife.ButterKnife;
 
-import static android.content.ContentValues.TAG;
-
 
 public class MainFragment extends Fragment {
-    private final static String ACM_ATTENDANCE_URL = "https://acm-attendance.firebaseapp.com/";
+    private static final String TAG = "MainFragment";
+
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private ValueEventListener attendanceListener;
 
     private enum AttendanceMode {HIDDEN, PROMPT_GOOGLE, PROMPT_MEETING, SIGNED_IN}
 
-    boolean haveISignedInAlready;
-    String currentMeeting;
+    private boolean signedInMeeting;
+    private String currentMeeting;
 
 
     /**
-     * Returns a new instance of this fragment for the given section
-     * number.
+     * Returns a new instance of this fragment
      */
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -74,21 +72,22 @@ public class MainFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Revoke access to the user's Google Account and sign out
+     */
     private void revokeAccess() {
         GoogleApiClient googleApiClient = ((MainTabActivity) getActivity()).getGoogleApiClient();
         if(!googleApiClient.isConnected()) {
-            Toast.makeText(getActivity(), "You are not signed in. Unable to sign out", Toast.LENGTH_LONG).show();
+            // The user is not signed in
+            Toast.makeText(getActivity(), R.string.error_sign_out_not_signed_in, Toast.LENGTH_LONG).show();
         }
         else {
-
             Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
                     new ResultCallback<Status>() {
                         @Override
                         public void onResult(@NonNull Status status) {
-                            // ...
-                            //updateGoogleSignInButtons(false);
                             FirebaseAuth.getInstance().signOut();
-                            Toast.makeText(getActivity(), "Signed out", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), R.string.signed_out, Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -103,7 +102,7 @@ public class MainFragment extends Fragment {
         getView().findViewById(R.id.attendance_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(haveISignedInAlready) {
+                if(signedInMeeting) {
                     Snackbar.make(getView(), "You already signed in to the meeting ✓", Snackbar.LENGTH_SHORT).show();
                 }
                 else {
@@ -161,30 +160,28 @@ public class MainFragment extends Fragment {
                 boolean attendanceEnabled = (boolean) dataSnapshot.child("enabled").getValue();
                 if(attendanceEnabled) {
 
-                    haveISignedInAlready = false;
+                    signedInMeeting = false;
 
                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                     if(currentUser == null) {
-                        haveISignedInAlready = false;
+                        signedInMeeting = false;
                         updateAttendanceViews(AttendanceMode.PROMPT_GOOGLE);
                     }
                     else {
                         String uid = currentUser.getUid();
 
                         currentMeeting = (String) dataSnapshot.child("current").getValue();
-                        Iterable<DataSnapshot> children = dataSnapshot.child(currentMeeting).getChildren();
-                        Iterator<DataSnapshot> iter = children.iterator();
-                        while (iter.hasNext()) {
-                            DataSnapshot snapshot = iter.next();
-                            Log.d(TAG, "onDataChange: " + snapshot.getKey());
+                        Iterator<DataSnapshot> childrenIter = dataSnapshot.child(currentMeeting).getChildren().iterator();
+                        while (childrenIter.hasNext()) {
+                            DataSnapshot snapshot = childrenIter.next();
                             if(snapshot.getKey().equals(uid)) {
-                                haveISignedInAlready = true;
+                                signedInMeeting = true;
                                 // tell the user that they already signed in
                                 updateAttendanceViews(AttendanceMode.SIGNED_IN);
                                 return;
                             }
                         }
-                        haveISignedInAlready = false;
+                        signedInMeeting = false;
                         // The user is signed into their google account but not to the meeting
                         updateAttendanceViews(AttendanceMode.PROMPT_MEETING);
                     }
@@ -215,12 +212,9 @@ public class MainFragment extends Fragment {
     }
 
     private void slackListener(final String email) {
-        Log.d(TAG, "slackListener() called with: email = [" + email + "]");
         FirebaseDatabase.getInstance().getReference("slack").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange() called with: dataSnapshot = [" + dataSnapshot + "]");
-
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     if (((String) snapshot.getValue()).equalsIgnoreCase(email)) {
                         updateSlackViews(true);
@@ -236,29 +230,25 @@ public class MainFragment extends Fragment {
     }
 
     private void updateSlackViews(boolean onSlack) {
-        Log.d(TAG, "updateSlackViews() called with: onSlack = [" + onSlack + "]");
-
         TextView slackTextView = (TextView) getView().findViewById(R.id.slack_textview);
         Button slackSignUpButton = (Button) getView().findViewById(R.id.slack_sign_up_button);
         slackSignUpButton.setVisibility(View.VISIBLE);
         slackTextView.setVisibility(View.VISIBLE);
 
         if(onSlack) {
-            slackTextView.setText("You are on slack ✓");
-            slackSignUpButton.setText("Open Slack");
+            slackTextView.setText(R.string.on_slack);
+            slackSignUpButton.setText(R.string.open_slack);
 
             slackSignUpButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Uri uri = Uri.parse("slack://open");
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
+                    openSlack();
                 }
             });
         }
         else {
-            slackTextView.setText("You are not on slack");
-            slackSignUpButton.setText("Sign Up");
+            slackTextView.setText(R.string.not_on_slack);
+            slackSignUpButton.setText(R.string.sign_up_slack);
             slackSignUpButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -266,6 +256,12 @@ public class MainFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void openSlack() {
+        Uri uri = Uri.parse("slack://open");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 
     private void updateAttendanceViews(AttendanceMode attendanceMode) {
@@ -287,7 +283,7 @@ public class MainFragment extends Fragment {
             case PROMPT_GOOGLE:
                 attendanceLayout.setVisibility(View.VISIBLE);
                 attendanceTextView.setVisibility(View.VISIBLE);
-                attendanceTextView.setText("Sign in to your google account before you can sign in to the meeting");
+                attendanceTextView.setText(R.string.sign_in_google_before_meeting);
                 googleSignInButton.setVisibility(View.VISIBLE);
                 meetingButton.setAnimation(null);
                 meetingButton.setVisibility(View.GONE);
@@ -295,7 +291,7 @@ public class MainFragment extends Fragment {
             case SIGNED_IN:
                 attendanceLayout.setVisibility(View.VISIBLE);
                 attendanceTextView.setVisibility(View.VISIBLE);
-                attendanceTextView.setText("You are signed in to the meeting ✓");
+                attendanceTextView.setText(R.string.signed_into_meeting);
                 meetingButton.setAnimation(null);
                 meetingButton.setVisibility(View.GONE);
                 break;
@@ -309,6 +305,10 @@ public class MainFragment extends Fragment {
         }
     }
 
+    /**
+     * Update the views related to Google sign in
+     * @param currentlySignedIn Whether the user is currently signed in
+     */
     private void updateGoogleSignInButtons(boolean currentlySignedIn) {
         SignInButton googleSignInButton =(SignInButton) getView().findViewById(R.id.sign_in_google_button);
         TextView signOutTextView = (TextView) getView().findViewById(R.id.google_sign_out_textview);

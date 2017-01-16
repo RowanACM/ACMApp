@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by John on 12/1/2016.
+ * The adapter for the announcements
  */
 
 public class AnnouncementArrayAdapter extends BaseAdapter {

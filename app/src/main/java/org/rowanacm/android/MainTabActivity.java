@@ -52,32 +52,30 @@ import java.util.Date;
 
 import butterknife.OnClick;
 
-import static org.rowanacm.android.UserData.mDatabase;
-
+/**
+ * The main activity of the app. Contains a view pager with
+ * two fragments, MainFragment and AnnouncementFragment
+ */
 public class MainTabActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
+    // The log tag
     private static final String TAG = "MainTabActivity";
 
+    // Handles firebase authentication
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private static final int RC_SIGN_IN = 4;
+    // Handles google authentication
     private GoogleApiClient mGoogleApiClient;
+    // Get called when the user signs in/out
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    // Gets passed to onActivityResult after signing in
+    private static final int RC_SIGN_IN = 4;
 
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+    // The PagerAdapter that will provide fragments for each of the sections
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+    // The ViewPager that will host the section contents
     private ViewPager mViewPager;
+
+    // Whether the current user is an admin and is able to create annoucements
     private boolean admin;
 
     @Override
@@ -114,24 +112,16 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
+                // Only show the fab on the AnnouncementFragment and if the user is an admin
                 FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-                if(position == 0) {
+                if(position == 1 && admin)
+                    fab.show();
+                else
                     fab.hide();
-                }
-                else if(position == 1) {
-                    if(admin) {
-                        fab.show();
-                    }
-                    else {
-                        fab.hide();
-                    }
-                }
             }
 
             @Override
@@ -144,7 +134,6 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         mAuth = FirebaseAuth.getInstance();
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -165,73 +154,10 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainTabActivity.this);
-                alertDialogBuilder.setTitle("Create announcement");
-                final View dialogView = getLayoutInflater().inflate(R.layout.create_announcement_view, null);
-                alertDialogBuilder.setView(dialogView);
-
-                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
-
-                alertDialogBuilder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String author = ((EditText)dialogView.findViewById(R.id.author_edit_text)).getText().toString();
-                        String subject = ((EditText)dialogView.findViewById(R.id.subject_edit_text)).getText().toString();
-                        String message = ((EditText)dialogView.findViewById(R.id.message_edit_text)).getText().toString();
-                        String committee = ((Spinner)dialogView.findViewById(R.id.committee_spinner)).getSelectedItem().toString();
-
-                        long timestamp = new Date().getTime() / 1000;
-
-                        String date = DateFormat.getDateTimeInstance().format(new Date());
-
-                        Announcement announcement = new Announcement(author, committee, date, subject, message, subject, timestamp);
-
-                        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference newRef = database.child("announcements").push();
-                        newRef.setValue(announcement);
-                    }
-                });
-
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                if(currentUser != null) {
-                    EditText nameEditText = (EditText) dialogView.findViewById(R.id.author_edit_text);
-                    nameEditText.setText(currentUser.getDisplayName());
-                }
-
-
-                Spinner spinner = (Spinner) dialogView.findViewById(R.id.committee_spinner);
-// Create an ArrayAdapter using the string array and a default spinner layout
-                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(MainTabActivity.this,
-                        R.array.committee_array, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
-                spinner.setAdapter(adapter);
-
-                alertDialogBuilder.create().show();
+                showCreateAnnouncementDialog();
             }
         });
 
-    }
-
-    public void adminListener(final String userid) {
-        mDatabase.child("admins").child(userid).child("admin").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(((boolean)dataSnapshot.getValue())){
-                    admin = true;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
     }
 
 
@@ -245,9 +171,13 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         return true;
     }
 
+    /**
+     * Called by the system when an options menu item is selected (the ... on the top right of the activity)
+     * @param item The item that was selected
+     * @return True if it was properly handled
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.settings:
                 switchActivity(SettingsActivity.class);
@@ -298,11 +228,14 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
             } else {
                 Log.d(TAG, "onActivityResult: failed else");
                 // Google Sign In failed, update UI appropriately
-                // ...
             }
         }
     }
 
+    /**
+     * Sign the user into Firebase after they have signed into their google account
+     * @param acct The user's GoogleSignInAccount
+     */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Toast.makeText(this, acct.getEmail(), Toast.LENGTH_SHORT).show();
 
@@ -324,19 +257,99 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(MainTabActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainTabActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
-                        // ...
                     }
                 });
     }
 
+    /**
+     * Show the dialog to create an announcement
+     */
+    private void showCreateAnnouncementDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainTabActivity.this);
+        alertDialogBuilder.setTitle("Create announcement");
+        final View dialogView = getLayoutInflater().inflate(R.layout.create_announcement_view, null);
+        alertDialogBuilder.setView(dialogView);
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            // When Cancel is pressed, close the dialog and do nothing
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {}
+        });
+
+        alertDialogBuilder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String author = ((EditText)dialogView.findViewById(R.id.author_edit_text)).getText().toString();
+                String subject = ((EditText)dialogView.findViewById(R.id.subject_edit_text)).getText().toString();
+                String message = ((EditText)dialogView.findViewById(R.id.message_edit_text)).getText().toString();
+                String committee = ((Spinner)dialogView.findViewById(R.id.committee_spinner)).getSelectedItem().toString();
+
+                // Date uses a timestamp with milliseconds. Dividing makes it match the system
+                long timestamp = new Date().getTime() / 1000;
+                String date = DateFormat.getDateTimeInstance().format(new Date());
+
+                Announcement announcement = new Announcement(author, committee, date, subject, message, subject, timestamp);
+
+                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference newRef = database.child("announcements").push();
+                newRef.setValue(announcement);
+            }
+        });
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser != null) {
+            EditText nameEditText = (EditText) dialogView.findViewById(R.id.author_edit_text);
+            nameEditText.setText(currentUser.getDisplayName());
+        }
+
+        Spinner spinner = (Spinner) dialogView.findViewById(R.id.committee_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(MainTabActivity.this,
+                R.array.committee_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
+        alertDialogBuilder.create().show();
+    }
+
+    private void adminListener(final String userid) {
+        FirebaseDatabase.getInstance().getReference().child("admins").child(userid).child("admin").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(((boolean)dataSnapshot.getValue())){
+                    admin = true;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    /**
+     * Switch to a new activity
+     * @param newActivity The class of the activity to switch to. Use ActivityName.class
+     */
+    private void switchActivity(Class newActivity) {
+        Intent intent = new Intent(this, newActivity);
+        startActivity(intent);
+    }
+
+    /**
+     * Get the google api client
+     * @return The google api client
+     */
+    protected GoogleApiClient getGoogleApiClient() {
+        return mGoogleApiClient;
+    }
+
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -378,14 +391,6 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
             }
             return null;
         }
-    }
-    private void switchActivity(Class newActivity) {
-        Intent intent = new Intent(this, newActivity);
-        startActivity(intent);
-    }
-
-    protected GoogleApiClient getGoogleApiClient() {
-        return mGoogleApiClient;
     }
 
 

@@ -18,7 +18,7 @@ public class Utils {
         customTabsIntent.launchUrl(context, Uri.parse(url));
     }
 
-    public static String readFromSharedPreferenceString(Context context, String key) {
+    public static String readSharedPreferenceString(Context context, String key) {
         SharedPreferences prefs = context.getSharedPreferences(
                 "org.rowanacm.android", Context.MODE_PRIVATE);
 

@@ -91,6 +91,25 @@
     <string name="cancel">Cancel</string>
     <string name="wait_write_dialog_text">Approach the NFC tag</string>
     <string name="title_activity_about">AboutActivity</string>
+    <string name="open_slack">Open Slack</string>
+    <string name="committee">Committee</string>
+    <string name="announcement_info">Announcement Info</string>
+    <string name="date">Date</string>
+    <string name="committee_head">committee head</string>
+    <string name="announcement">announcement</string>
+    <string name="author">Author</string>
+    <string name="subject">Subject</string>
+    <string name="text">Text</string>
+    <string name="meeting_sign_in">Meeting sign in</string>
+    <string name="you_are_signed_into_your_google_account">You are signed into your Google Account</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="on_slack">You are on slack ✓</string>
+    <string name="not_on_slack">You are not on slack</string>
+    <string name="sign_up_slack">Sign Up</string>
+    <string name="signed_into_meeting">You are signed in to the meeting ✓</string>
+    <string name="sign_in_google_before_meeting">Sign in to your google account before you can sign in to the meeting</string>
+    <string name="signed_out">Signed out</string>
+    <string name="error_sign_out_not_signed_in">You are not signed in. Unable to sign out</string>
 
     <string-array name="committee_array">
         <item>Everyone</item>

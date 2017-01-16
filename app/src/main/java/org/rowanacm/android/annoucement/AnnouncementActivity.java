@@ -9,7 +9,7 @@ import android.widget.TextView;
 import java.util.Date;
 
 public class AnnouncementActivity extends AppCompatActivity {
-    Announcement announcement;
+    private Announcement announcement;
     private static final String TAG = "AnnouncementActivity";
 
     @Override

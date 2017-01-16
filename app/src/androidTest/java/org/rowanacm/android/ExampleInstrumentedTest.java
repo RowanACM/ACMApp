@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("mordor.us.acm", appContext.getPackageName());
+        assertEquals("org.rowanacm.android", appContext.getPackageName());
     }
 }
