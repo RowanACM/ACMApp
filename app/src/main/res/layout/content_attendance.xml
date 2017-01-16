@@ -10,41 +10,15 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="android.us.acm.org.us.acm.AttendanceActivity"
+    tools:context="org.rowanacm.android.attendance.AttendanceActivity"
     tools:showIn="@layout/activity_attendance">
 
-    <EditText
-        android:id="@+id/name_exit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Name"
-        android:inputType="textPersonName"/>
 
-
-    <EditText
-        android:id="@+id/email_edit_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Rowan Email Address"
-        android:layout_below="@+id/name_exit_text"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:inputType="textEmailAddress" />
-
-    <Button
-        android:id="@+id/attendance_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_in_to_the_meeting"
-        android:layout_below="@+id/email_edit_text"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_google_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/email_edit_text"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 

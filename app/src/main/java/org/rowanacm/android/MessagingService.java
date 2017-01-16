@@ -30,7 +30,7 @@ public class MessagingService extends FirebaseMessagingService {
 
         Log.d(LOG_TAG, "onMessageReceived() called with: " + "remoteMessage = [" + remoteMessage + "]");
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MainTabActivity.class);
         intent.putExtra("notification_action", "unsubscribe");
         // use System.currentTimeMillis() to have a unique ID for the pending intent
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
@@ -58,7 +58,7 @@ public class MessagingService extends FirebaseMessagingService {
             //resultIntent.putExtra("activity", "attendance");
         }
         else {
-            resultIntent = new Intent(this, MainActivity.class);
+            resultIntent = new Intent(this, MainTabActivity.class);
 
             Log.d(TAG, "onMessageReceived: Main Activity");
         }
@@ -70,7 +70,7 @@ public class MessagingService extends FirebaseMessagingService {
         // your application to the Home screen.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         // Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addParentStack(MainTabActivity.class);
         // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
