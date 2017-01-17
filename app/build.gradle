@@ -55,7 +55,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 
-    compile 'com.github.daniel-stoneuk:material-about-library:1.1.1'
+    compile 'com.github.daniel-stoneuk:material-about-library:1.4.2'
 
     testCompile 'junit:junit:4.12'
 }

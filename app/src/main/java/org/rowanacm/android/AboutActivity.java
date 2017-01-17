@@ -1,5 +1,6 @@
 package org.rowanacm.android;
 
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -17,7 +18,7 @@ import com.danielstone.materialaboutlibrary.model.MaterialAboutTitleItem;
 public class AboutActivity extends MaterialAboutActivity {
 
     @Override
-    protected MaterialAboutList getMaterialAboutList() {
+    protected MaterialAboutList getMaterialAboutList(Context context) {
 
         MaterialAboutCard.Builder appCardBuilder = new MaterialAboutCard.Builder();
 
@@ -95,6 +96,18 @@ public class AboutActivity extends MaterialAboutActivity {
                     @Override
                     public void onClick() {
                         Toast.makeText(AboutActivity.this, "Bug report tapped", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .build());
+
+        supportCardBuilder.addItem(new MaterialAboutActionItem.Builder()
+                .text("Rate on the Play Store")
+                .subText("Please rate this app on the Play Store")
+                .icon(R.drawable.ic_play_store)
+                .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
+                    @Override
+                    public void onClick() {
+                        Utils.openUrl(AboutActivity.this, "https://play.google.com/store/apps/details?id=org.rowanacm.android");
                     }
                 })
                 .build());
