@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="google-signin-client_id" content="536754237521-ioallp2ibqppaqn27pupvf8b9201mve4.apps.googleusercontent.com">
+
+		<title>ACM Sign-In</title>
+    	<link rel="shortcut icon" href="img/rowan_acm_logo.png">
+    	<link rel="stylesheet" href="css/main.css" type="text/css">
+		<link href="https://fonts.googleapis.com/css?family=Catamaran:700" rel="stylesheet" type="text/css">
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+		<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-auth.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-database.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="https%3A%2F%2Fwww.google.com%2Fjsapi%3Fautoload%3D%7B%27modules%27%3A%5B%7B%27name%27%3A%27visualization%27%2C%27version%27%3A%271.1%27%2C%27packages%27%3A%5B%27corechart%27%5D%7D%5D%7D"></script>
+		<script src="https://www.gstatic.com/charts/loader.js"></script>
+		<script src="Scripts/tabletop.js"></script>
+		<script src="Scripts/attendance.js"></script>
+		<script>
+  		    google.charts.load('current', {packages: ['corechart']});
+  		    google.charts.setOnLoadCallback(null);
+		</script>
+	</head>
+	<body>
+		<header>
+			<div class="header_center">
+				<img class="logo" src="img/acm_logo.png" alt="Rowan ACM Logo">
+				<h1 class="main_header">Rowan ACM</h1>
+			</div>
+		</header>
+		<div class="body_first_half">
+		
+			<p id="attendance">Attendance</p>
+			<div class="g-signin2" data-onsuccess="onSignIn"></div>
+			<button type="button" id="meeting_button" onclick="firebaseTest()">MEETING SIGN IN</button>
+		
+			<h2 id="signed_in">How many people signed into this meeting: Loading</h2>
+			<h2 id="first_meeting">Number of new members: Loading</h2>
+		</div>
+		<div class="body_second_half">
+			<div id="piechart"></div>
+		</div>
+        <footer id ="footer">
+        <h2 id="contribute">Contribute at:  <a href="https://github.com/RowanACM/ACMAttendanceWebsite" target="_blank">github.com/RowanACM/ACMAttendanceWebsite </a> </h2>
+    </footer>
+	</body>
+</html>

@@ -32,7 +32,7 @@
       // Anyone can read from it. Only admins can change it
       "current": {
         ".read": true,
-        ".write": "root.child('admins').child(auth.uid).child('admin').val() == true",
+        ".write": "root.child('admins').child(auth.uid).child('admin').val() == true"
       },
       
       // The meeting attendance. The key is the uid and the value is the person's name
@@ -41,7 +41,7 @@
         "$uid": {
           ".read": "$uid == auth.uid",
           ".write": "root.child('attendance').child('enabled').val() == true && root.child('attendance').child('current').val() == $meeting && $uid == auth.uid"
-        },
+        }
     
       },
         

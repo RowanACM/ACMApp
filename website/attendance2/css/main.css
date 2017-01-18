@@ -1,0 +1,118 @@
+body {
+  margin: 0;
+  font-family: 'Catamaran', sans-serif;
+  color: rgb(30, 30, 30);
+  
+}
+
+header {
+  background-color: rgb(66, 133, 244);
+    
+  -webkit-box-shadow: 0px 4px 37px 2px rgba(0,0,0,0.49);
+  -moz-box-shadow: 0px 4px 37px 2px rgba(0,0,0,0.49);
+  box-shadow: 0px 4px 37px 2px rgba(0,0,0,0.49);
+    
+}
+
+.header_center {
+  width: 520px;
+  margin: 0 auto;
+   
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  margin-top: 12px;
+  float: left;
+}
+
+.main_header {
+  margin: 0px 0px 0px 130px;
+  font-size: 75px;
+  color: white;
+}
+
+.body_first_half {
+  width: 49%;
+  float: left;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.body_second_half {
+  width: 49%;
+  float: right;
+  margin-top: 40px;
+}
+
+#title {
+  margin: 0 auto;
+  font-size: 35px;
+}
+
+a {
+  color: rgb(30, 30, 30);
+}
+
+#piechart {
+  width: 100%;
+  height: 350px;
+}
+#footer{
+    margin-top: 40%;
+    clear: both;
+    text-align: center;
+    float:left;
+    padding: 20px;
+    border-top: 2px solid black;
+    width: 100%;
+}
+
+@media screen and (orientation:portrait) {
+    body{
+        min-height: 100%;
+        min-width: 100%;
+        height: 100%;
+        width: 100%;
+    }
+    #sign-in-links{
+        display: none;
+        background-color: antiquewhite;
+      visibility: hidden;
+    }
+    .body_first_half {
+                font-size: 30px;
+
+        width: 100%;
+        height: 10%;
+        float: left;
+        align-items: center
+    }
+    .body_second_half {
+        margin-top: 15%;
+        width: 100%;
+        height: 55%;
+        margin-top: 0px;
+        float: left;
+        align-items: center
+}
+    button{
+         display:block;
+        visibility: visible;
+    }
+    footer{visibility: hidden;
+      display: none;}
+    header{
+          visibility: hidden;
+      display: none;
+    }
+    #piechart {
+        font-size: 30px;
+  width: 100%;
+  height: 1500px;
+        margin: 10%;
+        
+}
+ 
+}
