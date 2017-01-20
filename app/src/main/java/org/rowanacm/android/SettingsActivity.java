@@ -242,6 +242,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     return true;
                 }
             });
+
+            findPreference("notifications_meetings").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    String topic = "meeting_reminders";
+                    if((boolean) newValue)
+                        FirebaseMessaging.getInstance().subscribeToTopic(topic);
+                    else
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic);
+                    return true;
+                }
+            });
         }
 
         @Override
