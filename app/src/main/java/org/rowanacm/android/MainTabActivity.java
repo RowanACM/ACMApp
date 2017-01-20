@@ -43,6 +43,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.rowanacm.android.annoucement.Announcement;
 import org.rowanacm.android.annoucement.AnnouncementListFragment;
@@ -194,6 +195,8 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+
+        Log.d(TAG, "onStart: " + FirebaseInstanceId.getInstance().getToken());
     }
 
     @Override

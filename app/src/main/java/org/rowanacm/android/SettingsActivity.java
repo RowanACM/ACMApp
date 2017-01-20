@@ -19,9 +19,15 @@ import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.us.acm.R;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.util.List;
+import java.util.Set;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -209,7 +215,33 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+            //bindPreferenceSummaryToValue(findPreference("committeeNotificationList"));
+
+            findPreference("committeeNotificationList").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Log.d(TAG, "onPreferenceChange: " + newValue);
+                    Log.d(TAG, "onPreferenceChange: " + newValue.getClass().getName());
+
+                    Set<String> selectedCommittees = (Set<String>) newValue;
+                    String[] allCommittees = getResources().getStringArray(R.array.committee_array);
+                    String[] allCommitteeKeys = getResources().getStringArray(R.array.committee_keys);
+
+                    for (int i = 0; i < allCommittees.length; i++) {
+                        String committee = allCommittees[i];
+                        String committeeKey = allCommitteeKeys[i];
+
+                        if(selectedCommittees.contains(committee)) {
+                            FirebaseMessaging.getInstance().subscribeToTopic(committeeKey);
+                        }
+                        else {
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic(committeeKey);
+                        }
+                    }
+
+                    return true;
+                }
+            });
         }
 
         @Override
