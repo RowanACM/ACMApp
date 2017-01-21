@@ -15,14 +15,7 @@ class AnnouncementTableViewCell: UITableViewCell {
 class ViewController: BaseViewController , UITableViewDelegate, UITableViewDataSource{
     
     
-    struct Announcement {
-        var author : String = ""
-        var committee : String = ""
-        var date : String = "";
-        var text : String = ""
-        var timestamp : Int = 0
-        var title : String = ""
-    }
+  
     var items: Array<Announcement> = Array<Announcement>();
 
     @IBOutlet weak var tableView: UITableView!
@@ -30,7 +23,7 @@ class ViewController: BaseViewController , UITableViewDelegate, UITableViewDataS
         super.viewDidLoad()
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
 
-        self.title = "ACM";
+        self.title = "Announcements";
        let announcementRef =  BaseViewController.ref.child("announcements")
         // Listen for new comments in the Firebase database
         announcementRef.observe(.childAdded, with: { (snapshot) -> Void in
@@ -64,14 +57,17 @@ class ViewController: BaseViewController , UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell:AnnouncementTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "AnnouncementTableViewCell")! as! AnnouncementTableViewCell
         var announcement = self.items[indexPath.row]
-        cell.committee.text = announcement.committee 
+        cell.committee.text = announcement.committee
         cell.body.text = announcement.text
         
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = UIStoryboard(name:"Main", bundle:nil).instantiateViewController(withIdentifier: "AnnouncementViewController") as? AnnouncementViewController
+        vc?.announcement = items[indexPath.row]
+        self.navigationController?.pushViewController(vc!, animated:true)
+
     }
 
 

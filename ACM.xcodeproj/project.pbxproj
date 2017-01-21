@@ -22,6 +22,8 @@
 		BDFC965B1E331EBE001D5670 /* GoogleToolboxForMac.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFC96541E331E93001D5670 /* GoogleToolboxForMac.framework */; };
 		BDFC965F1E33228C001D5670 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFC965E1E33228C001D5670 /* BaseViewController.swift */; };
 		BDFC96651E33234A001D5670 /* FirebaseDatabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFC96641E33234A001D5670 /* FirebaseDatabase.framework */; };
+		BDFC96671E33B424001D5670 /* AnnouncementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFC96661E33B424001D5670 /* AnnouncementViewController.swift */; };
+		BDFC96691E33B9A0001D5670 /* Announcment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFC96681E33B9A0001D5670 /* Announcment.swift */; };
 		C6C10550448C8238BFACFC3E /* Pods_ACM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 762CD4C506D82117203029FE /* Pods_ACM.framework */; };
 /* End PBXBuildFile section */
 
@@ -96,6 +98,8 @@
 		BDFC964C1E331E93001D5670 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		BDFC965E1E33228C001D5670 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseViewController.swift; path = ../BaseViewController.swift; sourceTree = "<group>"; };
 		BDFC96641E33234A001D5670 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseDatabase.framework; path = Pods/FirebaseDatabase/Frameworks/FirebaseDatabase.framework; sourceTree = "<group>"; };
+		BDFC96661E33B424001D5670 /* AnnouncementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AnnouncementViewController.swift; path = ../AnnouncementViewController.swift; sourceTree = "<group>"; };
+		BDFC96681E33B9A0001D5670 /* Announcment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Announcment.swift; sourceTree = "<group>"; };
 		CAABEE8F35DA28C2D1F5C55C /* Pods-ACMUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACMUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ACMUITests/Pods-ACMUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -166,9 +170,11 @@
 		BDFC96191E3315DA001D5670 /* ACM */ = {
 			isa = PBXGroup;
 			children = (
+				BDFC96661E33B424001D5670 /* AnnouncementViewController.swift */,
 				BDFC965E1E33228C001D5670 /* BaseViewController.swift */,
 				BDFC961A1E3315DA001D5670 /* AppDelegate.swift */,
 				BDFC961C1E3315DA001D5670 /* ViewController.swift */,
+				BDFC96681E33B9A0001D5670 /* Announcment.swift */,
 				BDFC961E1E3315DA001D5670 /* Main.storyboard */,
 				BDFC96211E3315DA001D5670 /* Assets.xcassets */,
 				BDFC96231E3315DA001D5670 /* LaunchScreen.storyboard */,
@@ -546,6 +552,8 @@
 			files = (
 				BDFC961D1E3315DA001D5670 /* ViewController.swift in Sources */,
 				BDFC961B1E3315DA001D5670 /* AppDelegate.swift in Sources */,
+				BDFC96691E33B9A0001D5670 /* Announcment.swift in Sources */,
+				BDFC96671E33B424001D5670 /* AnnouncementViewController.swift in Sources */,
 				BDFC965F1E33228C001D5670 /* BaseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
