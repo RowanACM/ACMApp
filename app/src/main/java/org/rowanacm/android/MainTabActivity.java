@@ -1,6 +1,5 @@
 package org.rowanacm.android;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,9 +18,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -40,16 +36,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import org.rowanacm.android.annoucement.Announcement;
 import org.rowanacm.android.annoucement.AnnouncementListFragment;
-
-import java.text.DateFormat;
-import java.util.Date;
 
 import butterknife.OnClick;
 
@@ -270,52 +261,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
      * Show the dialog to create an announcement
      */
     private void showCreateAnnouncementDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainTabActivity.this);
-        alertDialogBuilder.setTitle("Create announcement");
-        final View dialogView = getLayoutInflater().inflate(R.layout.create_announcement_view, null);
-        alertDialogBuilder.setView(dialogView);
-
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            // When Cancel is pressed, close the dialog and do nothing
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {}
-        });
-
-        alertDialogBuilder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String author = ((EditText)dialogView.findViewById(R.id.author_edit_text)).getText().toString();
-                String subject = ((EditText)dialogView.findViewById(R.id.subject_edit_text)).getText().toString();
-                String message = ((EditText)dialogView.findViewById(R.id.message_edit_text)).getText().toString();
-                String committee = ((Spinner)dialogView.findViewById(R.id.committee_spinner)).getSelectedItem().toString();
-
-                // Date uses a timestamp with milliseconds. Dividing makes it match the system
-                long timestamp = new Date().getTime() / 1000;
-                String date = DateFormat.getDateTimeInstance().format(new Date());
-
-                Announcement announcement = new Announcement(author, committee, date, subject, message, subject, timestamp);
-
-                DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                DatabaseReference newRef = database.child("announcements").push();
-                newRef.setValue(announcement);
-            }
-        });
-
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser != null) {
-            EditText nameEditText = (EditText) dialogView.findViewById(R.id.author_edit_text);
-            nameEditText.setText(currentUser.getDisplayName());
-        }
-
-        Spinner spinner = (Spinner) dialogView.findViewById(R.id.committee_spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(MainTabActivity.this,
-                R.array.committee_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-
+        AlertDialog.Builder alertDialogBuilder = new CreateAnnouncementDialog(this);
         alertDialogBuilder.create().show();
     }
 
@@ -323,7 +269,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         FirebaseDatabase.getInstance().getReference().child("members").child(userid).child("admin").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(((boolean)dataSnapshot.getValue())){
+                if(dataSnapshot.getValue() != null && ((boolean)dataSnapshot.getValue())){
                     admin = true;
                 }
             }
