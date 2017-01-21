@@ -1,12 +1,15 @@
 package org.rowanacm.android;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.us.acm.R;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +34,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Iterator;
 
 import butterknife.ButterKnife;
@@ -106,11 +113,7 @@ public class MainFragment extends Fragment {
                     Snackbar.make(getView(), "You already signed in to the meeting ✓", Snackbar.LENGTH_SHORT).show();
                 }
                 else {
-                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                    DatabaseReference attendance = FirebaseDatabase.getInstance().getReference("attendance").child(currentMeeting);
-                    attendance.child(currentUser.getUid()).setValue(currentUser.getDisplayName());
-                    Snackbar.make(getView(), "Signing in...", Snackbar.LENGTH_SHORT).show();
+                    signInToMeeting();
 
                 }
             }
@@ -150,6 +153,24 @@ public class MainFragment extends Fragment {
                 }
             }
         };
+    }
+
+    private void signInToMeeting() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser != null) {
+
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme("https")
+                    .authority("2dvdaw7sq1.execute-api.us-east-1.amazonaws.com")
+                    .appendPath("prod")
+                    .appendPath("attendance")
+                    .appendQueryParameter("uid", currentUser.getUid())
+                    .appendQueryParameter("name", currentUser.getDisplayName())
+                    .appendQueryParameter("email", currentUser.getEmail());
+            String myUrl = builder.build().toString();
+
+            new AttendanceAsyncTask().execute(myUrl);
+        }
     }
 
     private ValueEventListener attendanceListener() {
@@ -323,6 +344,104 @@ public class MainFragment extends Fragment {
             googleSignInButton.setVisibility(View.VISIBLE);
             signOutTextView.setVisibility(View.GONE);
             signOutButton.setVisibility(View.GONE);
+        }
+    }
+
+
+    private class AttendanceAsyncTask extends AsyncTask<String, Void, String> {
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                URL url = new URL(urls[0]);
+
+                BufferedReader in = null;
+                in = new BufferedReader(
+                        new InputStreamReader(
+                                url.openStream()));
+
+
+                String response = "";
+
+                String inputLine;
+                while ((inputLine = in.readLine()) != null)
+                    response += inputLine;
+
+                in.close();
+
+                return response;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String resultStr) {
+            progressDialog.dismiss();
+
+            int result = Integer.parseInt(resultStr);
+            String message;
+
+            // If true, show a snackbar. If false, show an AlertDialog
+            boolean snackbar = true;
+
+            switch(result) {
+                case 100:
+                    // Signed in successfully. New member
+                    message = "Signed in successfully. Welcome to your first ACM Meeting. You should have received an email with more information about the club.";
+                    snackbar = false;
+                    break;
+                case 110:
+                    // Signed in successfully. Existing member
+                    message = "Signed in successfully";
+                    snackbar = true;
+                    break;
+                case 120:
+                    // Already signed in
+                    message = "You already signed in to the meeting";
+                    snackbar = true;
+                    break;
+                case 200:
+                    // Didn't sign in. Attendance disabled
+                    message = "Attendance is disabled";
+                    snackbar = true;
+                    break;
+                case 210:
+                    // Invalid input
+                    message = "Error: Invalid input. Try to sign in again. If you still can't, tell someone on eboard or @TylerCarberry on slack";
+                    snackbar = false;
+                    break;
+                case 220:
+                    // Didn't sign in. Unknown error
+                    message = "Error: Unknown error. Try to sign in again. If you still can't, tell someone on eboard or @TylerCarberry on slack";
+                    snackbar = false;
+                    break;
+                default:
+                    // Didn't sign in. Unknown error
+                    message = "Error: Unknown error. Try to sign in again. If you still can't, tell someone on eboard or @TylerCarberry on slack";
+                    snackbar = false;
+                    break;
+            }
+
+            if(snackbar) {
+                Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(message);
+                builder.create().show();
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Signing in to meeting");
+            progressDialog.show();
         }
     }
 }
