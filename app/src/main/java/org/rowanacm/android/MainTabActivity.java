@@ -320,7 +320,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
     }
 
     private void adminListener(final String userid) {
-        FirebaseDatabase.getInstance().getReference().child("admins").child(userid).child("admin").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("members").child(userid).child("admin").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(((boolean)dataSnapshot.getValue())){
