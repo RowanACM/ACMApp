@@ -5,8 +5,6 @@ var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1cFTIl6Xy8v
 var theData = null;
 var signed_in_count = 0;
 var new_member_count = 0;
-var poll_results = {};
-var poll_question = "Loading poll question"
 
 var currentMeeting = null;
 var attendanceEnabled = false;
@@ -31,36 +29,26 @@ function updateSignInCount() {
 }
 
 function firebaseAttendanceSetup() {
-	var meetingRef = firebase.database().ref('attendance/current');
-	meetingRef.on('value', function(snapshot) {
-  		currentMeeting = snapshot.val();
-  		
-  		var newRef = firebase.database().ref('attendance/' + currentMeeting + "/new_member_count");
-		newRef.on('value', function(snapshot) {
-  			new_member_count = snapshot.val();
-  			updateSignInCount();
-		});
-	
-		var signedRef = firebase.database().ref('attendance/' + currentMeeting + "/signed_in_count");
-		signedRef.on('value', function(snapshot) {
-  			signed_in_count = snapshot.val();
-  			updateSignInCount();
-		});
-	});
-	
-	var enabledRef = firebase.database().ref('attendance/enabled');
-	enabledRef.on('value', function(snapshot) {
+	var attendanceRef = firebase.database().ref('attendance');
+	attendanceRef.on('value', function(snapshot) {
+  		currentMeeting = snapshot.child("current").val();
   		attendanceEnabled = snapshot.val();
   		
-  		if(attendanceEnabled) {
+  		if(signedInGoogle) {
   			document.getElementById("attendance").innerHTML = "Sign in to the meeting";
   			if(signedInGoogle) {
     			showSignInButton();
     		}
+    		
+    		determineIfSignedInMeeting();
   		}
   		else {
   			document.getElementById("attendance").innerHTML = "Attendance is disabled";
   		}
+  		
+  		new_member_count = snapshot.child(currentMeeting).child("new_member_count").val();
+  		signed_in_count = snapshot.child(currentMeeting).child("signed_in_count").val();
+  		updateSignInCount();
 	});
 	
 	var provider = new firebase.auth.GoogleAuthProvider();
@@ -71,19 +59,36 @@ function firebaseAttendanceSetup() {
 firebaseAttendanceSetup()
 
 firebase.auth().onAuthStateChanged(function(user) {
-  
-  if (user) {
-    // User is signed in.
-    signedInGoogle = true;
-    if(attendanceEnabled) {
-    	showSignInButton();
-    }
-    
-  } else {
-    // No user is signed in.
-    signedInGoogle = false;
-  }
+	console.log("ON AUTH STATE CHANGED " + user);
+	 
+  	if (user) {
+  		// User is signed in.
+		signedInGoogle = true;
+		if(attendanceEnabled && !signedInMeeting) {
+			showSignInButton();
+		}
+	
+		if(currentMeeting != null) {	
+			determineIfSignedInMeeting();
+	  	}
+	} else {
+		// No user is signed in.
+		signedInGoogle = false;
+	}
 });
+
+var already_listening = false;
+function determineIfSignedInMeeting() {
+	if(already_listening) return; else already_listening = true;
+	var uid = firebase.auth().currentUser.uid;
+	var meetingSignedInRef = firebase.database().ref('attendance/' + currentMeeting + "/" + uid);
+	meetingSignedInRef.on('value', function(snapshot) {
+		if(snapshot.val() != null && snapshot.child("uid").val() === uid) { // If signed in
+			console.log("ALREADY SIGNED IN");
+			signedInToMeeting();
+		}
+	});  
+}
 
 function googleSignIn() {
 	firebase.auth().signInWithPopup(provider).then(function(result) {
@@ -112,25 +117,18 @@ function hideSignInButton() {
 	document.getElementById("meeting_button").style.visibility = "hidden";
 }
 
+function signedInToMeeting() {
+	console.log("SIGNED IN TO MEETING");
 
-function firebaseTest() {
+	signedInMeeting = true;
+	hideSignInButton();
+	document.getElementById("attendance").innerHTML = "You signed in to the meeting ✓";
+}
+
+
+function submitAttendance() {
 	var user = firebase.auth().currentUser;
-	var name, email, photoUrl, uid, emailVerified;
-	
-	
 	if (user != null) {
-	  	//name = user.displayName;
-	  	//email = user.email;
-	  	photoUrl = user.photoURL;
-	  	emailVerified = user.emailVerified;
-	  	//uid = user.uid; // The user's ID, unique to the Firebase project. Do NOT use
-					   	// this value to authenticate with your backend server, if
-					   	// you have one. Use User.getToken() instead.
-					   	
-		//firebase.database().ref('attendance/' + currentMeeting + "/" + uid).set({
-		//	name, uid
-		//});
-		
 		$.get({
 		  url: "https://2dvdaw7sq1.execute-api.us-east-1.amazonaws.com/prod/attendance",
 		  type: "get", //send it through get method
@@ -140,12 +138,39 @@ function firebaseTest() {
 			email: user.email
 		  },
 		  success: function(response) {
-		  	alert(response);
-			//Do Something
+		  	switch(response) {
+    			case 100:
+        			// Signed in successfully. New member
+        			signedInToMeeting();
+        			break;
+    			case 110:
+        			// Signed in successfully. Existing member
+        			signedInToMeeting();
+        			break;
+    			case 120:
+        			// Already signed in
+        			signedInToMeeting();
+        			break;
+    			case 200:
+        			// Didn't sign in. Attendance disabled
+        			hideSignInButton();
+        			break;
+        		case 210:
+        			// Invalid input
+        			alert("Invalid input");
+        			break;
+        		case 220:
+        			// Didn't sign in. Unknown error
+        			alert("Unknown error");
+        			break;
+    			default:
+    				// Didn't sign in. Unknown error
+    				alert("Unknown error");
+			}
 		  },
 		  error: function(xhr) {
 			//Do Something to handle error
-			alert(xhr);
+			alert("Connection Error: " + xhr);
 		  }
 		});
   	

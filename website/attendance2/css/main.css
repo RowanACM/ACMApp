@@ -55,6 +55,10 @@ header {
   font-size: 35px;
 }
 
+#meeting_button {
+	visibility: hidden;
+}
+
 
 
 a {
