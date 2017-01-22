@@ -41,6 +41,7 @@ import java.net.URL;
 import java.util.Iterator;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class MainFragment extends Fragment {
@@ -68,36 +69,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_screen, container, false);
-
-        rootView.findViewById(R.id.google_sign_out_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                revokeAccess();
-            }
-        });
-
         return rootView;
-    }
-
-    /**
-     * Revoke access to the user's Google Account and sign out
-     */
-    private void revokeAccess() {
-        GoogleApiClient googleApiClient = ((MainTabActivity) getActivity()).getGoogleApiClient();
-        if(!googleApiClient.isConnected()) {
-            // The user is not signed in
-            Toast.makeText(getActivity(), R.string.error_sign_out_not_signed_in, Toast.LENGTH_LONG).show();
-        }
-        else {
-            Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
-                    new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(@NonNull Status status) {
-                            FirebaseAuth.getInstance().signOut();
-                            Toast.makeText(getActivity(), R.string.signed_out, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        }
     }
 
     @Override
@@ -135,30 +107,60 @@ public class MainFragment extends Fragment {
 
                 if (user != null) {
                     // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    String uid = user.getUid();
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + uid);
+                    slackListener(uid);
+
                     updateGoogleSignInButtons(true);
-
-                    String email = user.getEmail();
-                    Log.d(TAG, "onAuthStateChanged: " +  email);
-
-                    if(email != null)
-                        slackListener(email);
 
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                     updateGoogleSignInButtons(false);
-
-
                 }
             }
         };
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    /**
+     * Revoke access to the user's Google Account and sign out
+     */
+    @OnClick(R.id.google_sign_out_button)
+    private void signOutGoogle() {
+        GoogleApiClient googleApiClient = ((MainTabActivity) getActivity()).getGoogleApiClient();
+        if(!googleApiClient.isConnected()) {
+            // The user is not signed in
+            Toast.makeText(getActivity(), R.string.error_sign_out_not_signed_in, Toast.LENGTH_LONG).show();
+        }
+        else {
+            Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(@NonNull Status status) {
+                            FirebaseAuth.getInstance().signOut();
+                            Toast.makeText(getActivity(), R.string.signed_out, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
     private void signInToMeeting() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser != null) {
-
             Uri.Builder builder = new Uri.Builder();
             builder.scheme("https")
                     .authority("2dvdaw7sq1.execute-api.us-east-1.amazonaws.com")
@@ -166,9 +168,10 @@ public class MainFragment extends Fragment {
                     .appendPath("attendance")
                     .appendQueryParameter("uid", currentUser.getUid())
                     .appendQueryParameter("name", currentUser.getDisplayName())
-                    .appendQueryParameter("email", currentUser.getEmail());
-            String myUrl = builder.build().toString();
+                    .appendQueryParameter("email", currentUser.getEmail())
+                    .appendQueryParameter("method", "android");
 
+            String myUrl = builder.build().toString();
             new AttendanceAsyncTask().execute(myUrl);
         }
     }
@@ -218,31 +221,12 @@ public class MainFragment extends Fragment {
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
-
-    private void slackListener(final String email) {
-        FirebaseDatabase.getInstance().getReference("slack").addValueEventListener(new ValueEventListener() {
+    private void slackListener(final String uid) {
+        FirebaseDatabase.getInstance().getReference("members").child(uid).child("on_slack").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    if (((String) snapshot.getValue()).equalsIgnoreCase(email)) {
-                        updateSlackViews(true);
-                        return;
-                    }
-                }
-                updateSlackViews(false);
+                boolean onSlack = dataSnapshot.getValue() != null && (boolean) dataSnapshot.getValue();
+                updateSlackViews(onSlack);
             }
 
             @Override
@@ -279,6 +263,9 @@ public class MainFragment extends Fragment {
         }
     }
 
+    /**
+     * Open the slack app
+     */
     private void openSlack() {
         Uri uri = Uri.parse("slack://open");
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -357,13 +344,9 @@ public class MainFragment extends Fragment {
                 URL url = new URL(urls[0]);
 
                 BufferedReader in = null;
-                in = new BufferedReader(
-                        new InputStreamReader(
-                                url.openStream()));
-
+                in = new BufferedReader(new InputStreamReader(url.openStream()));
 
                 String response = "";
-
                 String inputLine;
                 while ((inputLine = in.readLine()) != null)
                     response += inputLine;
