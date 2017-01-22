@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Firebase
 import FirebaseDatabase
+import GoogleSignIn
 
 class BaseViewController: UIViewController {
     static var ref: FIRDatabaseReference! = FIRDatabase.database().reference()

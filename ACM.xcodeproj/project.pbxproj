@@ -24,6 +24,12 @@
 		BDFC96651E33234A001D5670 /* FirebaseDatabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFC96641E33234A001D5670 /* FirebaseDatabase.framework */; };
 		BDFC96671E33B424001D5670 /* AnnouncementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFC96661E33B424001D5670 /* AnnouncementViewController.swift */; };
 		BDFC96691E33B9A0001D5670 /* Announcment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFC96681E33B9A0001D5670 /* Announcment.swift */; };
+		BDFC96761E350A97001D5670 /* GTMOAuth2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFC96731E3508F4001D5670 /* GTMOAuth2.framework */; };
+		BDFC96781E350B61001D5670 /* GoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFC96771E350B61001D5670 /* GoogleSignIn.framework */; };
+		BDFC967C1E350DBE001D5670 /* FirebaseAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFC967B1E350DBE001D5670 /* FirebaseAuth.framework */; };
+		BDFC96841E350FE1001D5670 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFC96831E350FE1001D5670 /* MainViewController.swift */; };
+		BDFC96881E3512C4001D5670 /* FirebaseInstanceID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFC96871E3512C4001D5670 /* FirebaseInstanceID.framework */; };
+		BDFC968A1E351E96001D5670 /* RestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFC96891E351E96001D5670 /* RestUtils.swift */; };
 		C6C10550448C8238BFACFC3E /* Pods_ACM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 762CD4C506D82117203029FE /* Pods_ACM.framework */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +76,20 @@
 			remoteGlobalIDString = 4E56DAC92AB18FE072F1D118D65B8271;
 			remoteInfo = "Pods-ACMUITests";
 		};
+		BDFC96721E3508F4001D5670 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BDFC964C1E331E93001D5670 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C8F7AF0E3A809D328916013766A4E4F8;
+			remoteInfo = GTMOAuth2;
+		};
+		BDFC96741E3508F4001D5670 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BDFC964C1E331E93001D5670 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D095B14DCB175437AF38AEA312B562DA;
+			remoteInfo = GTMSessionFetcher;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +120,12 @@
 		BDFC96641E33234A001D5670 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseDatabase.framework; path = Pods/FirebaseDatabase/Frameworks/FirebaseDatabase.framework; sourceTree = "<group>"; };
 		BDFC96661E33B424001D5670 /* AnnouncementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AnnouncementViewController.swift; path = ../AnnouncementViewController.swift; sourceTree = "<group>"; };
 		BDFC96681E33B9A0001D5670 /* Announcment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Announcment.swift; sourceTree = "<group>"; };
+		BDFC96771E350B61001D5670 /* GoogleSignIn.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleSignIn.framework; path = Pods/GoogleSignIn/Frameworks/GoogleSignIn.framework; sourceTree = "<group>"; };
+		BDFC967B1E350DBE001D5670 /* FirebaseAuth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseAuth.framework; path = Pods/FirebaseAuth/Frameworks/frameworks/FirebaseAuth.framework; sourceTree = "<group>"; };
+		BDFC96831E350FE1001D5670 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		BDFC96851E3512A1001D5670 /* frameworks */ = {isa = PBXFileReference; lastKnownFileType = folder; name = frameworks; path = Pods/FirebaseInstanceID/Frameworks/frameworks; sourceTree = "<group>"; };
+		BDFC96871E3512C4001D5670 /* FirebaseInstanceID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseInstanceID.framework; path = Pods/FirebaseInstanceID/Frameworks/frameworks/FirebaseInstanceID.framework; sourceTree = "<group>"; };
+		BDFC96891E351E96001D5670 /* RestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestUtils.swift; sourceTree = "<group>"; };
 		CAABEE8F35DA28C2D1F5C55C /* Pods-ACMUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACMUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ACMUITests/Pods-ACMUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -108,6 +134,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDFC96881E3512C4001D5670 /* FirebaseInstanceID.framework in Frameworks */,
+				BDFC967C1E350DBE001D5670 /* FirebaseAuth.framework in Frameworks */,
+				BDFC96781E350B61001D5670 /* GoogleSignIn.framework in Frameworks */,
+				BDFC96761E350A97001D5670 /* GTMOAuth2.framework in Frameworks */,
 				BDFC96651E33234A001D5670 /* FirebaseDatabase.framework in Frameworks */,
 				BDFC965B1E331EBE001D5670 /* GoogleToolboxForMac.framework in Frameworks */,
 				C6C10550448C8238BFACFC3E /* Pods_ACM.framework in Frameworks */,
@@ -136,6 +166,10 @@
 		8A03072E3E7678420CDDA8F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BDFC96871E3512C4001D5670 /* FirebaseInstanceID.framework */,
+				BDFC96851E3512A1001D5670 /* frameworks */,
+				BDFC967B1E350DBE001D5670 /* FirebaseAuth.framework */,
+				BDFC96771E350B61001D5670 /* GoogleSignIn.framework */,
 				BDFC96641E33234A001D5670 /* FirebaseDatabase.framework */,
 				BDFC964C1E331E93001D5670 /* Pods.xcodeproj */,
 				762CD4C506D82117203029FE /* Pods_ACM.framework */,
@@ -174,7 +208,9 @@
 				BDFC965E1E33228C001D5670 /* BaseViewController.swift */,
 				BDFC961A1E3315DA001D5670 /* AppDelegate.swift */,
 				BDFC961C1E3315DA001D5670 /* ViewController.swift */,
+				BDFC96831E350FE1001D5670 /* MainViewController.swift */,
 				BDFC96681E33B9A0001D5670 /* Announcment.swift */,
+				BDFC96891E351E96001D5670 /* RestUtils.swift */,
 				BDFC961E1E3315DA001D5670 /* Main.storyboard */,
 				BDFC96211E3315DA001D5670 /* Assets.xcassets */,
 				BDFC96231E3315DA001D5670 /* LaunchScreen.storyboard */,
@@ -206,6 +242,8 @@
 			isa = PBXGroup;
 			children = (
 				BDFC96541E331E93001D5670 /* GoogleToolboxForMac.framework */,
+				BDFC96731E3508F4001D5670 /* GTMOAuth2.framework */,
+				BDFC96751E3508F4001D5670 /* GTMSessionFetcher.framework */,
 				BDFC96561E331E93001D5670 /* Pods_ACM.framework */,
 				BDFC96581E331E93001D5670 /* Pods_ACMTests.framework */,
 				BDFC965A1E331E93001D5670 /* Pods_ACMUITests.framework */,
@@ -373,6 +411,20 @@
 			fileType = wrapper.framework;
 			path = Pods_ACMUITests.framework;
 			remoteRef = BDFC96591E331E93001D5670 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BDFC96731E3508F4001D5670 /* GTMOAuth2.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GTMOAuth2.framework;
+			remoteRef = BDFC96721E3508F4001D5670 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BDFC96751E3508F4001D5670 /* GTMSessionFetcher.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GTMSessionFetcher.framework;
+			remoteRef = BDFC96741E3508F4001D5670 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -553,6 +605,8 @@
 				BDFC961D1E3315DA001D5670 /* ViewController.swift in Sources */,
 				BDFC961B1E3315DA001D5670 /* AppDelegate.swift in Sources */,
 				BDFC96691E33B9A0001D5670 /* Announcment.swift in Sources */,
+				BDFC96841E350FE1001D5670 /* MainViewController.swift in Sources */,
+				BDFC968A1E351E96001D5670 /* RestUtils.swift in Sources */,
 				BDFC96671E33B424001D5670 /* AnnouncementViewController.swift in Sources */,
 				BDFC965F1E33228C001D5670 /* BaseViewController.swift in Sources */,
 			);
@@ -711,6 +765,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseDatabase/Frameworks",
+					"$(PROJECT_DIR)/Pods/GoogleSignIn/Frameworks",
+					"$(PROJECT_DIR)/Pods/FirebaseAuth/Frameworks/frameworks",
+					"$(PROJECT_DIR)/Pods/FirebaseInstanceID/Frameworks/frameworks",
 				);
 				INFOPLIST_FILE = ACM/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -729,6 +786,9 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseDatabase/Frameworks",
+					"$(PROJECT_DIR)/Pods/GoogleSignIn/Frameworks",
+					"$(PROJECT_DIR)/Pods/FirebaseAuth/Frameworks/frameworks",
+					"$(PROJECT_DIR)/Pods/FirebaseInstanceID/Frameworks/frameworks",
 				);
 				INFOPLIST_FILE = ACM/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

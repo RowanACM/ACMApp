@@ -14,7 +14,7 @@
         <scene sceneID="gzl-y8-8Y5">
             <objects>
                 <navigationController title="ACM" id="Kdk-Ph-603" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cIc-Hd-4wQ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="cIc-Hd-4wQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -29,7 +29,7 @@
         <!--Item 1-->
         <scene sceneID="EPh-9U-hz9">
             <objects>
-                <viewController id="Twr-Aw-zGJ" sceneMemberID="viewController">
+                <viewController id="Twr-Aw-zGJ" customClass="MainViewController" customModule="ACM" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9vI-Hj-Odb"/>
                         <viewControllerLayoutGuide type="bottom" id="Xsi-nI-ZIq"/>
@@ -37,9 +37,19 @@
                     <view key="view" contentMode="scaleToFill" id="ztq-aV-BRx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V3b-7X-HVc" customClass="GIDSignInButton">
+                                <rect key="frame" x="67" y="269" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 1" id="xwn-yk-pFS"/>
+                    <connections>
+                        <outlet property="signInButton" destination="V3b-7X-HVc" id="AYd-Ip-XlQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2rJ-Ki-Mka" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
