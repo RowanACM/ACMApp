@@ -140,7 +140,7 @@ public class MainFragment extends Fragment {
      * Revoke access to the user's Google Account and sign out
      */
     @OnClick(R.id.google_sign_out_button)
-    private void signOutGoogle() {
+    public void signOutGoogle() {
         GoogleApiClient googleApiClient = ((MainTabActivity) getActivity()).getGoogleApiClient();
         if(!googleApiClient.isConnected()) {
             // The user is not signed in
