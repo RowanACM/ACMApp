@@ -9,24 +9,22 @@
 import Foundation
 import FirebaseAuth
 class RestUtils{
-    static func memberSignin(currentUser:FIRUser ){
+    static func memberSignin(currentUser:FIRUser ) {
         
-        var query = "https://2dvdaw7sq1.execute-api.us-east-1.amazonaws.com/prod/attendance?uid="
+        let displayname =  currentUser.displayName!.replacingOccurrences(of: " ", with: "%20")
         
-            query = query + currentUser.uid + "&name="
-       let displayname =  currentUser.displayName!.replacingOccurrences(of: " ", with: "%20")
-            query = query +  displayname + "&email="
-            query = query +  currentUser.email!
+        var query = "https://2dvdaw7sq1.execute-api.us-east-1.amazonaws.com/prod/attendance"
+        query += "?uid=" + currentUser.uid
+        query += "&name=" + displayname
+        query += "&email=" +  currentUser.email!
+        query += "&method=" + "ios"
         
         let url = URL(string: query)
+        print(url!)
         
-        
-        
-        
-        print(url)
         let task = URLSession.shared.dataTask(with: url!) { data, response, error in
             guard error == nil else {
-                print(error)
+                print(error!)
                 return
             }
             guard let data = data else {
@@ -34,8 +32,8 @@ class RestUtils{
                 return
             }
             
-            let result  = String(data: data, encoding: String.Encoding.utf8)
-            print(result)
+            let result = String(data: data, encoding: String.Encoding.utf8)
+            print(result!)
         }
         
         task.resume()
