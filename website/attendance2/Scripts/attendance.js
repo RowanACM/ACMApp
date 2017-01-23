@@ -53,14 +53,21 @@ firebase.auth().onAuthStateChanged(function(user) {
 	console.log("ON AUTH STATE CHANGED " + user + " SIGNED IN: " + (user != null));
 	 
   	if (user) {
-  		// User is signed in.
-		signedInGoogle = true;
-		if(attendanceEnabled && !signedInMeeting) {
-			changeViewsSignedInGoogle()
-		}
+  		var email = user.email
+  		if(email != null && email.includes("rowan.edu")) {
+			// User is signed in.
+			signedInGoogle = true;
+			if(attendanceEnabled && !signedInMeeting) {
+				changeViewsSignedInGoogle()
+			}
 	
-		if(currentMeeting != null) {	
-			determineIfSignedInMeeting();
+			if(currentMeeting != null) {	
+				determineIfSignedInMeeting();
+			}
+	  	}
+	  	else {
+	  		firebaseSignOut();
+	  		alert("Please sign in with your students.rowan.edu email address");
 	  	}
 	} else {
 		// No user is signed in.
