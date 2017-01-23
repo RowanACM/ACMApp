@@ -1,14 +1,5 @@
 {
   "rules": {
-    
-    "admins": {
-      // You can only access your own admin information
-      // and can only change your admin info if admin==true
-      "$uid": {
-        ".read": "$uid === auth.uid",
-        ".write": "$uid === auth.uid && data.child('admin').val() == true"
-      }
-    },
       
     "announcements": {
       // Anyone can read annoucements
@@ -41,18 +32,30 @@
         "$uid": {
           ".read": "$uid == auth.uid",
           ".write": "root.child('attendance').child('enabled').val() == true && root.child('attendance').child('current').val() == $meeting && $uid == auth.uid"
+        },
+          
+        "new_member_count": {
+          ".read": "true",
+          ".write": "false"
+        },
+          
+        "signed_in_count": {
+          ".read": "true",
+          ".write": "false"
         }
     
-      },
-        
-      ".read": true
+      }
         
     },
-    
-    // TODO: Improve security rules for list of members on slack
-    "slack": {  
-      ".read": "auth != null",
-      ".write": false
+      
+    "members": {
+      
+      // You can only read your own member information
+      // Only change it if you are an admin
+      "$uid": {
+          ".read": "$uid == auth.uid",
+          ".write": "$uid == auth.uid && data.child('admin').val() == true"
+        }
     },
     
     ".read": false,
