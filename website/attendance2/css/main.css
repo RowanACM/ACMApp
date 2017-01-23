@@ -59,6 +59,13 @@ header {
 	visibility: hidden;
 }
 
+#sign_out {
+	visibility: hidden;
+}
+
+#attendance {
+	font-size: 25px;
+}
 
 
 a {
