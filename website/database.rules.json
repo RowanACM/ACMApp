@@ -2,49 +2,53 @@
   "rules": {
       
     "announcements": {
-      // Anyone can read annoucements
-      ".read": true,
-      // Only admins can create announcements
-      ".write": "root.child('admins').child(auth.uid).child('admin').val() == true"
+    	// Anyone can read annoucements
+      	".read": true,
+      	// Only admins can create announcements
+      	".write": "root.child('admins').child(auth.uid).child('admin').val() == true"
     }, 
       
     "attendance": {
-      
-      // enabled is a boolean for whether the attendance is enabled
-      // Anyone can read from it. Only admins can change it
-      // Must be a boolean
-      "enabled": {
-        ".read": true,
-        ".write": "root.child('admins').child(auth.uid).child('admin').val() == true",
-        ".validate": "newData.isBoolean()"
-      },
-      
-      // current is the root of the current attendance.
-      // Anyone can read from it. Only admins can change it
-      "current": {
-        ".read": true,
-        ".write": "root.child('admins').child(auth.uid).child('admin').val() == true"
-      },
-      
-      // The meeting attendance. The key is the uid and the value is the person's name
-      "$meeting": {
+     
+    	"status": {    
+			
+			// enabled is a boolean for whether the attendance is enabled
+			// Anyone can read from it. Only admins can change it
+			// Must be a boolean
+			"enabled": {
+				".read": true,
+				".write": "root.child('admins').child(auth.uid).child('admin').val() == true",
+				".validate": "newData.isBoolean()"
+			},
+	  
+			// current is the root of the current attendance.
+			// Anyone can read from it. Only admins can change it
+			"current": {
+				".read": true,
+				".write": "root.child('admins').child(auth.uid).child('admin').val() == true"
+			},
+		
+			"new_member_count": {
+			  ".read": true,
+			  ".write": false
+			},
+		  
+			"signed_in_count": {
+			  ".read": true,
+			  ".write": false
+			},
+		
+			".read": true
         
-        "$uid": {
-          ".read": "$uid == auth.uid",
-          ".write": "root.child('attendance').child('enabled').val() == true && root.child('attendance').child('current').val() == $meeting && $uid == auth.uid"
-        },
-          
-        "new_member_count": {
-          ".read": "true",
-          ".write": "false"
-        },
-          
-        "signed_in_count": {
-          ".read": "true",
-          ".write": "false"
-        }
-    
-      }
+    	},
+      
+      	// The meeting attendance. The key is the uid and the value is the person's name
+      	"$meeting": {
+        	"$uid": {
+          	".read": "$uid == auth.uid",
+          	".write": "root.child('attendance').child('enabled').val() == true && root.child('attendance').child('current').val() == $meeting && $uid == auth.uid"
+        	}
+      	}
         
     },
       

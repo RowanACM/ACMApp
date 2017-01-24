@@ -23,12 +23,12 @@ var config = {
 firebase.initializeApp(config);
 
 
-var attendanceRef = firebase.database().ref('attendance');
+var attendanceRef = firebase.database().ref('attendance').child("status");
 attendanceRef.on('value', function(snapshot) {
 	currentMeeting = snapshot.child("current").val();
 	attendanceEnabled = snapshot.child("enabled").val();
-	new_member_count = snapshot.child(currentMeeting).child("new_member_count").val();
-	signed_in_count = snapshot.child(currentMeeting).child("signed_in_count").val();
+	new_member_count = snapshot.child("new_member_count").val();
+	signed_in_count = snapshot.child("signed_in_count").val();
 	
 	if(attendanceEnabled) {
 		if(signedInGoogle) {
@@ -45,7 +45,6 @@ attendanceRef.on('value', function(snapshot) {
 	
 	updateSignInViews();
 });
-
 
 
 
