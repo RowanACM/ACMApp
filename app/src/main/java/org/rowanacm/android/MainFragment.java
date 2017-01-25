@@ -38,7 +38,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Iterator;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -73,16 +72,16 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
 
-        getView().findViewById(R.id.attendance_button).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.attendance_button).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View attendanceButton) {
                 if(signedInMeeting) {
-                    Snackbar.make(getView(), "You already signed in to the meeting ✓", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, "You already signed in to the meeting ✓", Snackbar.LENGTH_SHORT).show();
                 }
                 else {
                     signInToMeeting();
@@ -178,12 +177,11 @@ public class MainFragment extends Fragment {
 
     private ValueEventListener attendanceListener() {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        return database.child("attendance").addValueEventListener(new ValueEventListener() {
+        return database.child("attendance").child("status").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean attendanceEnabled = (boolean) dataSnapshot.child("enabled").getValue();
                 if(attendanceEnabled) {
-
                     signedInMeeting = false;
 
                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -193,27 +191,34 @@ public class MainFragment extends Fragment {
                     }
                     else {
                         String uid = currentUser.getUid();
-
                         currentMeeting = (String) dataSnapshot.child("current").getValue();
-                        Iterator<DataSnapshot> childrenIter = dataSnapshot.child(currentMeeting).getChildren().iterator();
-                        while (childrenIter.hasNext()) {
-                            DataSnapshot snapshot = childrenIter.next();
-                            if(snapshot.getKey().equals(uid)) {
-                                signedInMeeting = true;
-                                // tell the user that they already signed in
-                                updateAttendanceViews(AttendanceMode.SIGNED_IN);
-                                return;
-                            }
-                        }
-                        signedInMeeting = false;
-                        // The user is signed into their google account but not to the meeting
-                        updateAttendanceViews(AttendanceMode.PROMPT_MEETING);
+                        createSignedInListener(currentMeeting, uid);
+                        //updateAttendanceViews(AttendanceMode.PROMPT_MEETING);
                     }
 
                 }
                 else {
                     updateAttendanceViews(AttendanceMode.HIDDEN);
                 }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    private void createSignedInListener(String currentMeeting, String uid) {
+        FirebaseDatabase.getInstance().getReference("attendance").child(currentMeeting).child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                signedInMeeting = (dataSnapshot.getValue() != null);
+                if(signedInMeeting) {
+                    updateAttendanceViews(AttendanceMode.SIGNED_IN);
+                }
+                else {
+                    updateAttendanceViews(AttendanceMode.PROMPT_MEETING);
+                }
+
             }
 
             @Override
