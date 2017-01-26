@@ -67,6 +67,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 	  	else {
 	  		firebaseSignOut();
 	  		alert("Please sign in with your students.rowan.edu email address");
+	  		document.getElementById("attendance").innerHTML = "Please sign in with your students.rowan.edu email address";
 	  	}
 	} else {
 		// No user is signed in.
@@ -126,6 +127,7 @@ function submitAttendance() {
     			case 100:
         			// Signed in successfully. New member
         			signedInToMeeting();
+        			document.getElementById("attendance").innerHTML = "Signed in successfully ✓<br/>Welcome to your first ACM Meeting. You should have received an email with more information about the club.";
         			break;
     			case 110:
         			// Signed in successfully. Existing member
