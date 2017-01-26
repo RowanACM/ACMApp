@@ -5,6 +5,7 @@
 		<meta name="google-signin-client_id" content="536754237521-ioallp2ibqppaqn27pupvf8b9201mve4.apps.googleusercontent.com">
 		<meta name="google-signin-cookiepolicy" content="single_host_origin">
 		<meta name="google-signin-scope" content="profile email">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<title>ACM Sign-In</title>
     	<link rel="shortcut icon" href="img/rowan_acm_logo.png">
@@ -27,13 +28,15 @@
 	</head>
 	<body>
 		<header>
-			<div class="header_center">
-				<img class="logo" src="img/acm_logo.png" alt="Rowan ACM Logo">
-				<h1 class="main_header">Rowan ACM</h1>
+			<div id="wrapper" style="text-align: center">    
+    			<div class="header_center" style="display: inline-block;">
+    				<img class="logo" src="img/acm_logo.png" alt="Rowan ACM Logo">
+					<h1 class="main_header">Rowan ACM</h1>	
+    			</div>
 			</div>
 		</header>
 		<div class="body">
-			<p id="attendance">Sign in to your google account (Rowan Email Address)</p>
+			<p id="attendance">Sign in to your Google account <br /> (Rowan Email Address)</p>
 			<button type="button" id="meeting_button" onclick="submitAttendance()">MEETING SIGN IN</button>
 			<div class="g-signin2" id="google_sign_in" data-onsuccess="onSignIn"></div>
 			<button type="button" id="sign_out" onclick="firebaseSignOut()">Google Sign Out</button>

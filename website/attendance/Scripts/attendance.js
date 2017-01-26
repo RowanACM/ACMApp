@@ -165,8 +165,8 @@ function submitAttendance() {
 
 
 function updateSignInViews() {
-    document.getElementById("first_meeting").innerHTML = "Number of new members: " + new_member_count;
-    document.getElementById("signed_in").innerHTML = "How many people signed into this meeting: " + signed_in_count;
+    document.getElementById("signed_in").innerHTML = "People signed in: " + signed_in_count;
+    document.getElementById("first_meeting").innerHTML = "New members: " + new_member_count;
 }
 
 
