@@ -2,16 +2,10 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<meta name="google-signin-client_id" content="536754237521-ioallp2ibqppaqn27pupvf8b9201mve4.apps.googleusercontent.com">
-		<meta name="google-signin-cookiepolicy" content="single_host_origin">
-		<meta name="google-signin-scope" content="profile email">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-
 		<title>ACM Sign-In</title>
     	<link rel="shortcut icon" href="img/rowan_acm_logo.png">
     	<link rel="stylesheet" href="css/main.css" type="text/css">
 		<link href="https://fonts.googleapis.com/css?family=Catamaran:700" rel="stylesheet" type="text/css">
-		<script src="https://apis.google.com/js/platform.js" async defer></script>
 		<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-app.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-auth.js"></script>
@@ -28,22 +22,25 @@
 	</head>
 	<body>
 		<header>
-			<div id="wrapper" style="text-align: center">    
-    			<div class="header_center" style="display: inline-block;">
-    				<img class="logo" src="img/rowan_acm_logo_small.png" alt="Rowan ACM Logo">
-					<h1 class="main_header">Rowan ACM</h1>	
-    			</div>
+			<div class="header_center">
+				<img class="logo" src="img/acm_logo.png" alt="Rowan ACM Logo">
+				<h1 class="main_header">Rowan ACM</h1>
 			</div>
 		</header>
-		<div class="body">
-			<p id="attendance">Sign in to your Google account <br /> (Rowan Email Address)</p>
-			<button type="button" id="meeting_button" onclick="submitAttendance()">MEETING SIGN IN</button>
-			<div class="g-signin2" id="google_sign_in" data-onsuccess="onSignIn"></div>
-			<button type="button" id="sign_out" onclick="firebaseSignOut()">Google Sign Out</button>
-		
-			<p id="signed_in">People signed in: Loading</p>
-			<p id="first_meeting">New members: Loading</p>
-			<p id="contribute"><a href="https://github.com/RowanACM/ACM_Site" target="_blank">Help code this website</a> </p>
+		<div class="body_first_half">
+            <section id ="sign-in-links"> 
+			<p id="title"> Sign in at <a id="poll_url" style="text-decoration: none" href="http://bit.ly/rowanacm" target="_blank">www.bit.ly/rowanacm</a> or</p>
+			<img id="poll_qr" src="https://chart.apis.google.com/chart?cht=qr&chs=400x400&choe=UTF-8&chld=H%7C0&chl=http://bit.ly/rowanacm" alt="QR Code" width="150" height="150">
+            </section>
+			<h2 id="signed_in">How many people signed into this meeting: Loading</h2>
+			<h2 id="first_meeting">Number of new members: Loading</h2>
 		</div>
+		<div class="body_second_half">
+			<div id="piechart"></div>
+		</div>
+         <button type="button" id="button" onclick="location.href='https://docs.google.com/forms/d/e/1FAIpQLScgL5EttHTj4HblJrkIoSRo560gseCQFoypADL7qEd5UdJlnA/viewform'">SIGN IN</button>
+            <footer id ="footer">
+        <h2 id="contribute">Contribute at:  <a href="https://github.com/RowanACM/ACMAttendanceWebsite" target="_blank">github.com/RowanACM/ACMAttendanceWebsite </a> </h2>
+    </footer>
 	</body>
 </html>
