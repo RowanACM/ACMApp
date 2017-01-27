@@ -71,7 +71,7 @@ initApp = function() {
               '<span class="sr-only">Toggle navigation</span>' +
               'Menu <i class="fa fa-bars"></i>' +
           '</button>' +
-          '<a class="/attendance/index.html" href="register.html">Attendance</a>' +
+          '<a class="navbar-brand" href="attendance/index.html">Attendance</a>' +
       '</div>' +
       '<div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">' +
           '<ul class="nav navbar-nav navbar-right">' +
