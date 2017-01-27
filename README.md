@@ -3,9 +3,10 @@ Receive information about Rowan ACM. Learn more at [rowanacm.org](https://rowana
 
 ### Setup Instructions for Members
 
-1. Download and install Android Studio
-2. Locate your [AndroidStudioProjects](https://developer.android.com/studio/index.html) folder. This is where Android will store all projects you create.
-3. Clone this repository inside of your AndroidStudioProjects folder
+1. Download and install [Android Studio](https://developer.android.com/studio/index.html)
+2. Download and install [git](https://git-scm.com/)
+3. Locate your AndroidStudioProjects folder. This is where Android will store all projects you create.
+4. Clone this repository inside of your AndroidStudioProjects folder
 
         git clone https://github.com/RowanACM/ACMAppAndroid.git
 
