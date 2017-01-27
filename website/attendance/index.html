@@ -11,6 +11,7 @@
     	<link rel="shortcut icon" href="img/rowan_acm_logo.png">
     	<link rel="stylesheet" href="css/main.css" type="text/css">
 		<link href="https://fonts.googleapis.com/css?family=Catamaran:700" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 		<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-app.js"></script>
@@ -37,7 +38,7 @@
 		</header>
 		<div class="body">
 			<p id="attendance">Sign in to your Google account <br /> (Rowan Email Address)</p>
-			<button type="button" id="meeting_button" onclick="submitAttendance()">MEETING SIGN IN</button>
+			<button type="button" class="animated infinite tada" id="meeting_button" onclick="submitAttendance()">MEETING SIGN IN</button>
 			<div class="g-signin2" id="google_sign_in" data-onsuccess="onSignIn"></div>
 			<button type="button" id="sign_out" onclick="firebaseSignOut()">Google Sign Out</button>
 		
