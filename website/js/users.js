@@ -46,7 +46,7 @@ initApp = function() {
                 '<span class="sr-only">Toggle navigation</span>' +
                 'Menu <i class="fa fa-bars"></i>' +
             '</button>' +
-            '<a class="navbar-brand" href="dashboard.html">Dashboard</a>' +
+            '<a class="navbar-brand" href="attendance/index.html">Attendance</a>' +
         '</div>' +
         '<div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">' +
         '<ul class="nav navbar-nav navbar-right">' +
@@ -55,6 +55,9 @@ initApp = function() {
             '</li>' +
             '<li>' +
                 '<a href="committees.html">Committees</a>' +
+            '</li>' +
+            '<li>' +
+                '<a href="dashboard.html">Dashboard</a>' +
             '</li>' +
             '<li>' +
                 '<a href="index.html" onclick="signOut();">Sign out</a>' +
