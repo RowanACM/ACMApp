@@ -38,8 +38,8 @@ attendanceRef.on('value', function(snapshot) {
 		determineIfSignedInMeeting();
 	}
 	else {
-		document.getElementById("attendance").innerHTML = "Attendance is disabled";
-		document.getElementById("meeting_button").style.visibility = "hidden";
+		document.getElementById("attendance").innerHTML = "Sign in to your Google Account (Rowan Email Address)";
+		document.getElementById("meeting_button").innerHTML = "Register for Rowan ACM";
 	}
 	
 	
@@ -56,7 +56,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   		if(email != null && email.includes("rowan.edu")) {
 			// User is signed in.
 			signedInGoogle = true;
-			if(attendanceEnabled && !signedInMeeting) {
+			if(!signedInMeeting) {
 				changeViewsSignedInGoogle()
 			}
 	
@@ -96,7 +96,10 @@ function determineIfSignedInMeeting() {
 function signingInToMeeting() {
 	console.log("SIGNING IN TO MEETING");
 	document.getElementById("meeting_button").style.visibility = "hidden";
-	document.getElementById("attendance").innerHTML = "Signing in to the meeting...";
+	if(attendanceEnabled)
+		document.getElementById("attendance").innerHTML = "Signing in to the meeting...";
+	else
+		document.getElementById("attendance").innerHTML = "Registering for ACM...";
 }
 
 
@@ -106,6 +109,14 @@ function signedInToMeeting() {
 	signedInMeeting = true;
 	document.getElementById("meeting_button").style.visibility = "hidden";
 	document.getElementById("attendance").innerHTML = "You signed in to the meeting ✓";
+}
+
+function registeredForACM() {
+	console.log("REGISTERED FOR ACM");
+
+	signedInMeeting = true;
+	document.getElementById("meeting_button").style.visibility = "hidden";
+	document.getElementById("attendance").innerHTML = "You registered for ACM. You should have received an email with more information about the club. ✓";
 }
 
 function submitAttendance() {
@@ -137,9 +148,14 @@ function submitAttendance() {
         			// Already signed in
         			signedInToMeeting();
         			break;
+        		case 130:
+        			// Already signed in
+        			registeredForACM();
+        			break;
     			case 200:
         			// Didn't sign in. Attendance disabled
-        			hideSignInButton();
+        			document.getElementById("meeting_button").style.visibility = "hidden";
+					document.getElementById("attendance").innerHTML = "You already registered for ACM";
         			break;
         		case 210:
         			// Invalid input
