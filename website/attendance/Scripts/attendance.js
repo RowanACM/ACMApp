@@ -75,7 +75,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 		document.getElementById("meeting_button").style.visibility = "hidden";
 		document.getElementById("sign_out").style.visibility = "hidden";
 		document.getElementById("google_sign_in").style.visibility = "visible";
-		document.getElementById("attendance").innerHTML = "Sign in to your google account (Rowan Email Address)";
+		document.getElementById("attendance").innerHTML = "Sign in to your Google account\n(Rowan Email Address)";
 	}
 });
 
