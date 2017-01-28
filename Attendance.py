@@ -1,19 +1,9 @@
 print "START IMPORTS"
 
-from pushbullet import Pushbullet
-from pprint import pprint
-import json
-import urllib2
-import requests
 import firebase
-import json
-from pyfcm import FCMNotification
-import time
-import twitter
-from twitter import Api
-from slacker import Slacker
+
 from Email import Email
-import boto3
+from slacker import Slacker
 
 print "START CODE"
 
@@ -21,12 +11,73 @@ print "START CODE"
 RESPONSE_SUCCESSFUL_NEW = 100
 RESPONSE_SUCCESSFUL_EXISTING = 110
 RESPONSE_ALREADY_SIGNED_IN = 120
+RESPONSE_REGISTERED = 130
 RESPONSE_ATTENDANCE_DISABLED = 200
 RESPONSE_INVALID_INPUT = 210
 RESPONSE_UNKNOWN_ERROR = 220
 
 FIREBASE_LICENSE_KEY = ""
 SLACK_KEY = ""
+
+
+def valid_input(uid, name, email):
+    return len(uid) > 0 and len(name) > 0 and len(email) > 0
+
+
+def setup_firebase():
+    myfirebase = firebase.FirebaseApplication('https://rowan-acm.firebaseio.com/', None)
+    authentication = firebase.FirebaseAuthentication(FIREBASE_LICENSE_KEY, 'tylercarberry@gmail.com', admin=True)
+    myfirebase.authentication = authentication
+    return myfirebase
+
+
+def register(myfirebase, name, email, uid):
+    """
+    Update user info. Creates it if new member
+    :param myfirebase:
+    :param name:
+    :param email:
+    :param uid:
+    :return:
+    """
+    username = email.split("@")[0]
+    onSlack = on_slack(email)
+
+    new_member = myfirebase.get('/members/' + uid + "/email", None) != email
+
+    myfirebase.put('/members/', uid + "/email", email)
+    myfirebase.put('/members/', uid + "/username", username)
+    myfirebase.put('/members/', uid + "/name", name)
+    myfirebase.put('/members/', uid + "/uid", uid)
+    myfirebase.put('/members/', uid + "/on_slack", onSlack)
+
+    return new_member
+
+
+def already_signed_in(current, myfirebase, uid):
+    return myfirebase.get('/attendance/' + current + '/' + uid, None) is not None
+
+
+def increment_signed_in_count(current, myfirebase):
+    signed_in_people = myfirebase.get('/attendance/' + current, None)
+    signed_in_count = len(signed_in_people)
+    myfirebase.put('/attendance/status', "/signed_in_count", signed_in_count)
+
+
+def increment_new_member_count(myfirebase):
+    increment_firebase(myfirebase, '/attendance/status/new_member_count')
+
+
+def increment_meeting_count(myfirebase, uid):
+    increment_firebase(myfirebase, '/members/' + uid + "/meeting_count")
+
+
+def increment_firebase(myfirebase, path):
+    count = myfirebase.get(path, None)
+    if count is None:
+        count = 0
+    count += 1
+    myfirebase.put("/", path, count)
 
 
 def on_slack(email):
@@ -46,7 +97,7 @@ def on_slack(email):
     return False
 
 
-def email_new_user(email, the_subject, the_text, the_html, from_email):
+def email_new_member(email, myfirebase):
     """
     Send a welcome email to a new user of ACM
     :param email: Email address to send to
@@ -58,10 +109,20 @@ def email_new_user(email, the_subject, the_text, the_html, from_email):
     """
     print "Sending email to " + email
 
-    email = Email(to=email, subject=the_subject)
-    email.text(the_text)
-    email.html(the_html)
-    email.send(from_addr=from_email)
+    email_enabled = myfirebase.get('/new_member_email/enabled', None)
+    the_subject = myfirebase.get('/new_member_email/subject', None)
+    the_text = myfirebase.get('/new_member_email/body', None)
+    the_html = myfirebase.get('/new_member_email/html', None)
+    # from_address = myfirebase.get('/new_member_email/from', None)
+    from_address = "tyler@rowanacm.org"
+
+    #print the_subject, the_text, from_address
+
+    if email_enabled:
+        email = Email(to=email, subject=the_subject)
+        email.text(the_text)
+        email.html(the_html)
+        email.send(from_addr=from_address)
 
     # The following code could be used to send an sms
     # It is not currently used
@@ -98,89 +159,46 @@ def attendance(event, context):
 
     # TODO: Require that the email is a Rowan email address
 
-    if len(uid) == 0 or len(name) == 0 or len(email) == 0:
+    if not valid_input(uid, name, email):
         print "Invalid parameters"
         return RESPONSE_INVALID_INPUT
 
-    myfirebase = firebase.FirebaseApplication('https://rowan-acm.firebaseio.com/', None)
+    myfirebase = setup_firebase()
 
     print "Step 2"
 
-    authentication = firebase.FirebaseAuthentication(FIREBASE_LICENSE_KEY, 'tylercarberry@gmail.com', admin=True,
-                                                     extra={'id': 123})
-    myfirebase.authentication = authentication
-    user = authentication.get_user()
+    # Register the user. Doesn't do anything if they are already registered
+    new_member = register(myfirebase, name, email, uid)
+
+    if new_member:
+        email_new_member(email, myfirebase)
 
     # A boolean of whether the attendance is enabled
     attendance_enabled = myfirebase.get('/attendance/status/enabled', None)
     if not attendance_enabled:
+        if new_member:
+            return RESPONSE_REGISTERED
         return RESPONSE_ATTENDANCE_DISABLED
 
     # The location of the current attendance in the database
     current = myfirebase.get('/attendance/status/current', None)
 
     # If the member already signed in, return RESPONSE_ALREADY_SIGNED_IN
-    my_sign_in = myfirebase.get('/attendance/' + current + '/' + uid, None)
-    if not (my_sign_in is None):
+    if already_signed_in(current, myfirebase, uid):
         return RESPONSE_ALREADY_SIGNED_IN
 
     # Sign the user in to the meeting
     myfirebase.put('/attendance/', current + "/" + uid, {"uid": uid, "name": name, "email": email})
     print "You signed in"
 
-    # Increment the number of people signed in to the meeting
-    signed_in_people = myfirebase.get('/attendance/' + current, None)
-
-    # Since I restructured the database, the following 2 lines aren't needed.
-    # But I will keep them until I update the website and app
-    signed_in_people.pop("signed_in_count", None)
-    signed_in_people.pop("new_member_count", None)
-
     # Increment signed in count
-    signed_in_count = len(signed_in_people)
-    myfirebase.put('/attendance/status', "/signed_in_count", signed_in_count)
+    increment_signed_in_count(current, myfirebase)
 
-    # Update user info. Creates it if new member
-    username = email.split("@")[0]
-    myfirebase.put('/members/', uid + "/email", email)
-    myfirebase.put('/members/', uid + "/username", username)
-    myfirebase.put('/members/', uid + "/name", name)
-    myfirebase.put('/members/', uid + "/uid", uid)
-
-    new_member = False
-    current_member_meeting_count = myfirebase.get('/members/' + uid + "/meeting_count", None)
-    if current_member_meeting_count is None:
+    if new_member:
         print "First meeting"
-        new_member = True
-        current_member_meeting_count = 0
-        myfirebase.put('/members/', uid + "/email", email)
+        increment_new_member_count(myfirebase)
 
-        # Increment new_member_count
-        new_member_count = myfirebase.get('/attendance/status/new_member_count', None)
-        if new_member_count is None:
-            new_member_count = 0
-        new_member_count += 1
-        myfirebase.put('/attendance/status', 'new_member_count', new_member_count)
-
-    current_member_meeting_count += 1
-    myfirebase.put('/members/', uid + "/meeting_count", current_member_meeting_count)
-
-    # Determine whether the user is on slack
-    onSlack = on_slack(email)
-    myfirebase.put('/members/', uid + "/on_slack", onSlack)
-
-    # If this is the first time that a user has signed in to the meeting, send them a welcome email
-    email_enabled = myfirebase.get('/new_member_email/enabled', None)
-    if new_member and email_enabled:
-        subject = myfirebase.get('/new_member_email/subject', None)
-        body = myfirebase.get('/new_member_email/body', None)
-        html = myfirebase.get('/new_member_email/html', None)
-        # from_address = myfirebase.get('/new_member_email/from', None)
-        from_address = "tyler@rowanacm.org"
-
-        print subject, body, from_address
-
-        email_new_user(email, the_subject=subject, the_text=body, the_html=html, from_email=from_address)
+    increment_meeting_count(myfirebase, uid)
 
     if new_member:
         return RESPONSE_SUCCESSFUL_NEW
@@ -189,4 +207,4 @@ def attendance(event, context):
 
 # There is no main method since it is called from AWS Lambda. Uncomment the following line to test it
 # REPLACE THE EMAIL ADDRESS WITH YOUR OWN. I have accidentally emailed John Smith a couple times, sorry john.
-# attendance({"uid": "abc123", "email": "smithj2@students.rowan.edu", "name": "John Smith"}, None)
+print attendance({"uid": "abc123", "email": "carberryt9@students.rowan.edu", "name": "Tyler Carberry"}, None)
