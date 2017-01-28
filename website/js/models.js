@@ -6,6 +6,13 @@ var announcementsRef_all = firebase.database().ref("announcements").orderByKey()
 var announcementsRef_10 = announcementsRef_all.limitToLast(10);
 var announcementsList_all = document.getElementById('announcementsList_all');
 var announcementsList_10 = document.getElementById('announcementsList_10');
+var postDiv = document.getElementById('postDiv');
+
+/*
+var getPost = function(postID){
+
+}
+*/
 
 
 announcementsRef_10.once('value').then(function(snapshot) {
