@@ -18,7 +18,7 @@ SLACK_KEY = ""
 
 
 def valid_input(uid, name, email):
-    return len(uid) > 0 and len(name) > 0 and len(email) > 0
+    return len(uid) > 0 and len(name) > 0 and len(email) > 0 and email.endswith("rowan.edu")
 
 
 def setup_firebase():
@@ -166,8 +166,6 @@ def attendance(event, context):
     email = event["email"]
 
     print "UID:", uid, "NAME:", name, "EMAIL:", email
-
-    # TODO: Require that the email is a Rowan email address
 
     if not valid_input(uid, name, email):
         print "Invalid parameters"
