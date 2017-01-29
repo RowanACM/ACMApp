@@ -30,7 +30,7 @@ var addPost = function(title, subject, text, author, date, postID, announcements
   //console.log(title + ' ' + subject + ' ' + text);
   announcementsList.insertAdjacentHTML('afterbegin',
   '<div class="post-preview">' +
-  '    <a href="post.html" onclick="getPost(' + postID + ')">' +
+  '    <a href="https://interactive-announcements.firebaseapp.com/">' +
   '        <h2 class="post-title">' + title + '</h2>' +
   '        <h3 class="post-subtitle">' + subject + '</h3>' +
   '    </a>' +
@@ -51,7 +51,7 @@ var getPost = function(postID){
   var postSubj
   var postText
 
-  firebase.database().ref('rowan-acm/announcements/' + postID).once('value').then(function(snapshot) {
+  firebase.database().ref('announcements/' + postID).once('value').then(function(snapshot) {
   postTitle = snapshot.val().title;
   postSubj = snapshot.val().subj;
   postText = snapshot.val().text;
