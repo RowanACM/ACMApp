@@ -1,11 +1,8 @@
-print "START IMPORTS"
-
 import firebase
-
+import requests
+import json
 from Email import Email
 from slacker import Slacker
-
-print "START CODE"
 
 # Response codes
 RESPONSE_SUCCESSFUL_NEW = 100
@@ -97,6 +94,19 @@ def on_slack(email):
     return False
 
 
+def invite_to_slack(email):
+    url = 'https://slack.com/api/users.admin.invite?token=' + SLACK_KEY + '&email=' + email
+
+    r = requests.get(url)
+
+    response = json.loads(r.content)
+
+    print response
+
+    return response["ok"]
+    # https://slack.com/api/users.admin.invite?token=XXX&email=test@email.com&channels=C000000001,C000000002
+
+
 def email_new_member(email, myfirebase):
     """
     Send a welcome email to a new user of ACM
@@ -116,7 +126,7 @@ def email_new_member(email, myfirebase):
     # from_address = myfirebase.get('/new_member_email/from', None)
     from_address = "tyler@rowanacm.org"
 
-    #print the_subject, the_text, from_address
+    # print the_subject, the_text, from_address
 
     if email_enabled:
         email = Email(to=email, subject=the_subject)
@@ -172,6 +182,8 @@ def attendance(event, context):
 
     if new_member:
         email_new_member(email, myfirebase)
+        # If they are already on slack, this won't do anything
+        print invite_to_slack(email)
 
     # A boolean of whether the attendance is enabled
     attendance_enabled = myfirebase.get('/attendance/status/enabled', None)
@@ -204,7 +216,6 @@ def attendance(event, context):
         return RESPONSE_SUCCESSFUL_NEW
     return RESPONSE_SUCCESSFUL_EXISTING
 
-
 # There is no main method since it is called from AWS Lambda. Uncomment the following line to test it
-# REPLACE THE EMAIL ADDRESS WITH YOUR OWN. I have accidentally emailed John Smith a couple times, sorry john.
-print attendance({"uid": "abc123", "email": "carberryt9@students.rowan.edu", "name": "Tyler Carberry"}, None)
+# REPLACE THE INFO WITH YOUR OWN.
+# print attendance({"uid": "abc123", "email": "YOUR EMAIL", "name": "John Smith"}, None)
