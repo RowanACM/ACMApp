@@ -34,7 +34,7 @@ initApp = function() {
         providerData = user.providerData;
 
         // this is for more user/site control
-          user.getToken().then(function(accessToken) {
+        user.getToken().then(function(accessToken) {
           document.getElementById("email_test").innerHTML= "email: <u>" + email + "</u>";
         });
 
