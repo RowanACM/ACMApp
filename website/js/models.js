@@ -4,9 +4,9 @@
 // ANNOUNCEMENTS //
 
 var announcementsRef_all = firebase.database().ref("announcements").orderByChild('timestamp');
-var announcementsRef_10 = announcementsRef_all.limitToLast(10);
+var announcementsRef_5 = announcementsRef_all.limitToLast(5);
 var announcementsList_all = document.getElementById('announcementsList_all');
-var announcementsList_10 = document.getElementById('announcementsList_10');
+var announcementsList_5 = document.getElementById('announcementsList_5');
 var postDiv = document.getElementById('postDiv');
 
 
@@ -14,9 +14,9 @@ var postDiv = document.getElementById('postDiv');
 
 
 
-announcementsRef_10.once('value').then(function(snapshot) {
+announcementsRef_5.once('value').then(function(snapshot) {
   snapshot.forEach(function(childSnapshot) {
-    addPost(childSnapshot.val().title, childSnapshot.val().subj, childSnapshot.val().text, childSnapshot.val().author, childSnapshot.val().date, childSnapshot.val().postID, announcementsList_10);
+    addPost(childSnapshot.val().title, childSnapshot.val().subj, childSnapshot.val().text, childSnapshot.val().author, childSnapshot.val().date, childSnapshot.val().postID, announcementsList_5);
   });
 });
 
