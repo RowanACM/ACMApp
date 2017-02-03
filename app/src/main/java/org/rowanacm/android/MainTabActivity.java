@@ -334,7 +334,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "ATTENDANCE";
+                    return "INFORMATION";
                 case 1:
                     return "ANNOUNCEMENTS";
             }
