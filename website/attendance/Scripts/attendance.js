@@ -320,7 +320,7 @@ function download(filename, text) {
 
 function exportAttendance() {
 	var exportRef = firebase.database().ref("attendance").child(currentMeeting);
-	exportRef.on('value', function(snapshot) {
+	exportRef.once('value', function(snapshot) {
 		console.log("EXPORT RECEIVED");
 		var result = snapshot.val()
 		
