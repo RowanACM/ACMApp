@@ -9,6 +9,8 @@ var attendanceEnabled = false;
 var signedInGoogle = false;
 var signedInMeeting = false;
 
+var admin = false;
+
 var meetingSignedInRef;
 
 
@@ -63,6 +65,8 @@ firebase.auth().onAuthStateChanged(function(user) {
 			if(currentMeeting != null) {	
 				determineIfSignedInMeeting();
 			}
+			
+			determineIfAdmin();
 	  	}
 	  	else {
 	  		firebaseSignOut();
@@ -265,4 +269,68 @@ function firebaseSignOut() {
     });
     firebase.auth().signOut();
     signedInMeeting = false;
+}
+
+
+function determineIfAdmin() {
+	if(firebase.auth().currentUser != null) {
+		var uid = firebase.auth().currentUser.uid;
+		adminRef = firebase.database().ref('members/' + uid + "/admin");
+		adminRef.on('value', function(snapshot) {
+			if(snapshot.val()) { // If signed in
+				admin = true;
+				console.log("USER IS ADMIN");
+				showAdminViews();
+			}
+			else
+				admin = false;
+		}); 
+	} 
+}
+
+function showAdminViews() {
+	document.getElementById("admin_title").style.visibility = "visible";
+	document.getElementById("get_attendance_button").style.visibility = "visible";
+	document.getElementById("toggle_attendance_button").style.visibility = "visible";
+}
+
+function toggleAttendanceEnabled() {
+	attendanceEnabled = !attendanceEnabled;
+	firebase.database().ref('attendance').child("status").child("enabled").set(attendanceEnabled);
+	if(attendanceEnabled)
+		alert("You enabled the attendance");
+	else
+		alert("You disabled the attendance");
+}
+
+function download(filename, text) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+}
+
+function exportAttendance() {
+	var exportRef = firebase.database().ref("attendance").child(currentMeeting);
+	exportRef.on('value', function(snapshot) {
+		console.log("EXPORT RECEIVED");
+		var result = snapshot.val()
+		
+		var attendanceExport = "";
+		for(var member in result) {
+			attendanceExport += result[member]["name"] + "," + result[member]["email"] + "\n";
+		
+		}
+		var fileName = "attendance_" + currentMeeting + ".csv";
+		download(fileName, attendanceExport);
+	}); 
+
 }

@@ -47,7 +47,10 @@
         	"$uid": {
           	".read": "$uid == auth.uid",
           	".write": "root.child('attendance').child('enabled').val() == true && root.child('attendance').child('current').val() == $meeting && $uid == auth.uid"
-        	}
+        	},
+            
+          ".read": "root.child('members').child(auth.uid).child('admin').val() == true",
+          ".write": "root.child('members').child(auth.uid).child('admin').val() == true"
       	}
         
     },
