@@ -319,14 +319,26 @@ function download(filename, text) {
 }
 
 function exportAttendance() {
-	var exportRef = firebase.database().ref("attendance").child(currentMeeting);
+	var exportRef = firebase.database().ref("members");
 	exportRef.once('value', function(snapshot) {
 		console.log("EXPORT RECEIVED");
 		var result = snapshot.val()
+		exportAttendance2(result);
+	}); 
+
+}
+
+
+function exportAttendance2(members) {
+	var exportRef = firebase.database().ref("attendance").child(currentMeeting);
+	exportRef.once('value', function(snapshot) {
+		console.log("EXPORT RECEIVED");
+		result = snapshot.val()
 		
-		var attendanceExport = "";
+		var attendanceExport = "Name,Email,Meeting Count\n";
 		for(var member in result) {
-			attendanceExport += result[member]["name"] + "," + result[member]["email"] + "\n";
+			var meeting_count = members[result[member]["uid"]]["meeting_count"];
+			attendanceExport += result[member]["name"] + "," + result[member]["email"] + "," + meeting_count + "\n";
 		
 		}
 		var fileName = "attendance_" + currentMeeting + ".csv";
