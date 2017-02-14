@@ -189,6 +189,7 @@ function submitAttendance() {
 function updateSignInViews() {
     document.getElementById("signed_in").innerHTML = "People signed in: " + signed_in_count;
     document.getElementById("first_meeting").innerHTML = "New members: " + new_member_count;
+    document.getElementById("current_meeting_text").innerHTML = "Current Meeting: " + currentMeeting;
 }
 
 
@@ -292,6 +293,8 @@ function showAdminViews() {
 	document.getElementById("admin_title").style.visibility = "visible";
 	document.getElementById("get_attendance_button").style.visibility = "visible";
 	document.getElementById("toggle_attendance_button").style.visibility = "visible";
+	document.getElementById("current_meeting_text").style.visibility = "visible";
+	document.getElementById("change_current_meeting_button").style.visibility = "visible";
 }
 
 function toggleAttendanceEnabled() {
@@ -316,6 +319,13 @@ function download(filename, text) {
     else {
         pom.click();
     }
+}
+
+function changeCurrentMeeting() {
+	var meetingVal = prompt("Set current meeting (Ex. jan_23): ", currentMeeting);
+	if(meetingVal != null && meetingVal.length > 3)
+		firebase.database().ref('attendance').child("status").child("current").set(meetingVal);
+	
 }
 
 function exportAttendance() {
