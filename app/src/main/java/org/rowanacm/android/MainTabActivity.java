@@ -42,7 +42,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.rowanacm.android.annoucement.AnnouncementListFragment;
 
-import butterknife.OnClick;
+import butterknife.ButterKnife;
 
 /**
  * The main activity of the app. Contains a view pager with
@@ -74,6 +74,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tab);
+        ButterKnife.bind(this);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -149,7 +150,6 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
                 showCreateAnnouncementDialog();
             }
         });
-
     }
 
 
@@ -198,7 +198,6 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         }
     }
 
-    @OnClick(R.id.sign_in_google_button)
     public void signInGoogle() {
         Toast.makeText(this, "Select your Rowan account", Toast.LENGTH_LONG).show();
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);

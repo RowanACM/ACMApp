@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.us.acm.BuildConfig;
 import android.us.acm.R;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +37,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,7 +52,7 @@ import butterknife.OnClick;
 
 public class MainFragment extends Fragment {
     private static final String TAG = "MainFragment";
-
+    FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private ValueEventListener attendanceListener;
@@ -63,11 +70,18 @@ public class MainFragment extends Fragment {
         return new MainFragment();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_screen, container, false);
+        ButterKnife.bind(this, rootView);
+
+        rootView.findViewById(R.id.sign_in_google_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainTabActivity) getActivity()).signInGoogle();
+            }
+        });
         return rootView;
     }
 
@@ -76,24 +90,9 @@ public class MainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-
-        view.findViewById(R.id.attendance_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View attendanceButton) {
-                if(signedInMeeting) {
-                    Snackbar.make(view, "You already signed in to the meeting ✓", Snackbar.LENGTH_SHORT).show();
-                }
-                else {
-                    signInToMeeting();
-
-                }
-            }
-        });
-
-
-        ButterKnife.bind(getActivity());
-
         attendanceListener = attendanceListener();
+
+        loadHeaderImage(view);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -121,10 +120,18 @@ public class MainFragment extends Fragment {
         };
     }
 
+    private void loadHeaderImage(View view) {
+        String headerUrl = remoteConfig.getString("header_image");
+        if (headerUrl != null && headerUrl.length() > 5)
+            Picasso.with(getActivity()).load(headerUrl).into((ImageView) view.findViewById(R.id.header_image_view));
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+
+        setupRemoteConfig();
     }
 
     @Override
@@ -136,16 +143,39 @@ public class MainFragment extends Fragment {
     }
 
     /**
+     * Setup Firebase remote configuration
+     */
+    private void setupRemoteConfig() {
+        remoteConfig = FirebaseRemoteConfig.getInstance();
+        remoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG) // developer mode enabled for debug apks
+                .build());
+        remoteConfig.setDefaults(R.xml.remote_config_defaults);
+        remoteConfig.fetch(BuildConfig.DEBUG ? 0 : 12 * 60 * 60) // no cache for debug apk, 12 hours for release apk
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        remoteConfig.activateFetched();
+                        loadHeaderImage(getView());
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure() called with: e = [" + e + "]");
+            }
+        });
+    }
+
+    /**
      * Revoke access to the user's Google Account and sign out
      */
     @OnClick(R.id.google_sign_out_button)
     public void signOutGoogle() {
         GoogleApiClient googleApiClient = ((MainTabActivity) getActivity()).getGoogleApiClient();
-        if(!googleApiClient.isConnected()) {
+        if (!googleApiClient.isConnected()) {
             // The user is not signed in
             Toast.makeText(getActivity(), R.string.error_sign_out_not_signed_in, Toast.LENGTH_LONG).show();
-        }
-        else {
+        } else {
             Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
                     new ResultCallback<Status>() {
                         @Override
