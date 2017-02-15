@@ -320,6 +320,8 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
                     return AnnouncementListFragment.newInstance();
                 case 2:
                     return CommitteeFragment.newInstance();
+                case 3:
+                    return MeFragment.newInstance();
 
             }
             return null;
@@ -328,7 +330,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         @Override
         public int getCount() {
             // Number of pages.
-            return 3;
+            return 4;
         }
 
         @Override
@@ -340,6 +342,8 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
                     return "ANNOUNCEMENTS";
                 case 2:
                     return "COMMITTEE";
+                case 3:
+                    return "ME";
 
             }
             return null;
