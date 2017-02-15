@@ -93,10 +93,25 @@
                 android:visibility="gone"/>
 
             <TextView
+                android:id="@+id/current_committee_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/slack_sign_up_button"
+                android:text="Choose a committee"/>
+
+            <Button
+                android:id="@+id/change_committee_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/current_committee_textview"
+                android:layout_toRightOf="@id/current_committee_textview"
+                android:text="Change committee"/>
+
+            <TextView
                 android:id="@+id/google_sign_out_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/slack_textview"
+                android:layout_below="@id/change_committee_button"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:visibility="gone"
                 android:text="@string/you_are_signed_into_your_google_account"/>

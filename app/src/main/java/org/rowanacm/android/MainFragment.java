@@ -1,5 +1,6 @@
 package org.rowanacm.android;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,10 +17,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -346,6 +350,25 @@ public class MainFragment extends Fragment {
                 meetingButton.startAnimation(pulse);
                 break;
         }
+    }
+
+    @OnClick(R.id.change_committee_button)
+    protected void chooseCommittee() {
+        // custom dialog
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.radiobutton_dialog);
+
+        String[] stringArray = getResources().getStringArray(R.array.committee_array);
+        RadioGroup rg = (RadioGroup) dialog.findViewById(R.id.radio_group);
+
+        for (String committee : stringArray) {
+            RadioButton rb = new RadioButton(getActivity()); // dynamically creating RadioButton and adding to RadioGroup.
+            rb.setText(committee);
+            rg.addView(rb);
+        }
+
+        dialog.show();
     }
 
     /**
