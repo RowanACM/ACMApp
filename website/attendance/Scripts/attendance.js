@@ -9,6 +9,8 @@ var attendanceEnabled = false;
 var signedInGoogle = false;
 var signedInMeeting = false;
 
+var admin = false;
+
 var meetingSignedInRef;
 
 
@@ -63,6 +65,8 @@ firebase.auth().onAuthStateChanged(function(user) {
 			if(currentMeeting != null) {	
 				determineIfSignedInMeeting();
 			}
+			
+			determineIfAdmin();
 	  	}
 	  	else {
 	  		firebaseSignOut();
@@ -185,6 +189,7 @@ function submitAttendance() {
 function updateSignInViews() {
     document.getElementById("signed_in").innerHTML = "People signed in: " + signed_in_count;
     document.getElementById("first_meeting").innerHTML = "New members: " + new_member_count;
+    document.getElementById("current_meeting_text").innerHTML = "Current Meeting: " + currentMeeting;
 }
 
 
@@ -265,4 +270,89 @@ function firebaseSignOut() {
     });
     firebase.auth().signOut();
     signedInMeeting = false;
+}
+
+
+function determineIfAdmin() {
+	if(firebase.auth().currentUser != null) {
+		var uid = firebase.auth().currentUser.uid;
+		adminRef = firebase.database().ref('members/' + uid + "/admin");
+		adminRef.on('value', function(snapshot) {
+			if(snapshot.val()) { // If signed in
+				admin = true;
+				console.log("USER IS ADMIN");
+				showAdminViews();
+			}
+			else
+				admin = false;
+		}); 
+	} 
+}
+
+function showAdminViews() {
+	document.getElementById("admin_title").style.visibility = "visible";
+	document.getElementById("get_attendance_button").style.visibility = "visible";
+	document.getElementById("toggle_attendance_button").style.visibility = "visible";
+	document.getElementById("current_meeting_text").style.visibility = "visible";
+	document.getElementById("change_current_meeting_button").style.visibility = "visible";
+}
+
+function toggleAttendanceEnabled() {
+	attendanceEnabled = !attendanceEnabled;
+	firebase.database().ref('attendance').child("status").child("enabled").set(attendanceEnabled);
+	if(attendanceEnabled)
+		alert("You enabled the attendance");
+	else
+		alert("You disabled the attendance");
+}
+
+function download(filename, text) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+
+    if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+    }
+    else {
+        pom.click();
+    }
+}
+
+function changeCurrentMeeting() {
+	var meetingVal = prompt("Set current meeting (Ex. jan_23): ", currentMeeting);
+	if(meetingVal != null && meetingVal.length > 3)
+		firebase.database().ref('attendance').child("status").child("current").set(meetingVal);
+	
+}
+
+function exportAttendance() {
+	var exportRef = firebase.database().ref("members");
+	exportRef.once('value', function(snapshot) {
+		console.log("EXPORT RECEIVED");
+		var result = snapshot.val()
+		exportAttendance2(result);
+	}); 
+
+}
+
+
+function exportAttendance2(members) {
+	var exportRef = firebase.database().ref("attendance").child(currentMeeting);
+	exportRef.once('value', function(snapshot) {
+		console.log("EXPORT RECEIVED");
+		result = snapshot.val()
+		
+		var attendanceExport = "Name,Email,Meeting Count\n";
+		for(var member in result) {
+			var meeting_count = members[result[member]["uid"]]["meeting_count"];
+			attendanceExport += result[member]["name"] + "," + result[member]["email"] + "," + meeting_count + "\n";
+		
+		}
+		var fileName = "attendance_" + currentMeeting + ".csv";
+		download(fileName, attendanceExport);
+	}); 
+
 }

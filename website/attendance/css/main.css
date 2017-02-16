@@ -49,6 +49,22 @@ header {
 #sign_out {
     visibility: hidden;
 }
+#admin_title {
+    visibility: hidden;
+}
+#get_attendance_button {
+    visibility: hidden;
+}
+#toggle_attendance_button {
+    visibility: hidden;
+}
+#current_meeting_text {
+    visibility: hidden;
+}
+#change_current_meeting_button {
+    visibility: hidden;
+}
+
 #attendance {
     font-size: 15px;
 }
