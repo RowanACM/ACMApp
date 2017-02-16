@@ -110,6 +110,7 @@
     <string name="sign_in_google_before_meeting">Sign in to your google account before you can sign in to the meeting</string>
     <string name="signed_out">Signed out</string>
     <string name="error_sign_out_not_signed_in">You are not signed in. Unable to sign out</string>
+    <string name="title_activity_announcement">Announcement</string>
 
     <string-array name="committee_array">
         <item>General</item>
