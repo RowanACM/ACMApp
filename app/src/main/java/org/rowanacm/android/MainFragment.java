@@ -1,7 +1,6 @@
 package org.rowanacm.android;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -300,14 +299,6 @@ public class MainFragment extends Fragment {
         */
     }
 
-    /**
-     * Open the slack app
-     */
-    private void openSlack() {
-        Uri uri = Uri.parse("slack://open");
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
-    }
 
     private void updateAttendanceViews(AttendanceMode attendanceMode) {
         View rootView = getView();

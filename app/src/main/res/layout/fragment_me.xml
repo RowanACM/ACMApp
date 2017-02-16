@@ -10,17 +10,20 @@
               android:orientation="vertical">
 
     <TextView
+        android:id="@+id/name_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name: John Smith"/>
+        android:text="John Smith"/>
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/committee_text_view"
         android:text="Committee: RU Mad"/>
 
     <Button
+        android:id="@+id/change_committee_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Change Committee"/>
@@ -32,16 +35,19 @@
         android:text="First Meeting Date: Jan 1 2016"/>
 
     <TextView
+        android:id="@+id/meeting_count_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Number of meetings attended: 10"/>
 
     <TextView
+        android:id="@+id/on_slack_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="You are on slack"/>
 
     <Button
+        android:id="@+id/slack_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Open slack"/>
