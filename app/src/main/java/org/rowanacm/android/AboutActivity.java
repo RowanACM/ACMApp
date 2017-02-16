@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
+import android.us.acm.BuildConfig;
 import android.us.acm.R;
 import android.widget.Toast;
 
@@ -22,9 +23,10 @@ public class AboutActivity extends MaterialAboutActivity {
         MaterialAboutCard.Builder appCardBuilder = new MaterialAboutCard.Builder();
 
         // Add items to card
+        String title = BuildConfig.DEBUG ? "Rowan ACM" : "Rowan ACM DEBUG";
 
         appCardBuilder.addItem(new MaterialAboutTitleItem.Builder()
-                .text("Rowan ACM")
+                .text(title)
                 .icon(R.mipmap.ic_launcher)
                 .build());
 
