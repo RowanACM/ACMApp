@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
 import android.us.acm.R;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.danielstone.materialaboutlibrary.MaterialAboutActivity;
@@ -28,6 +27,7 @@ public class AboutActivity extends MaterialAboutActivity {
                 .text("Rowan ACM")
                 .icon(R.mipmap.ic_launcher)
                 .build());
+
         appCardBuilder.addItem(new MaterialAboutActionItem.Builder()
                 .text("Version")
                 .subText(getVersionName())
@@ -35,8 +35,8 @@ public class AboutActivity extends MaterialAboutActivity {
                 .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
                     @Override
                     public void onClick() {
-                        Log.i("test", "onClick: Version Tapped");
-                        Toast.makeText(AboutActivity.this, "Version Tapped", Toast.LENGTH_SHORT).show();
+                        if(Math.random() < 0.1)
+                            Toast.makeText(AboutActivity.this, "Easter \uD83E\uDD5A", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .build());
@@ -46,7 +46,7 @@ public class AboutActivity extends MaterialAboutActivity {
                 .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
                     @Override
                     public void onClick() {
-                        Toast.makeText(AboutActivity.this, "Changelog Tapped", Toast.LENGTH_SHORT).show();
+                        openUrl("https://github.com/RowanACM/ACMAppAndroid/commits/master");
                     }
                 })
                 .build());
@@ -56,7 +56,7 @@ public class AboutActivity extends MaterialAboutActivity {
                 .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
                     @Override
                     public void onClick() {
-                        Toast.makeText(AboutActivity.this, "Licenses Tapped", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AboutActivity.this, "Coming Soon", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .build());
@@ -95,7 +95,7 @@ public class AboutActivity extends MaterialAboutActivity {
                 .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
                     @Override
                     public void onClick() {
-                        Toast.makeText(AboutActivity.this, "Bug report tapped", Toast.LENGTH_SHORT).show();
+                        openUrl("https://github.com/RowanACM/ACMAppAndroid/issues");
                     }
                 })
                 .build());
