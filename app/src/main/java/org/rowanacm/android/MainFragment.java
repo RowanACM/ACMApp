@@ -121,7 +121,7 @@ public class MainFragment extends Fragment {
 
     private void loadHeaderImage(View view) {
         String headerUrl = remoteConfig.getString("header_image");
-        if (headerUrl != null && headerUrl.length() > 5)
+        if (headerUrl != null && headerUrl.length() > 5 && view != null)
             Picasso.with(getActivity()).load(headerUrl).into((ImageView) view.findViewById(R.id.header_image_view));
     }
 
