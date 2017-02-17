@@ -30,31 +30,31 @@ var addPost = function(title, subject, text, author, date, postID, announcements
   //console.log(title + ' ' + subject + ' ' + text);
   announcementsList.insertAdjacentHTML('afterbegin',
   '<div class="post-preview">' +
-  '    <a href="https://interactive-announcements.firebaseapp.com/">' +
-  '        <h2 class="post-title">' + title + '</h2>' +
-  '        <h3 class="post-subtitle">' + subject + '</h3>' +
-  '    </a>' +
+  '    <a style="cursor: pointer;" onClick="getPost(\'' + postID + '\')">' +
+  '        <h2 class="post-title">' + title + '</h2></a>' +
+  '        <p class="post-subtitle">' + subject + '</p>' +
+  '    ' +
   '    <p class="post-meta">Posted by <a href="#">' + author + '</a> on ' + date + '</p>' +
   '</div>' +
   '<hr>');
 };
 
-var setPost = function(title, subj, text){
-  postDiv.innerHTML =
-  '<p>' + title + '</p>' +
-  '<p>' + subj + '</p>' +
+var setPost = function(title, subj, text, author, date){
+  postDiv.innerHTML = '<div class="post-preview">' +
+  '<h1>' + title + '</h1>' +
+  '<p class="post-meta">Posted by <a href="#">' + author + '</a> on ' + date + '</p>' +
   '<p>' + text + '</p>';
 };
 
 var getPost = function(postID){
-  var postTitle;
-  var postSubj
-  var postText
+  $('#announcementsList_5').hide();
 
   firebase.database().ref('announcements/' + postID).once('value').then(function(snapshot) {
-  postTitle = snapshot.val().title;
-  postSubj = snapshot.val().subj;
-  postText = snapshot.val().text;
+  var postTitle = snapshot.val().title;
+  var postSubj = snapshot.val().subj;
+  var postText = snapshot.val().text;
+  var postAuthor = snapshot.val().author;
+  var postDate = snapshot.val().date;
+  setPost(postTitle, postSubj, postText, postAuthor, postDate);
   });
-setPost(postTitle, postSubj, postText);
 };
