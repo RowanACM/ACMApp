@@ -1,7 +1,9 @@
 package org.rowanacm.android;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -157,9 +159,27 @@ public class MeFragment extends Fragment {
      */
     @OnClick(R.id.slack_button)
     protected void openSlack() {
-        Uri uri = Uri.parse("slack://open");
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
+
+        if(isAppInstalled(getActivity(),"com.Slack")) {
+            Uri uri = Uri.parse("slack://open");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
+        else{
+            String url = "https://play.google.com/store/apps/details?id=com.Slack";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        }
+    }
+    public static boolean isAppInstalled(Context context, String packageName) {
+        try {
+            context.getPackageManager().getApplicationInfo(packageName, 0);
+            return true;
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 
 
