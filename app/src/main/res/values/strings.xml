@@ -100,7 +100,7 @@
     <string name="author">Author</string>
     <string name="subject">Subject</string>
     <string name="text">Text</string>
-    <string name="meeting_sign_in">Meeting sign in</string>
+    <string name="meeting_sign_in">Meeting sign in (COMING SOON)</string>
     <string name="you_are_signed_into_your_google_account">You are signed into your Google Account</string>
     <string name="sign_out">Sign Out</string>
     <string name="on_slack">You are on slack ✓</string>
