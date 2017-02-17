@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AlertDialog;
 import android.us.acm.BuildConfig;
 import android.us.acm.R;
@@ -253,6 +254,18 @@ public class MainFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
+    }
+
+    @OnClick(R.id.contact_eboard_button)
+    protected void contact_eboard(){
+        ShareCompat.IntentBuilder.from(getActivity())
+                .setType("message/rfc822")
+                .addEmailTo("acm@rowan.edu")
+                .setSubject("ACM Feedback")
+                //.setText(body)
+                //.setHtmlText(body) //If you are using HTML in your body text
+                .setChooserTitle("Contact ACM eboard.")
+                .startChooser();
     }
 
     private void slackListener(final String uid) {

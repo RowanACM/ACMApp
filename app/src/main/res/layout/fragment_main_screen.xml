@@ -95,6 +95,13 @@
                 android:visibility="gone"
                 android:text="@string/sign_out"/>
 
+            <Button
+                android:id="@+id/contact_eboard_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact Eboard"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_below="@id/google_sign_out_button"/>
 
         </RelativeLayout>
 
