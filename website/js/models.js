@@ -31,8 +31,8 @@ var addPost = function(title, subject, text, author, date, postID, announcements
   announcementsList.insertAdjacentHTML('afterbegin',
   '<div class="post-preview">' +
   '    <a style="cursor: pointer;" onClick="getPost(\'' + postID + '\')">' +
-  '        <h2 class="post-title">' + title + '</h2></a>' +
-  '        <p class="post-subtitle">' + subject + '</p>' +
+  '        <h2 class="post-title">' + title + '</h2>' +
+  '        <p class="post-subtitle">' + subject + '</p></a>' +
   '    ' +
   '    <p class="post-meta">Posted by <a href="#">' + author + '</a> on ' + date + '</p>' +
   '</div>' +
