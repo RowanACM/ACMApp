@@ -111,6 +111,7 @@
     <string name="signed_out">Signed out</string>
     <string name="error_sign_out_not_signed_in">You are not signed in. Unable to sign out</string>
     <string name="title_activity_announcement">Announcement</string>
+    <string name="main_info">What is ACM?\nACM is the programming club at Rowan University. I don\'t know what else to put here so please open a pull request and add more info here.\n\nWhen do you meet?\nEvery Friday at 2-4 PM in Robinson 201 a/b.</string>
 
     <string-array name="committee_array">
         <item>General</item>

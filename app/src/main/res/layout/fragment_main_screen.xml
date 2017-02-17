@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sign_in_google_button"
-                android:text="What is ACM?\nACM is the programming club at Rowan University. I don't know what else to put here so please open a pull request and add more info here.\n\nWhen do you meet?\nEvery Friday at 2-4 PM in Robinson 224"/>
+                android:text="@string/main_info"/>
 
 
             <TextView
