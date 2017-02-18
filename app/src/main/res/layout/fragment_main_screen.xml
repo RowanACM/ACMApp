@@ -37,10 +37,21 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/attendance_textview"
                 android:layout_centerHorizontal="true"
+                android:enabled="false"
                 android:text="@string/meeting_sign_in"/>
 
-
         </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/header_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:contentDescription="@string/header_image"
+            android:layout_below="@id/attendance_layout"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:scaleType="fitXY"/>
 
         <RelativeLayout
             android:id="@+id/info_layout"
@@ -50,7 +61,8 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:paddingBottom="@dimen/activity_vertical_margin"
-            android:layout_below="@id/attendance_layout">
+            android:layout_below="@id/header_image_view">
+
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/sign_in_google_button"
@@ -64,30 +76,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sign_in_google_button"
-                android:text="What is ACM?\nACM is the programming club at Rowan University. I don't know what else to put here so please open a pull request and add more info here.\n\nWhen do you meet?\nEvery Friday at 2-4 PM in Robinson 224"/>
+                android:text="@string/main_info"/>
 
-
-            <TextView
-                android:id="@+id/slack_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/about_text_view"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:visibility="gone"/>
-
-            <Button
-                android:id="@+id/slack_sign_up_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/slack_textview"
-                android:layout_toRightOf="@id/slack_textview"
-                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/google_sign_out_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/slack_textview"
+                android:layout_below="@id/about_text_view"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:visibility="gone"
                 android:text="@string/you_are_signed_into_your_google_account"/>
@@ -100,6 +96,13 @@
                 android:visibility="gone"
                 android:text="@string/sign_out"/>
 
+            <Button
+                android:id="@+id/contact_eboard_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_eboard"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_below="@id/google_sign_out_button"/>
 
         </RelativeLayout>
 

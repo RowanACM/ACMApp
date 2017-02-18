@@ -42,7 +42,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.rowanacm.android.annoucement.AnnouncementListFragment;
 
-import butterknife.OnClick;
+import butterknife.ButterKnife;
 
 /**
  * The main activity of the app. Contains a view pager with
@@ -67,13 +67,14 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
     // The ViewPager that will host the section contents
     private ViewPager mViewPager;
 
-    // Whether the current user is an admin and is able to create annoucements
+    // Whether the current user is an admin and is able to create announcements
     private boolean admin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tab);
+        ButterKnife.bind(this);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -149,7 +150,6 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
                 showCreateAnnouncementDialog();
             }
         });
-
     }
 
 
@@ -198,7 +198,6 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         }
     }
 
-    @OnClick(R.id.sign_in_google_button)
     public void signInGoogle() {
         Toast.makeText(this, "Select your Rowan account", Toast.LENGTH_LONG).show();
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -319,6 +318,10 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
                     return MainFragment.newInstance();
                 case 1:
                     return AnnouncementListFragment.newInstance();
+                case 2:
+                    return CommitteeFragment.newInstance();
+                case 3:
+                    return MeFragment.newInstance();
 
             }
             return null;
@@ -327,16 +330,21 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         @Override
         public int getCount() {
             // Number of pages.
-            return 2;
+            return 4;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "INFORMATION";
+                    return "INFO";
                 case 1:
                     return "ANNOUNCEMENTS";
+                case 2:
+                    return "COMMITTEE";
+                case 3:
+                    return "ME";
+
             }
             return null;
         }

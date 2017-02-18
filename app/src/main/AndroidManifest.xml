@@ -26,18 +26,31 @@
         <activity
             android:name="org.rowanacm.android.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="org.rowanacm.android.MainTabActivity" />
+            android:parentActivityName="org.rowanacm.android.MainTabActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.rowanacm.android.MainTabActivity" />
+
+            </activity>
+
         <activity
             android:name="org.rowanacm.android.MainTabActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.rowanacm.android.annoucement.AnnouncementActivity" />
+        <activity
+            android:name="org.rowanacm.android.annoucement.AnnouncementActivity"
+            android:label="@string/title_activity_announcement"
+            android:parentActivityName="org.rowanacm.android.MainTabActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.rowanacm.android.MainTabActivity" />
+        </activity>
         <activity
             android:name="org.rowanacm.android.AboutActivity"
             android:label="@string/title_activity_about"

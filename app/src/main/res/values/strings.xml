@@ -100,7 +100,7 @@
     <string name="author">Author</string>
     <string name="subject">Subject</string>
     <string name="text">Text</string>
-    <string name="meeting_sign_in">Meeting sign in</string>
+    <string name="meeting_sign_in">Meeting sign in (COMING SOON)</string>
     <string name="you_are_signed_into_your_google_account">You are signed into your Google Account</string>
     <string name="sign_out">Sign Out</string>
     <string name="on_slack">You are on slack ✓</string>
@@ -110,6 +110,10 @@
     <string name="sign_in_google_before_meeting">Sign in to your google account before you can sign in to the meeting</string>
     <string name="signed_out">Signed out</string>
     <string name="error_sign_out_not_signed_in">You are not signed in. Unable to sign out</string>
+    <string name="title_activity_announcement">Announcement</string>
+    <string name="main_info">What is ACM?\nACM is the programming club at Rowan University. I don\'t know what else to put here so please open a pull request and add more info here.\n\nWhen do you meet?\nEvery Friday at 2–4 PM in Robinson 201 a/b.</string>
+    <string name="header_image">Header Image</string>
+    <string name="contact_eboard">Contact Eboard</string>
 
     <string-array name="committee_array">
         <item>General</item>
@@ -130,8 +134,6 @@
         <item>robot</item>
         <item>acmw</item>
     </string-array>
-
-
 
     <string-array name="empty_array"/>
 </resources>

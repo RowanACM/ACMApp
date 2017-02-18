@@ -1,7 +1,6 @@
 package org.rowanacm.android;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,7 +8,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AlertDialog;
+import android.us.acm.BuildConfig;
 import android.us.acm.R;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +37,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,7 +52,7 @@ import butterknife.OnClick;
 
 public class MainFragment extends Fragment {
     private static final String TAG = "MainFragment";
-
+    FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private ValueEventListener attendanceListener;
@@ -63,11 +70,18 @@ public class MainFragment extends Fragment {
         return new MainFragment();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_screen, container, false);
+        ButterKnife.bind(this, rootView);
+
+        rootView.findViewById(R.id.sign_in_google_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainTabActivity) getActivity()).signInGoogle();
+            }
+        });
         return rootView;
     }
 
@@ -76,24 +90,9 @@ public class MainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-
-        view.findViewById(R.id.attendance_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View attendanceButton) {
-                if(signedInMeeting) {
-                    Snackbar.make(view, "You already signed in to the meeting ✓", Snackbar.LENGTH_SHORT).show();
-                }
-                else {
-                    signInToMeeting();
-
-                }
-            }
-        });
-
-
-        ButterKnife.bind(getActivity());
-
         attendanceListener = attendanceListener();
+
+        loadHeaderImage(view);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -104,27 +103,23 @@ public class MainFragment extends Fragment {
                 FirebaseDatabase.getInstance().getReference().removeEventListener(attendanceListener);
                 attendanceListener = attendanceListener();
 
-                if (user != null) {
-                    // User is signed in
-                    String uid = user.getUid();
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + uid);
-                    slackListener(uid);
-
-                    updateGoogleSignInButtons(true);
-
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                    updateGoogleSignInButtons(false);
-                }
+                updateGoogleSignInButtons(user != null);
             }
         };
+    }
+
+    private void loadHeaderImage(View view) {
+        String headerUrl = remoteConfig.getString("header_image");
+        if (headerUrl != null && headerUrl.length() > 5 && view != null)
+            Picasso.with(getActivity()).load(headerUrl).into((ImageView) view.findViewById(R.id.header_image_view));
     }
 
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+
+        setupRemoteConfig();
     }
 
     @Override
@@ -136,16 +131,39 @@ public class MainFragment extends Fragment {
     }
 
     /**
+     * Setup Firebase remote configuration
+     */
+    private void setupRemoteConfig() {
+        remoteConfig = FirebaseRemoteConfig.getInstance();
+        remoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG) // developer mode enabled for debug apks
+                .build());
+        remoteConfig.setDefaults(R.xml.remote_config_defaults);
+        remoteConfig.fetch(BuildConfig.DEBUG ? 0 : 12 * 60 * 60) // no cache for debug apk, 12 hours for release apk
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        remoteConfig.activateFetched();
+                        loadHeaderImage(getView());
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "onFailure() called with: e = [" + e + "]");
+            }
+        });
+    }
+
+    /**
      * Revoke access to the user's Google Account and sign out
      */
     @OnClick(R.id.google_sign_out_button)
     public void signOutGoogle() {
         GoogleApiClient googleApiClient = ((MainTabActivity) getActivity()).getGoogleApiClient();
-        if(!googleApiClient.isConnected()) {
+        if (!googleApiClient.isConnected()) {
             // The user is not signed in
             Toast.makeText(getActivity(), R.string.error_sign_out_not_signed_in, Toast.LENGTH_LONG).show();
-        }
-        else {
+        } else {
             Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
                     new ResultCallback<Status>() {
                         @Override
@@ -226,55 +244,16 @@ public class MainFragment extends Fragment {
         });
     }
 
-    private void slackListener(final String uid) {
-        FirebaseDatabase.getInstance().getReference("members").child(uid).child("on_slack").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean onSlack = dataSnapshot.getValue() != null && (boolean) dataSnapshot.getValue();
-                updateSlackViews(onSlack);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-    }
-
-    private void updateSlackViews(boolean onSlack) {
-        TextView slackTextView = (TextView) getView().findViewById(R.id.slack_textview);
-        Button slackSignUpButton = (Button) getView().findViewById(R.id.slack_sign_up_button);
-        slackSignUpButton.setVisibility(View.VISIBLE);
-        slackTextView.setVisibility(View.VISIBLE);
-
-        if(onSlack) {
-            slackTextView.setText(R.string.on_slack);
-            slackSignUpButton.setText(R.string.open_slack);
-
-            slackSignUpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    openSlack();
-                }
-            });
-        }
-        else {
-            slackTextView.setText(R.string.not_on_slack);
-            slackSignUpButton.setText(R.string.sign_up_slack);
-            slackSignUpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Utils.openUrl(getActivity(), "https://rowanacm.slack.com/signup");
-                }
-            });
-        }
-    }
-
-    /**
-     * Open the slack app
-     */
-    private void openSlack() {
-        Uri uri = Uri.parse("slack://open");
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
+    @OnClick(R.id.contact_eboard_button)
+    protected void contact_eboard(){
+        ShareCompat.IntentBuilder.from(getActivity())
+                .setType("message/rfc822")
+                .addEmailTo("acm@rowan.edu")
+                .setSubject("ACM Feedback")
+                //.setText(body)
+                //.setHtmlText(body) //If you are using HTML in your body text
+                .setChooserTitle("Contact ACM eboard.")
+                .startChooser();
     }
 
     private void updateAttendanceViews(AttendanceMode attendanceMode) {
