@@ -118,14 +118,14 @@ hr.small {
         transition: transform 0.3s;
     }
     .navbar-custom.is-fixed .navbar-brand {
-        color: #333333;
+        color: #ffffff;
     }
     .navbar-custom.is-fixed .navbar-brand:hover,
     .navbar-custom.is-fixed .navbar-brand:focus {
         color: #0085A1;
     }
     .navbar-custom.is-fixed .nav li a {
-        color: #333333;
+        color: #ffffff;
     }
     .navbar-custom.is-fixed .nav li a:hover,
     .navbar-custom.is-fixed .nav li a:focus {
