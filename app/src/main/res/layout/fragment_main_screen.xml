@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:cropToPadding="true"
+            android:contentDescription="@string/header_image"
             android:layout_below="@id/attendance_layout"
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:scaleType="fitXY"/>
@@ -99,7 +100,7 @@
                 android:id="@+id/contact_eboard_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Contact Eboard"
+                android:text="@string/contact_eboard"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_below="@id/google_sign_out_button"/>
 

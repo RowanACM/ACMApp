@@ -67,7 +67,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
     // The ViewPager that will host the section contents
     private ViewPager mViewPager;
 
-    // Whether the current user is an admin and is able to create annoucements
+    // Whether the current user is an admin and is able to create announcements
     private boolean admin;
 
     @Override

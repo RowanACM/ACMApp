@@ -103,19 +103,7 @@ public class MainFragment extends Fragment {
                 FirebaseDatabase.getInstance().getReference().removeEventListener(attendanceListener);
                 attendanceListener = attendanceListener();
 
-                if (user != null) {
-                    // User is signed in
-                    String uid = user.getUid();
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + uid);
-                    slackListener(uid);
-
-                    updateGoogleSignInButtons(true);
-
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                    updateGoogleSignInButtons(false);
-                }
+                updateGoogleSignInButtons(user != null);
             }
         };
     }
@@ -267,51 +255,6 @@ public class MainFragment extends Fragment {
                 .setChooserTitle("Contact ACM eboard.")
                 .startChooser();
     }
-
-    private void slackListener(final String uid) {
-        FirebaseDatabase.getInstance().getReference("members").child(uid).child("on_slack").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean onSlack = dataSnapshot.getValue() != null && (boolean) dataSnapshot.getValue();
-                updateSlackViews(onSlack);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-    }
-
-    private void updateSlackViews(boolean onSlack) {
-        /*
-        TextView slackTextView = (TextView) getView().findViewById(R.id.slack_textview);
-        Button slackSignUpButton = (Button) getView().findViewById(R.id.slack_sign_up_button);
-        slackSignUpButton.setVisibility(View.VISIBLE);
-        slackTextView.setVisibility(View.VISIBLE);
-
-        if(onSlack) {
-            slackTextView.setText(R.string.on_slack);
-            slackSignUpButton.setText(R.string.open_slack);
-
-            slackSignUpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    openSlack();
-                }
-            });
-        }
-        else {
-            slackTextView.setText(R.string.not_on_slack);
-            slackSignUpButton.setText(R.string.sign_up_slack);
-            slackSignUpButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Utils.openUrl(getActivity(), "https://rowanacm.slack.com/signup");
-                }
-            });
-        }
-        */
-    }
-
 
     private void updateAttendanceViews(AttendanceMode attendanceMode) {
         View rootView = getView();
