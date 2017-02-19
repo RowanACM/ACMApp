@@ -7,3 +7,11 @@
 //
 
 import Foundation
+import UIKit
+import Firebase
+import FirebaseDatabase
+
+class BaseViewController: UIViewController {
+    static var ref: FIRDatabaseReference! = FIRDatabase.database().reference()
+    
+}
