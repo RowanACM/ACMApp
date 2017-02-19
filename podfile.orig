@@ -1,0 +1,28 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'ACM' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for ACM
+pod 'Firebase/Core'
+<<<<<<< HEAD
+pod 'Firebase/Database'  
+=======
+pod 'Firebase/Database'
+pod 'GoogleSignIn'
+pod 'Firebase/Auth'
+ 
+>>>>>>> 753edcc255b690e73ffee0005891226a1a96678c
+target 'ACMTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'ACMUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end

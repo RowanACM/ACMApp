@@ -55,8 +55,12 @@ class ViewController: BaseViewController , UITableViewDelegate, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+<<<<<<< HEAD
         var cell:AnnouncementTableViewCell = self.tableView.dequeueReusableCell(withIdentifier:ls
         ")! as! AnnouncementTableViewCell
+=======
+        var cell:AnnouncementTableViewCell = self.tableView.dequeueReusableCell(withIdentifier:"AnnouncementTableViewCell")! as! AnnouncementTableViewCell
+>>>>>>> 753edcc255b690e73ffee0005891226a1a96678c
         var announcement = self.items[indexPath.row]
         cell.committee.text = announcement.committee
         cell.body.text = announcement.text

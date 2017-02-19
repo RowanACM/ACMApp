@@ -7,7 +7,14 @@ target 'ACM' do
 
   # Pods for ACM
 pod 'Firebase/Core'
+<<<<<<< HEAD
 pod 'Firebase/Database'  
+=======
+pod 'Firebase/Database'
+pod 'GoogleSignIn'
+pod 'Firebase/Auth'
+ 
+>>>>>>> 753edcc255b690e73ffee0005891226a1a96678c
 target 'ACMTests' do
     inherit! :search_paths
     # Pods for testing
