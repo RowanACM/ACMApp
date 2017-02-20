@@ -33,7 +33,10 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            // Before enabling Proguard, you must update the proguard rules to include Firebase
+            // See https://travis-ci.org/RowanACM/ACMAppAndroid/builds/203307727
+            minifyEnabled false
+            
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
