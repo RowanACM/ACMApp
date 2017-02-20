@@ -7,6 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:background="@color/colorPrimaryDark"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     card_view:cardCornerRadius="4dp">
 
     <RelativeLayout
@@ -19,7 +21,7 @@
         android:weightSum="1">
 
         <TextView
-            android:id="@+id/gro_View"
+            android:id="@+id/announcement_title_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -36,10 +38,10 @@
             android:textStyle="normal|bold"/>
 
         <TextView
-            android:id="@+id/ano_View"
+            android:id="@+id/announcement_desc_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/gro_View"
+            android:layout_below="@+id/announcement_title_view"
             android:layout_centerHorizontal="true"
             android:layout_gravity="start"
             android:ellipsize="end"

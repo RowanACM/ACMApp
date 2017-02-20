@@ -4,13 +4,12 @@
     android:layout_height="match_parent"
     tools:context="org.rowanacm.android.annoucement.AnnouncementListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
-
-    <ListView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/announcement_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/announcement_List_view"
-        android:nestedScrollingEnabled="true" />
+        android:nestedScrollingEnabled="true"
+        android:orientation="vertical"/>
 
 </FrameLayout>

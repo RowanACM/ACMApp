@@ -91,4 +91,17 @@ public class Announcement implements Serializable, Comparable<Announcement> {
     public int compareTo(@NonNull Announcement announcement) {
         return ((Long)announcement.timestamp).compareTo(timestamp);
     }
+
+    @Override
+    public String toString() {
+        return "Announcement{" +
+                "author='" + author + '\'' +
+                ", committee='" + committee + '\'' +
+                ", date='" + date + '\'' +
+                ", subj='" + subj + '\'' +
+                ", text='" + text + '\'' +
+                ", title='" + title + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }
