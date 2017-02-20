@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AnnouncementArrayAdapter extends RecyclerView.Adapter<AnnouncementArrayAdapter.MyViewHolder> {
@@ -145,6 +146,8 @@ public class AnnouncementArrayAdapter extends RecyclerView.Adapter<AnnouncementA
         announcementListAll.add(announcement);
         if(announcementList.size() < numToDisplay)
             announcementList.add(announcement);
+        Collections.sort(announcementList);
+        Collections.sort(announcementListAll);
         notifyDataSetChanged();
     }
 
