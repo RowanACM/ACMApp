@@ -175,7 +175,8 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private void signInToMeeting() {
+    @OnClick(R.id.attendance_button)
+    protected void signInToMeeting() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser != null) {
             Uri.Builder builder = new Uri.Builder();
