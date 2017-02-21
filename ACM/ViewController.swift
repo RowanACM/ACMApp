@@ -15,22 +15,22 @@ class AnnouncementTableViewCell: UITableViewCell {
 class ViewController: BaseViewController , UITableViewDelegate, UITableViewDataSource{
     
     
-  
+    
     var items: Array<Announcement> = Array<Announcement>();
-
+    
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-
+        
         self.title = "Announcements";
-       let announcementRef =  BaseViewController.ref.child("announcements")
+        let announcementRef =  BaseViewController.ref.child("announcements")
         // Listen for new comments in the Firebase database
         announcementRef.observe(.childAdded, with: { (snapshot) -> Void in
             let value = snapshot.value as? NSDictionary
-
+            
             var announcement = Announcement()
-                
+            
             announcement.author = value?["author"] as? String ?? ""
             announcement.committee = value?["committee"] as? String ?? ""
             announcement.date = value?["date"] as? String ?? ""
@@ -44,7 +44,7 @@ class ViewController: BaseViewController , UITableViewDelegate, UITableViewDataS
         })
         // Do any additional setup after loading the view, typically from a nib.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -67,10 +67,10 @@ class ViewController: BaseViewController , UITableViewDelegate, UITableViewDataS
         let vc = UIStoryboard(name:"Main", bundle:nil).instantiateViewController(withIdentifier: "AnnouncementViewController") as? AnnouncementViewController
         vc?.announcement = items[indexPath.row]
         self.navigationController?.pushViewController(vc!, animated:true)
-
+        
     }
-
-
-
+    
+    
+    
 }
 
