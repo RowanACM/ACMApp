@@ -38,6 +38,7 @@ class ViewController: BaseViewController , UITableViewDelegate, UITableViewDataS
             announcement.timestamp = value?["timestamp"] as? Int ?? 0
             announcement.title = value?["title"] as? String ?? ""
             self.items.append(announcement)
+            self.items = self.items.sorted(by: { $0.timestamp > $1.timestamp })
             self.tableView.reloadData()
             
             print(announcement)
