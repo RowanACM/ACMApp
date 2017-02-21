@@ -9,13 +9,10 @@ Copyright 2016 Google
 
 Copyright 2016 Google
 
-<<<<<<< HEAD
-=======
 ## FirebaseAuth
 
 Copyright 2016 Google
 
->>>>>>> 753edcc255b690e73ffee0005891226a1a96678c
 ## FirebaseCore
 
 Copyright 2016 Google
@@ -28,8 +25,6 @@ Copyright 2016 Google
 
 Copyright 2016 Google
 
-<<<<<<< HEAD
-=======
 ## GTMOAuth2
 
 
@@ -446,18 +441,14 @@ Copyright 2016 Google
 
 Copyright 2016 Google
 
->>>>>>> 753edcc255b690e73ffee0005891226a1a96678c
 ## GoogleInterchangeUtilities
 
 Copyright 2016 Google
 
-<<<<<<< HEAD
-=======
 ## GoogleSignIn
 
 Copyright 2016 Google
 
->>>>>>> 753edcc255b690e73ffee0005891226a1a96678c
 ## GoogleSymbolUtilities
 
 Copyright 2016 Google

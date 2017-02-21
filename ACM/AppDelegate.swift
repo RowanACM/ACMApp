@@ -8,11 +8,8 @@
 
 import UIKit
 import Firebase
-<<<<<<< HEAD
-=======
 import GoogleSignIn
 import FirebaseAuth
->>>>>>> 753edcc255b690e73ffee0005891226a1a96678c
 
 @UIApplicationMain
 class AppDelegate:  UIResponder, UIApplicationDelegate, GIDSignInDelegate {
@@ -23,12 +20,10 @@ class AppDelegate:  UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FIRApp.configure()
-<<<<<<< HEAD
-=======
         //auth stuff
         GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
         GIDSignIn.sharedInstance().delegate = self
->>>>>>> 753edcc255b690e73ffee0005891226a1a96678c
+
         return true
     }
     
@@ -89,12 +84,16 @@ class AppDelegate:  UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             print(user?.displayName)
             print(user?.email)
             print(user?.uid)
-            RestUtils.memberSignin(currentUser: (user)!)
+            UserData.user = user
+            
+            
+            //RestUtils.memberSignin(currentUser: (user)!)
     }
     }
     
     func signIn(signIn: GIDSignIn!, didDisconnectWithUser user:GIDGoogleUser!,
                 withError error: NSError!) {
+
         // Perform any operations when the user disconnects from app here.
         // ...
         

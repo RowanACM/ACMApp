@@ -73,15 +73,12 @@ EOM
       ;;
   esac
 }
-<<<<<<< HEAD
-=======
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "GoogleSignIn/Resources/GoogleSignIn.bundle"
 fi
->>>>>>> 753edcc255b690e73ffee0005891226a1a96678c
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"

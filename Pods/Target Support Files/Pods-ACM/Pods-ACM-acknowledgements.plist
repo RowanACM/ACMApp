@@ -38,8 +38,6 @@
 			<key>License</key>
 			<string>Copyright</string>
 			<key>Title</key>
-<<<<<<< HEAD
-=======
 			<string>FirebaseAuth</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
@@ -50,7 +48,6 @@
 			<key>License</key>
 			<string>Copyright</string>
 			<key>Title</key>
->>>>>>> 753edcc255b690e73ffee0005891226a1a96678c
 			<string>FirebaseCore</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
@@ -77,8 +74,6 @@
 		</dict>
 		<dict>
 			<key>FooterText</key>
-<<<<<<< HEAD
-=======
 			<string>
                                  Apache License
                            Version 2.0, January 2004
@@ -513,7 +508,6 @@
 		</dict>
 		<dict>
 			<key>FooterText</key>
->>>>>>> 753edcc255b690e73ffee0005891226a1a96678c
 			<string>Copyright 2016 Google</string>
 			<key>License</key>
 			<string>Copyright</string>
@@ -528,8 +522,6 @@
 			<key>License</key>
 			<string>Copyright</string>
 			<key>Title</key>
-<<<<<<< HEAD
-=======
 			<string>GoogleSignIn</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
@@ -540,7 +532,6 @@
 			<key>License</key>
 			<string>Copyright</string>
 			<key>Title</key>
->>>>>>> 753edcc255b690e73ffee0005891226a1a96678c
 			<string>GoogleSymbolUtilities</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
