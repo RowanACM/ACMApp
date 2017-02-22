@@ -14,7 +14,7 @@
         <scene sceneID="gzl-y8-8Y5">
             <objects>
                 <navigationController title="ACM" id="Kdk-Ph-603" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cIc-Hd-4wQ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="cIc-Hd-4wQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -24,9 +24,9 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rYn-2u-3uv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2836" y="563"/>
+            <point key="canvasLocation" x="-3146" y="892"/>
         </scene>
-        <!--Item 1-->
+        <!--ACM-->
         <scene sceneID="EPh-9U-hz9">
             <objects>
                 <viewController id="Twr-Aw-zGJ" customClass="MainViewController" customModule="ACM" customModuleProvider="target" sceneMemberID="viewController">
@@ -42,7 +42,7 @@
                                 <rect key="frame" x="67" y="573" width="240" height="37"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="google.png" translatesAutoresizingMaskIntoConstraints="NO" id="wLV-0q-wjj">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MainScreenBanner" translatesAutoresizingMaskIntoConstraints="NO" id="wLV-0q-wjj">
                                 <rect key="frame" x="0.0" y="64" width="375" height="200"/>
                                 <color key="backgroundColor" red="0.98097487779095704" green="1" blue="0.078072637403542866" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -96,7 +96,7 @@
                             <constraint firstItem="wLV-0q-wjj" firstAttribute="top" secondItem="9vI-Hj-Odb" secondAttribute="bottom" id="ov3-Y8-BdX"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 1" id="xwn-yk-pFS"/>
+                    <tabBarItem key="tabBarItem" title="ACM" id="xwn-yk-pFS"/>
                     <connections>
                         <outlet property="generalLabel" destination="dxp-E2-BVt" id="eII-cb-3vH"/>
                         <outlet property="googleSignInBtn" destination="V3b-7X-HVc" id="s9c-s9-HyT"/>
@@ -123,11 +123,64 @@
                     <connections>
                         <segue destination="Twr-Aw-zGJ" kind="relationship" relationship="viewControllers" id="fFO-HU-Xwf"/>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="6xV-2L-Xnp"/>
+                        <segue destination="YZv-IO-zvG" kind="relationship" relationship="viewControllers" id="qSp-Q9-o3t"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Ij-la-us6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1947" y="563"/>
+            <point key="canvasLocation" x="-2279" y="892"/>
+        </scene>
+        <!--Profile-->
+        <scene sceneID="zzk-wt-6i0">
+            <objects>
+                <viewController id="YZv-IO-zvG" customClass="ProfileViewController" customModule="ACM" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vgq-mO-l37"/>
+                        <viewControllerLayoutGuide type="bottom" id="Sb4-xj-aVX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="m9M-Jz-mtn">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z9c-f2-f7w">
+                                <rect key="frame" x="21" y="69" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9U-hS-pxI">
+                                <rect key="frame" x="21" y="95" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4bf-zw-Nri">
+                                <rect key="frame" x="21" y="121" width="79" height="30"/>
+                                <state key="normal" title="Open Slack"/>
+                                <connections>
+                                    <action selector="OpenSlackBtnPressed:" destination="YZv-IO-zvG" eventType="touchUpInside" id="74q-rh-dsE"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Z9c-f2-f7w" firstAttribute="top" secondItem="vgq-mO-l37" secondAttribute="bottom" constant="5" id="3uk-3C-NXP"/>
+                            <constraint firstItem="J9U-hS-pxI" firstAttribute="top" secondItem="Z9c-f2-f7w" secondAttribute="bottom" constant="5" id="8Re-U5-Vmh"/>
+                            <constraint firstItem="4bf-zw-Nri" firstAttribute="top" secondItem="J9U-hS-pxI" secondAttribute="bottom" constant="5" id="LbP-LG-u8T"/>
+                            <constraint firstItem="Z9c-f2-f7w" firstAttribute="leading" secondItem="m9M-Jz-mtn" secondAttribute="leadingMargin" constant="5" id="VUI-S2-TVY"/>
+                            <constraint firstItem="J9U-hS-pxI" firstAttribute="leading" secondItem="m9M-Jz-mtn" secondAttribute="leadingMargin" constant="5" id="kfN-AK-vGp"/>
+                            <constraint firstItem="4bf-zw-Nri" firstAttribute="leading" secondItem="m9M-Jz-mtn" secondAttribute="leadingMargin" constant="5" id="l87-n4-WDG"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Profile" id="dmR-Qv-yAR"/>
+                    <connections>
+                        <outlet property="meetingCountLbl" destination="J9U-hS-pxI" id="0jy-zt-wdg"/>
+                        <outlet property="nameLbl" destination="Z9c-f2-f7w" id="c1K-UB-pLa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CKJ-Zx-1O2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-922" y="1481"/>
         </scene>
         <!--Announcements-->
         <scene sceneID="tne-QT-ifu">
@@ -159,7 +212,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j0j-sU-USV">
-                                                    <rect key="frame" x="0.0" y="28" width="343" height="22.5"/>
+                                                    <rect key="frame" x="0.0" y="28" width="343" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -204,7 +257,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-922.39999999999998" y="891.90404797601207"/>
+            <point key="canvasLocation" x="-922" y="806"/>
         </scene>
         <!--Announcement View Controller-->
         <scene sceneID="FxY-CB-0Ql">
@@ -261,6 +314,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="google.png" width="18" height="18"/>
+        <image name="MainScreenBanner" width="1920" height="850"/>
     </resources>
 </document>

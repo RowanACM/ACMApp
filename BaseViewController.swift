@@ -17,6 +17,6 @@ class BaseViewController: UIViewController {
     
     static func signedIn(){
         //override this
-    }
+           }
     
 }
