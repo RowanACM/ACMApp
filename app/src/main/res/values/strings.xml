@@ -100,7 +100,7 @@
     <string name="author">Author</string>
     <string name="subject">Subject</string>
     <string name="text">Text</string>
-    <string name="meeting_sign_in">Meeting sign in (COMING SOON)</string>
+    <string name="meeting_sign_in">Meeting sign in</string>
     <string name="you_are_signed_into_your_google_account">You are signed into your Google Account</string>
     <string name="sign_out">Sign Out</string>
     <string name="on_slack">You are on slack ✓</string>
@@ -114,6 +114,15 @@
     <string name="main_info">What is ACM?\nACM is the programming club at Rowan University. I don\'t know what else to put here so please open a pull request and add more info here.\n\nWhen do you meet?\nEvery Friday at 2–4 PM in Robinson 201 a/b.</string>
     <string name="header_image">Header Image</string>
     <string name="contact_eboard">Contact Eboard</string>
+    <string name="attendance_error_invalid_input">Error: Invalid input. Try to sign in again. If you still can\'t, tell someone on eboard or @tylercarberry on slack</string>
+    <string name="attendance_unknown_error">Error: Unknown error. Try to sign in again. If you still can\'t, tell someone on eboard or @tylercarberry on slack</string>
+    <string name="attendance_error_disabled">Attendance is disabled</string>
+    <string name="attendance_already_signed_in">You already signed in to the meeting</string>
+    <string name="signed_in_successfully">Signed in successfully</string>
+    <string name="first_sign_in">Signed in successfully. Welcome to your first ACM Meeting. You should have received an email with more information about the club.</string>
+    <string name="attendance_loading">Signing in to meeting</string>
+    <string name="contact_eboard_subject">ACM Feedback</string>
+    <string name="contact_eboard_title">Contact ACM Eboard</string>
 
     <string-array name="committee_array">
         <item>General</item>

@@ -175,7 +175,8 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private void signInToMeeting() {
+    @OnClick(R.id.attendance_button)
+    protected void signInToMeeting() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser != null) {
             Uri.Builder builder = new Uri.Builder();
@@ -244,15 +245,18 @@ public class MainFragment extends Fragment {
         });
     }
 
+    /**
+     * Create an email intent to contact acm@rowan.edu
+     */
     @OnClick(R.id.contact_eboard_button)
     protected void contact_eboard(){
         ShareCompat.IntentBuilder.from(getActivity())
                 .setType("message/rfc822")
                 .addEmailTo("acm@rowan.edu")
-                .setSubject("ACM Feedback")
+                .setSubject(getString(R.string.contact_eboard_subject))
                 //.setText(body)
                 //.setHtmlText(body) //If you are using HTML in your body text
-                .setChooserTitle("Contact ACM eboard.")
+                .setChooserTitle(R.string.contact_eboard_title)
                 .startChooser();
     }
 
@@ -358,37 +362,37 @@ public class MainFragment extends Fragment {
             switch(result) {
                 case 100:
                     // Signed in successfully. New member
-                    message = "Signed in successfully. Welcome to your first ACM Meeting. You should have received an email with more information about the club.";
+                    message = getString(R.string.first_sign_in);
                     snackbar = false;
                     break;
                 case 110:
                     // Signed in successfully. Existing member
-                    message = "Signed in successfully";
+                    message = getString(R.string.signed_in_successfully);
                     snackbar = true;
                     break;
                 case 120:
                     // Already signed in
-                    message = "You already signed in to the meeting";
+                    message = getString(R.string.attendance_already_signed_in);
                     snackbar = true;
                     break;
                 case 200:
                     // Didn't sign in. Attendance disabled
-                    message = "Attendance is disabled";
+                    message = getString(R.string.attendance_error_disabled);
                     snackbar = true;
                     break;
                 case 210:
                     // Invalid input
-                    message = "Error: Invalid input. Try to sign in again. If you still can't, tell someone on eboard or @TylerCarberry on slack";
+                    message = getString(R.string.attendance_error_invalid_input);
                     snackbar = false;
                     break;
                 case 220:
                     // Didn't sign in. Unknown error
-                    message = "Error: Unknown error. Try to sign in again. If you still can't, tell someone on eboard or @TylerCarberry on slack";
+                    message = getString(R.string.attendance_unknown_error);
                     snackbar = false;
                     break;
                 default:
                     // Didn't sign in. Unknown error
-                    message = "Error: Unknown error. Try to sign in again. If you still can't, tell someone on eboard or @TylerCarberry on slack";
+                    message = getString(R.string.attendance_unknown_error);
                     snackbar = false;
                     break;
             }
@@ -407,7 +411,7 @@ public class MainFragment extends Fragment {
             super.onPreExecute();
 
             progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Signing in to meeting");
+            progressDialog.setMessage(getString(R.string.attendance_loading));
             progressDialog.show();
         }
     }

@@ -1,83 +1,188 @@
 package org.rowanacm.android.annoucement;
 
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.os.Build;
+import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.us.acm.R;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-/**
- * The adapter for the announcements
- */
+public class AnnouncementArrayAdapter extends RecyclerView.Adapter<AnnouncementArrayAdapter.MyViewHolder> {
 
-public class AnnouncementArrayAdapter extends BaseAdapter {
+    private static final String TAG = "AnnouncementArrayAdapter";
 
-    private LayoutInflater myInflater;
-    private ArrayList<Announcement> announcementArrayList = new ArrayList<>();
+    private Fragment fragment;
+    private List<Announcement> announcementList;
+    private List<Announcement> announcementListAll;
 
-    public AnnouncementArrayAdapter(Context c) {
-        myInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
+    private int numToDisplay;
 
-    public void add(Announcement a) {
-        announcementArrayList.add(a);
-        Collections.sort(announcementArrayList);
-        this.notifyDataSetChanged();
-    }
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView titleTextView, bodyTextView;
+        CardView cardView;
 
-    @Override
-    public int getCount() {
-        return announcementArrayList.size();
-    }
+        public MyViewHolder(View view) {
+            super(view);
 
-    @Override
-    public Object getItem(int i) {
-        return announcementArrayList.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    /**
-     * Get a View that displays the data at the specified position in the data set. You can either
-     * create a View manually or inflate it from an XML layout file. When the View is inflated, the
-     * parent View (GridView, ListViewParent...) will apply default layout parameters unless you use
-     * to specify a root view and to prevent attachment to the root.
-     *
-     * @param position    The position of the item within the adapter's data set of the item whose view
-     *                    we want.
-     * @param convertView The old view to reuse, if possible. Note: You should check that this view
-     *                    is non-null and of an appropriate type before using. If it is not possible to convert
-     *                    this view to display the correct data, this method can create a new view.
-     *                    Heterogeneous lists can specify their number of view types, so that this View is
-     *                    always of the right type (see {@link #getViewTypeCount()} and
-     *                    {@link #getItemViewType(int)}).
-     * @param parent      The parent that this view will eventually be attached to
-     * @return A View corresponding to the data at the specified position.
-     */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = myInflater.inflate(R.layout.announcement_view, parent, false);
+            cardView = (CardView) view.findViewById(R.id.card_view);
+            titleTextView = (TextView) view.findViewById(R.id.announcement_title_view);
+            bodyTextView = (TextView) view.findViewById(R.id.announcement_desc_view);
         }
 
-        TextView groupTextView = (TextView) convertView.findViewById(R.id.gro_View);
-        TextView announcementTextView = (TextView) convertView.findViewById(R.id.ano_View);
-        Announcement announcement = announcementArrayList.get(position);
-        groupTextView.setText(announcement.getCommittee());
-        announcementTextView.setText(announcement.getText());
+    }
 
-        return convertView;
+    public AnnouncementArrayAdapter(List<Announcement> announcementList, Fragment fragment) {
+        // Display 10 announcements by default
+        this(announcementList, fragment, 10);
+    }
+
+    public AnnouncementArrayAdapter(List<Announcement> announcementList, Fragment fragment, int numToDisplay) {
+        this.fragment = fragment;
+        this.numToDisplay = numToDisplay;
+
+        this.announcementList = new ArrayList<>();
+        this.announcementListAll = announcementList;
+
+        for(int i = 0; i < numToDisplay && i < announcementList.size(); i++) {
+            Announcement announcement = announcementList.get(i);
+            this.announcementList.add(announcement);
+        }
+    }
+
+    @Override
+    public MyViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.announcement_view, parent, false);
+
+        return new MyViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        final Announcement announcement = announcementList.get(position);
+
+        // If the announcement does not have all of its information, do not show it
+        if(announcement != null) {
+            TextView nameTextView = holder.titleTextView;
+            nameTextView.setText(announcement.getTitle());
+
+            TextView descriptionTextView = holder.bodyTextView;
+            descriptionTextView.setText(announcement.getText());
+
+            CardView cardView = holder.cardView;
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), AnnouncementActivity.class);
+                    intent.putExtra("announcement", announcement);
+                    v.getContext().startActivity(intent);
+                }
+            });
+
+            /*
+            View.OnClickListener callOnClick = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utilities.openDialer(fragment, Utilities.getFirstPhoneNumber(announcement.getPhoneNumber()));
+                }
+            };
+
+            TextView phoneTextView = holder.phoneTextView;
+            phoneTextView.setText(announcement.getPhoneNumber());
+            phoneTextView.setOnClickListener(callOnClick);
+
+            ImageView phoneIcon = holder.callIcon;
+            phoneIcon.setOnClickListener(callOnClick);
+
+            View.OnClickListener mapOnClick = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Utilities.openMapIntent(fragment, Utilities.getMapUri(announcement.getName(), announcement.getCity(), announcement.getState()));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            TextView addressTextView =  holder.addressTextView;
+            addressTextView.setText(announcement.getFullAddress());
+            addressTextView.setOnClickListener(mapOnClick);
+
+            ImageView addressIcon =  holder.addressIcon;
+            addressIcon.setOnClickListener(mapOnClick);
+
+            ImageView facilityImageView = holder.facilityImageView;
+            Bitmap facilityImage = announcement.getFacilityImage();
+            if(facilityImage != null)
+                facilityImageView.setImageBitmap(announcement.getFacilityImage());
+            else
+                facilityImageView.setImageBitmap(BitmapFactory.decodeResource(fragment.getResources(), R.drawable.default_facility_image));
+
+            facilityImageView.setOnClickListener(mapOnClick);
+
+            // Tapping the more info button opens the website
+            Button moreInfoButton = holder.moreInfoButton;
+            moreInfoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = Utilities.getFirstPhoneNumber(announcement.getUrl());
+                    Utilities.openBrowserIntent(fragment, url);
+                }
+            });
+            */
+
+        }
+    }
+
+    public void addItem(Announcement announcement) {
+        announcementListAll.add(announcement);
+        if(announcementList.size() < numToDisplay)
+            announcementList.add(announcement);
+        Collections.sort(announcementList);
+        Collections.sort(announcementListAll);
+        notifyDataSetChanged();
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return announcementList.size();
+    }
+
+    public void filter(String text) {
+
+        if(text.isEmpty()){
+            announcementList.clear();
+
+            for(int i = 0; i < numToDisplay && i < announcementListAll.size(); i++) {
+                announcementList.add(announcementListAll.get(i));
+            }
+        } else {
+            ArrayList<Announcement> result = new ArrayList<>();
+            text = text.toLowerCase().trim();
+            for(Announcement item: announcementListAll) {
+
+                if(item.getTitle().toLowerCase().contains(text) ||
+                        item.getCommittee().toLowerCase().contains(text) ||
+                        item.getText().toLowerCase().contains(text)) {
+                    result.add(item);
+                }
+            }
+            announcementList.clear();
+
+            for(int i = 0; i < numToDisplay && i < result.size(); i++) {
+                announcementList.add(result.get(i));
+            }
+        }
+        notifyDataSetChanged();
     }
 
 

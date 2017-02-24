@@ -37,7 +37,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/attendance_textview"
                 android:layout_centerHorizontal="true"
-                android:enabled="false"
                 android:text="@string/meeting_sign_in"/>
 
         </RelativeLayout>

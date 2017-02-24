@@ -26,14 +26,17 @@ android {
         applicationId "org.rowanacm.android"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 6
-        versionName "0.0.6"
+        versionCode 7
+        versionName "0.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
+            // Before enabling Proguard, you must update the proguard rules to include Firebase
+            // See https://travis-ci.org/RowanACM/ACMAppAndroid/builds/203307727
             minifyEnabled false
+            
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
@@ -73,6 +76,10 @@ dependencies {
 
     compile 'com.github.daniel-stoneuk:material-about-library:1.4.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
     testCompile 'junit:junit:4.12'
 }
