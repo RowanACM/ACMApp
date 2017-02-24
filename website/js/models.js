@@ -1,60 +1,69 @@
-/*
-*UNDER CONSTRUCTION -- TEMP
-*/
-// ANNOUNCEMENTS //
 
-var announcementsRef_all = firebase.database().ref("announcements").orderByChild('timestamp');
-var announcementsRef_5 = announcementsRef_all.limitToLast(5);
-var announcementsList_all = document.getElementById('announcementsList_all');
-var announcementsList_5 = document.getElementById('announcementsList_5');
-var postDiv = document.getElementById('postDiv');
-
-
-
-
-
+//Refernce for home page, limit to 5
+var announcementsRef_5 = firebase.database().ref("announcements").orderByChild("timestamp").limitToLast(5);
 
 announcementsRef_5.once('value').then(function(snapshot) {
   snapshot.forEach(function(childSnapshot) {
-    addPost(childSnapshot.val().title, childSnapshot.val().subj, childSnapshot.val().text, childSnapshot.val().author, childSnapshot.val().date, childSnapshot.val().postID, announcementsList_5);
+    addPost(childSnapshot, "#announcementsList_5");
   });
 });
+
+//Refernce for events page, no limit
+var announcementsRef_all = firebase.database().ref("announcements").orderByChild("timestamp");
 
 announcementsRef_all.once('value').then(function(snapshot) {
   snapshot.forEach(function(childSnapshot) {
-    addPost(childSnapshot.val().title, childSnapshot.val().subj, childSnapshot.val().text, childSnapshot.val().author, childSnapshot.val().date, childSnapshot.val().postID, announcementsList_all);
+    addPost(childSnapshot, "#announcementsList_all");
   });
 });
 
-var addPost = function(title, subject, text, author, date, postID, announcementsList) {
-  //console.log(title + ' ' + subject + ' ' + text);
-  announcementsList.insertAdjacentHTML('afterbegin',
-  '<div class="post-preview">' +
-  '    <a style="cursor: pointer;" onClick="getPost(\'' + postID + '\')">' +
-  '        <h2 class="post-title">' + title + '</h2>' +
-  '        <p class="post-subtitle">' + subject + '</p></a>' +
-  '    ' +
-  '    <p class="post-meta">Posted by <a href="#">' + author + '</a> on ' + date + '</p>' +
-  '</div>' +
-  '<hr>');
+//Add a post to the list
+var addPost = function(snapshot, elementId) {
+
+  var d = new Date(Number(snapshot.val().timestamp) * 1000);
+
+  $(elementId).prepend(
+    '<div class="post-preview">' +
+    ' <a href="#' + snapshot.key + '">' +
+    '   <h2 class="post-title">' + snapshot.val().title + '</h2>' +
+    '   <p class="post-subtitle">' + snapshot.val().subj + '</p>' +
+    '  </a>' +
+    '  <p class="post-meta">Posted by ' + snapshot.val().committee + ' on ' + d.toDateString() + '</p>' +
+    '</div>'
+    );
 };
 
-var setPost = function(title, subj, text, author, date){
-  postDiv.innerHTML = '<div class="post-preview">' +
-  '<h1>' + title + '</h1>' +
-  '<p class="post-meta">Posted by <a href="#">' + author + '</a> on ' + date + '</p>' +
-  '<p>' + text + '</p>';
+//Used to set the post inside the postDiv
+var setPost = function(snapshot) {
+  var d = new Date(Number(snapshot.val().timestamp) * 1000);
+
+  $("#postDiv").html(
+    '<div class="post-preview">' +
+    '  <h1>' + snapshot.val().title + '</h1>' +
+    '  <p class="post-meta">Posted by ' + snapshot.val().committee + ' on ' + d.toDateString() + '</p>' +
+    '  <p>' + snapshot.val().text + '</p>' +
+    '</div>');
 };
 
-var getPost = function(postID){
-  $('#announcementsList_5').hide();
-
-  firebase.database().ref('announcements/' + postID).once('value').then(function(snapshot) {
-  var postTitle = snapshot.val().title;
-  var postSubj = snapshot.val().subj;
-  var postText = snapshot.val().text;
-  var postAuthor = snapshot.val().author;
-  var postDate = snapshot.val().date;
-  setPost(postTitle, postSubj, postText, postAuthor, postDate);
-  });
+var switchView = function() {
+  var postKey = location.hash.slice(1);
+  if (postKey != "") {
+    $(".aList").hide();
+    firebase.database().ref('announcements/' + postKey).once('value').then(function(snapshot) {
+      setPost(snapshot);
+      $("#postDiv").show();
+    });
+  } else {
+    $("#postDiv").hide();
+    $(".aList").show();
+  }
 };
+
+//On hash change, change page structure
+$(window).on('hashchange',function(){
+  switchView();
+});
+
+$(document).ready(function() {
+  switchView();
+});
