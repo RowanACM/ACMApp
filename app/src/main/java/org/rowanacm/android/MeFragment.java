@@ -145,14 +145,39 @@ public class MeFragment extends Fragment {
         String[] stringArray = getResources().getStringArray(R.array.committee_array);
         RadioGroup rg = (RadioGroup) dialog.findViewById(R.id.radio_group);
 
-        for (String committee : stringArray) {
+        for (int i=0;i<stringArray.length;i++) {
+            String committee=stringArray[i];
             RadioButton rb = new RadioButton(getActivity()); // dynamically creating RadioButton and adding to RadioGroup.
+            final int finalI = i;
+            rb.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onRadioButtonClicked(view, finalI);
+                }
+            });
             rb.setText(committee);
             rg.addView(rb);
         }
 
         dialog.show();
     }
+    //below is changing
+    public void onRadioButtonClicked(View view,int ndx) {
+        if(view instanceof RadioButton) {
+
+            String[] stringArray = getResources().getStringArray(R.array.committee_keys);//grab key names
+            String committee=stringArray[ndx];//set string based on index of
+            Log.d(TAG, "onRadioButtonClicked: "+committee);
+            //then send to firebase
+
+            //send firebase
+
+
+        }
+
+
+    }
+    //above has been changed
 
     /**
      * Open the slack app
