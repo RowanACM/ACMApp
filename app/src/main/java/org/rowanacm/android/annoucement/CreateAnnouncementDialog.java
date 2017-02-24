@@ -18,6 +18,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.DateFormat;
 import java.util.Date;
 
+import static butterknife.ButterKnife.findById;
+
 public class CreateAnnouncementDialog extends AlertDialog.Builder {
 
     public CreateAnnouncementDialog(Activity activity) {
@@ -54,7 +56,7 @@ public class CreateAnnouncementDialog extends AlertDialog.Builder {
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
-            EditText nameEditText = (EditText) dialogView.findViewById(R.id.author_edit_text);
+            EditText nameEditText = findById(dialogView, R.id.author_edit_text);
             nameEditText.setText(currentUser.getDisplayName());
         }
 

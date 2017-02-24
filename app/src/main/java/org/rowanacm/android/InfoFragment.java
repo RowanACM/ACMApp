@@ -29,7 +29,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -52,6 +51,8 @@ public class InfoFragment extends BaseFragment {
     private static final String LOG_TAG = InfoFragment.class.getSimpleName();
 
     @Inject RemoteConfig remoteConfig;
+    @Inject FirebaseAuth firebaseAuth;
+    @Inject DatabaseReference database;
 
     @BindView(R.id.attendance_layout) ViewGroup attendanceLayout;
     @BindView(R.id.attendance_textview) TextView attendanceTextView;
@@ -62,8 +63,7 @@ public class InfoFragment extends BaseFragment {
     @BindView(R.id.google_sign_out_button) Button signOutButton;
 
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener authListener;
     private ValueEventListener attendanceListener;
 
     private enum AttendanceMode {HIDDEN, PROMPT_GOOGLE, PROMPT_MEETING, SIGNED_IN}
@@ -93,18 +93,17 @@ public class InfoFragment extends BaseFragment {
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
         attendanceListener = attendanceListener();
 
         loadHeaderImage(view);
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 // Refresh the attendance status
-                FirebaseDatabase.getInstance().getReference().removeEventListener(attendanceListener);
+                database.removeEventListener(attendanceListener);
                 attendanceListener = attendanceListener();
 
                 updateGoogleSignInButtons(user != null);
@@ -122,14 +121,14 @@ public class InfoFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        firebaseAuth.addAuthStateListener(authListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
+        if (firebaseAuth != null) {
+            firebaseAuth.removeAuthStateListener(authListener);
         }
     }
 
@@ -147,7 +146,7 @@ public class InfoFragment extends BaseFragment {
                     new ResultCallback<Status>() {
                         @Override
                         public void onResult(@NonNull Status status) {
-                            FirebaseAuth.getInstance().signOut();
+                            firebaseAuth.signOut();
                             Toast.makeText(getActivity(), R.string.signed_out, Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -161,7 +160,7 @@ public class InfoFragment extends BaseFragment {
 
     @OnClick(R.id.attendance_button)
     protected void signInToMeeting() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if(currentUser != null) {
             Uri.Builder builder = new Uri.Builder();
             builder.scheme("https")
@@ -179,7 +178,6 @@ public class InfoFragment extends BaseFragment {
     }
 
     private ValueEventListener attendanceListener() {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         return database.child("attendance").child("status").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -187,7 +185,7 @@ public class InfoFragment extends BaseFragment {
                 if(attendanceEnabled) {
                     signedInMeeting = false;
 
-                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    FirebaseUser currentUser = firebaseAuth.getCurrentUser();
                     if(currentUser == null) {
                         signedInMeeting = false;
                         updateAttendanceViews(AttendanceMode.PROMPT_GOOGLE);
@@ -210,16 +208,11 @@ public class InfoFragment extends BaseFragment {
     }
 
     private void createSignedInListener(String currentMeeting, String uid) {
-        FirebaseDatabase.getInstance().getReference("attendance").child(currentMeeting).child(uid).addValueEventListener(new ValueEventListener() {
+        database.child("attendance").child(currentMeeting).child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 signedInMeeting = (dataSnapshot.getValue() != null);
-                if (signedInMeeting) {
-                    updateAttendanceViews(AttendanceMode.SIGNED_IN);
-                } else {
-                    updateAttendanceViews(AttendanceMode.PROMPT_MEETING);
-                }
-
+                updateAttendanceViews(signedInMeeting ? AttendanceMode.SIGNED_IN : AttendanceMode.PROMPT_MEETING);
             }
 
             @Override

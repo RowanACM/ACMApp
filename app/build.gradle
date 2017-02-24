@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.triplet.play'
+apply plugin: 'com.google.firebase.firebase-perf'
+
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
@@ -64,7 +66,6 @@ dependencies {
     compile "com.android.support:support-v4:$supportLibVersion"
     compile "com.android.support:support-vector-drawable:$supportLibVersion"
 
-    // The version numbers of everything below must match. Ex. 10.0.1
     compile "com.google.android.gms:play-services-auth:$googlePlayServicesVersion"
     compile "com.google.firebase:firebase-core:$googlePlayServicesVersion"
     compile "com.google.firebase:firebase-database:$googlePlayServicesVersion"
@@ -72,6 +73,7 @@ dependencies {
     compile "com.google.firebase:firebase-auth:$googlePlayServicesVersion"
     compile "com.google.firebase:firebase-crash:$googlePlayServicesVersion"
     compile "com.google.firebase:firebase-config:$googlePlayServicesVersion"
+    compile "com.google.firebase:firebase-perf:$googlePlayServicesVersion"
 
     // Butter knife
     compile 'com.jakewharton:butterknife:8.4.0'

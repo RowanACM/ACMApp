@@ -6,6 +6,8 @@ import android.us.acm.R;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
@@ -57,5 +59,12 @@ public class FirebaseModule {
     FirebaseAuth providesFirebaseAuth() {
         return FirebaseAuth.getInstance();
     }
+
+    @Provides
+    @Singleton
+    DatabaseReference providesFirebaseDatabase() {
+        return FirebaseDatabase.getInstance().getReference();
+    }
+
 
 }
