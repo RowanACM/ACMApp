@@ -17,7 +17,7 @@ var post = function() {
   if (title == "") {
     showError("Title is empty.");
   } else if (subject == "") {
-    showError("Subjcet is empty.");
+    showError("Subject is empty.");
   } else if (text == "") {
     showError("Text is empty.");
   } else if (committee == "") {
@@ -31,7 +31,13 @@ var post = function() {
       text: text,
       committee: committee,
       timestamp: time
+    }, function(error) {
+      if (error){
+        showError("You don't have permission to post an announcement.");
+      }
     });
+
+    //console.log("posted: " + committee + ". " + title + ". " + subject + ". " + text);
 
   }
 };

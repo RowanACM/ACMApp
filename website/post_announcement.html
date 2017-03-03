@@ -41,7 +41,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
         <div id="navContainer" class="container-fluid" style="text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
-            
+
         </div>
         <!-- /.container -->
     </nav>
@@ -53,7 +53,7 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="site-heading">
-                        <h1 style="text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">Register</h1>
+                        <h1 style="text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">Post Announcement</h1>
                     </div>
                 </div>
             </div>
@@ -83,26 +83,26 @@
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Subject</label>
-                            <input type="text" class="form-control" placeholder="Subject" id="lastname">
+                            <input type="text" class="form-control" placeholder="Subject" id="subject">
                         </div>
                     </div>
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Text</label>
-                            <input type="email" class="form-control" placeholder="Text" id="email">
+                            <input type="email" class="form-control" placeholder="Text" id="text">
                         </div>
                     </div>
                     <div class="row control-group">
                         <div class="form-group col-xs-12 floating-label-form-group controls">
                             <label>Title</label>
-                            <input type="text" class="form-control" placeholder="Title" id="username">
+                            <input type="text" class="form-control" placeholder="Title" id="title">
                         </div>
                     </div>
                     <br>
                     <div class="row">
                         <div class="form-group col-xs-12">
                           <div class="alert alert-danger" role="alert" style="display: none;" id="prob-alert"></div>
-                            <button type="submit" class="btn btn-default" onClick="register()">Post</button>
+                            <button type="submit" class="btn btn-default" onClick="post()">Post</button>
                         </div>
                     </div>
             </div>
@@ -164,8 +164,9 @@
     <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
     <!--this should change-->
     <script src="js/main.js"></script>
-    <script src="js/models.js"></script>
+    <!-- <script src="js/models.js"></script> -->
     <script src="js/users.js"></script>
+    <script src = "js/postAnnouncement.js"></script>
 
 
 </body>
