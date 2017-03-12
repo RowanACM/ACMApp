@@ -114,6 +114,17 @@ public class AboutActivity extends MaterialAboutActivity {
                 })
                 .build());
 
+        supportCardBuilder.addItem(new MaterialAboutActionItem.Builder()
+                .text("Privacy Policy")
+                .icon(R.drawable.ic_settings_black_48dp)
+                .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
+                    @Override
+                    public void onClick() {
+                        Utils.openUrl(AboutActivity.this, "https://rowanacm.org/privacy-policy-android.html");
+                    }
+                })
+                .build());
+
         return new MaterialAboutList.Builder()
                 .addCard(appCardBuilder.build())
                 .addCard(authorCardBuilder.build())
