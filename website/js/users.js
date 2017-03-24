@@ -113,9 +113,7 @@ var login = function(){
   $("#prob-alert").html("You're now logged in (testing)");
   $("#prob-alert").show();
 
-
 };
-
 
 var register = function() {
   var firstname = $("#firstname").val();

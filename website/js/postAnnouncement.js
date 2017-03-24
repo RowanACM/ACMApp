@@ -1,5 +1,3 @@
-// none of this is tested yet
-
 var dataRef = firebase.database().ref("announcements");
 
 if (!Date.now) {
@@ -36,9 +34,6 @@ var post = function() {
         showError("You don't have permission to post an announcement.");
       }
     });
-
-    //console.log("posted: " + committee + ". " + title + ". " + subject + ". " + text);
-
   }
 };
 
