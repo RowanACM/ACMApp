@@ -33,6 +33,13 @@ var post = function() {
       if (error){
         showError("You don't have permission to post an announcement.");
       }
+      else {
+        showSuccess("You successfully posted an announcment.");
+        $('#title').val('');
+        $("#subject").val('');
+        $("#text").val('');
+        $("#committee").val('General');
+      }
     });
   }
 };
@@ -40,4 +47,10 @@ var post = function() {
 var showError = function(message) {
   $("#prob-alert").html(message);
   $("#prob-alert").show();
+};
+
+var showSuccess= function(message) {
+  $("#succ-alert").html(message);
+  $("#succ-alert").show();
+  $("#prob-alert").hide();
 };
