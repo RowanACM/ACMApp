@@ -292,6 +292,7 @@ function determineIfAdmin() {
 function showAdminViews() {
 	document.getElementById("admin_title").style.visibility = "visible";
 	document.getElementById("get_attendance_button").style.visibility = "visible";
+	document.getElementById("get_all_attendance_button").style.visibility = "visible";
 	document.getElementById("toggle_attendance_button").style.visibility = "visible";
 	document.getElementById("current_meeting_text").style.visibility = "visible";
 	document.getElementById("change_current_meeting_button").style.visibility = "visible";
@@ -338,6 +339,16 @@ function exportAttendance() {
 
 }
 
+function exportAllMembers() {
+	var exportRef = firebase.database().ref("members");
+	exportRef.once('value', function(snapshot) {
+		console.log("EXPORT RECEIVED");
+		var result = snapshot.val()
+		exportAllAttendance(result);
+	}); 
+
+}
+
 
 function exportAttendance2(members) {
 	var exportRef = firebase.database().ref("attendance").child(currentMeeting);
@@ -353,6 +364,32 @@ function exportAttendance2(members) {
 		}
 		var fileName = "attendance_" + currentMeeting + ".csv";
 		download(fileName, attendanceExport);
+	}); 
+
+}
+
+
+function exportAllAttendance(members) {
+	var exportRef = firebase.database().ref("attendance");
+	exportRef.once('value', function(snapshot) {
+		console.log("EXPORT RECEIVED");
+		result = snapshot.val();
+			
+		for(var week in result) {
+			if(week != "status") {
+				console.log(week);
+		
+				var attendanceExport = "Name,Email,Meeting Count\n";
+				for(var member in result[week]) {
+					if(members[member] != null) {
+						var meeting_count = members[member]["meeting_count"];
+						attendanceExport += result[week][member]["name"] + "," + result[week][member]["email"] + "," + meeting_count + "\n";
+					}
+				}
+				var fileName = "attendance_" + week + ".csv";
+				download(fileName, attendanceExport);
+			}
+		}
 	}); 
 
 }
