@@ -1,5 +1,3 @@
-// none of this is tested yet
-
 var dataRef = firebase.database().ref("announcements");
 
 if (!Date.now) {
@@ -35,14 +33,24 @@ var post = function() {
       if (error){
         showError("You don't have permission to post an announcement.");
       }
+      else {
+        showSuccess("You successfully posted an announcment.");
+        $('#title').val('');
+        $("#subject").val('');
+        $("#text").val('');
+        $("#committee").val('General');
+      }
     });
-
-    //console.log("posted: " + committee + ". " + title + ". " + subject + ". " + text);
-
   }
 };
 
 var showError = function(message) {
   $("#prob-alert").html(message);
   $("#prob-alert").show();
+};
+
+var showSuccess= function(message) {
+  $("#succ-alert").html(message);
+  $("#succ-alert").show();
+  $("#prob-alert").hide();
 };

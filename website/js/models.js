@@ -1,13 +1,3 @@
-
-//Refernce for home page, limit to 5
-var announcementsRef_5 = firebase.database().ref("announcements").orderByChild("timestamp").limitToLast(5);
-
-announcementsRef_5.once('value').then(function(snapshot) {
-  snapshot.forEach(function(childSnapshot) {
-    addPost(childSnapshot, "#announcementsList_5");
-  });
-});
-
 //Refernce for events page, no limit
 var announcementsRef_all = firebase.database().ref("announcements").orderByChild("timestamp");
 
@@ -17,9 +7,17 @@ announcementsRef_all.once('value').then(function(snapshot) {
   });
 });
 
+//Refernce for home page, limit to 5
+var announcementsRef_5 = announcementsRef_all.limitToLast(5);
+
+announcementsRef_5.once('value').then(function(snapshot) {
+  snapshot.forEach(function(childSnapshot) {
+    addPost(childSnapshot, "#announcementsList_5");
+  });
+});
+
 //Add a post to the list
 var addPost = function(snapshot, elementId) {
-
   var d = new Date(Number(snapshot.val().timestamp) * 1000);
 
   $(elementId).prepend(
