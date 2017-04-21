@@ -56,6 +56,9 @@ initApp = function() {
             '<li>' +
                 '<a href="committees.html">Committees</a>' +
             '</li>' +
+			'<li>' +
+                '<a href="eboard.html">Eboard</a>' +
+            '</li>' +
             '<li>' +
                 '<a href="dashboard.html">Dashboard</a>' +
             '</li>' +
@@ -84,6 +87,9 @@ initApp = function() {
               '<li>' +
                 '<a href="committees.html">Committees</a>' +
               '</li>' +
+			  '<li>' +
+                '<a href="eboard.html">Eboard</a>' +
+            '</li>' +
               '<li>' +
                   '<a href="login.html">Login</a>' +
               '</li>' +
