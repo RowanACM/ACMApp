@@ -353,7 +353,7 @@
 				TargetAttributes = {
 					BDFC96161E3315DA001D5670 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = AQMDNGRP82;
+						DevelopmentTeam = V86F8942BL;
 						ProvisioningStyle = Automatic;
 					};
 					BDFC962A1E3315DA001D5670 = {
@@ -777,7 +777,7 @@
 			baseConfigurationReference = 65F0965C1077FF531659124E /* Pods-ACM.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = AQMDNGRP82;
+				DEVELOPMENT_TEAM = V86F8942BL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseDatabase/Frameworks",
@@ -787,7 +787,7 @@
 				);
 				INFOPLIST_FILE = ACM/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.rowanacm.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = org.rowanacm.ios.rjbohn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -798,7 +798,7 @@
 			baseConfigurationReference = 29A0BB5EC17C5F7FC19CC669 /* Pods-ACM.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = AQMDNGRP82;
+				DEVELOPMENT_TEAM = V86F8942BL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseDatabase/Frameworks",
@@ -808,7 +808,7 @@
 				);
 				INFOPLIST_FILE = ACM/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.rowanacm.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = org.rowanacm.ios.rjbohn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
