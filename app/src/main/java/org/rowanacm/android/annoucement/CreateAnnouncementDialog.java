@@ -1,4 +1,4 @@
-package org.rowanacm.android;
+package org.rowanacm.android.annoucement;
 
 
 import android.app.Activity;
@@ -24,11 +24,11 @@ public class CreateAnnouncementDialog extends AlertDialog.Builder {
 
     public CreateAnnouncementDialog(Activity activity) {
         super(activity);
-        setTitle("Create announcement");
+        setTitle(R.string.create_annoucement);
         final View dialogView = activity.getLayoutInflater().inflate(R.layout.create_announcement_view, null);
         setView(dialogView);
 
-        setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             // When Cancel is pressed, close the dialog and do nothing
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {}
@@ -55,18 +55,15 @@ public class CreateAnnouncementDialog extends AlertDialog.Builder {
         });
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser != null) {
+        if (currentUser != null) {
             EditText nameEditText = (EditText) dialogView.findViewById(R.id.author_edit_text);
             nameEditText.setText(currentUser.getDisplayName());
         }
 
         Spinner spinner = (Spinner) dialogView.findViewById(R.id.committee_spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,
                 R.array.committee_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
     }
 }

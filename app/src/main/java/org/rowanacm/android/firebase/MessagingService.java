@@ -1,4 +1,4 @@
-package org.rowanacm.android;
+package org.rowanacm.android.firebase;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,8 +12,7 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-
-import static com.google.android.gms.internal.zzs.TAG;
+import org.rowanacm.android.MainTabActivity;
 
 /**
  * Handles messages received by Firebase Messaging Service
@@ -21,7 +20,7 @@ import static com.google.android.gms.internal.zzs.TAG;
 public class MessagingService extends FirebaseMessagingService {
 
     private static final String LOG_TAG = MessagingService.class.getSimpleName();
-    public static final int NOTIFICATION_ID = 5000;
+    public static final int NOTIFICATION_ID = 8028; // 08028 is the zip code of Glassboro
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -48,18 +47,16 @@ public class MessagingService extends FirebaseMessagingService {
         // Creates an explicit intent for an Activity in your app
         String openSection = remoteMessage.getData().get("section");
 
-        Log.d(TAG, "onMessageReceived: " + openSection);
+        Log.d(LOG_TAG, "onMessageReceived: " + openSection);
 
-        if(openSection != null && openSection.equals("attendance")) {
+        if (openSection != null && openSection.equals("attendance")) {
             resultIntent = new Intent(this, MainTabActivity.class);
 
-            Log.d(TAG, "onMessageReceived: ATTENDANCE");
+            Log.d(LOG_TAG, "onMessageReceived: ATTENDANCE");
             //resultIntent.putExtra("activity", "attendance");
-        }
-        else {
+        } else {
             resultIntent = new Intent(this, MainTabActivity.class);
-
-            Log.d(TAG, "onMessageReceived: Main Activity");
+            Log.d(LOG_TAG, "onMessageReceived: Main Activity");
         }
 
 

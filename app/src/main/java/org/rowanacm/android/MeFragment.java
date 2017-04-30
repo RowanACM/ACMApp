@@ -1,9 +1,7 @@
 package org.rowanacm.android;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,13 +24,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.rowanacm.android.utils.ExternalAppUtils;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
 public class MeFragment extends Fragment {
 
-    private static final String TAG = "MeFragment";
+    private static final String LOG_TAG = MeFragment.class.getSimpleName();
 
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -41,9 +41,7 @@ public class MeFragment extends Fragment {
     }
 
     public static MeFragment newInstance() {
-        MeFragment fragment = new MeFragment();
-
-        return fragment;
+        return new MeFragment();
     }
 
     @Override
@@ -68,7 +66,6 @@ public class MeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart() called");
         FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
     }
 
@@ -76,16 +73,14 @@ public class MeFragment extends Fragment {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                Log.d(TAG, "onAuthStateChanged() called with: firebaseAuth = [" + firebaseAuth + "]");
+                Log.d(LOG_TAG, "onAuthStateChanged() called with: firebaseAuth = [" + firebaseAuth + "]");
 
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-
-
 
                 if (user != null) {
                     // User is signed in
                     String uid = user.getUid();
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + uid);
+                    Log.d(LOG_TAG, "onAuthStateChanged:signed_in:" + uid);
 
                     String name = user.getDisplayName();
 
@@ -102,10 +97,11 @@ public class MeFragment extends Fragment {
 
                             boolean onSlack = dataSnapshot.child("on_slack").getValue(Boolean.class);
                             String text;
-                            if(onSlack)
+                            if (onSlack) {
                                 text = "You are on slack";
-                            else
+                            } else {
                                 text = "You are not on slack";
+                            }
                             ((TextView)getView().findViewById(R.id.on_slack_textview)).setText(text);
 
 
@@ -120,7 +116,7 @@ public class MeFragment extends Fragment {
 
                 } else {
                     // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    Log.d(LOG_TAG, "onAuthStateChanged:signed_out");
                     //updateGoogleSignInButtons(false);
                 }
             }
@@ -145,9 +141,10 @@ public class MeFragment extends Fragment {
         String[] stringArray = getResources().getStringArray(R.array.committee_array);
         RadioGroup rg = (RadioGroup) dialog.findViewById(R.id.radio_group);
 
-        for (int i=0;i<stringArray.length;i++) {
-            String committee=stringArray[i];
-            RadioButton rb = new RadioButton(getActivity()); // dynamically creating RadioButton and adding to RadioGroup.
+        for (int i = 0; i < stringArray.length; i++) {
+            String committee = stringArray[i];
+            RadioButton rb = new RadioButton(getActivity());
+
             final int finalI = i;
             rb.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -155,55 +152,38 @@ public class MeFragment extends Fragment {
                     onRadioButtonClicked(view, finalI);
                 }
             });
+
             rb.setText(committee);
             rg.addView(rb);
         }
 
         dialog.show();
     }
-    //below is changing
+
     public void onRadioButtonClicked(View view,int ndx) {
         if(view instanceof RadioButton) {
 
             String[] stringArray = getResources().getStringArray(R.array.committee_keys);//grab key names
             String committee=stringArray[ndx];//set string based on index of
-            Log.d(TAG, "onRadioButtonClicked: "+committee);
+            Log.d(LOG_TAG, "onRadioButtonClicked: "+committee);
             //then send to firebase
 
             //send firebase
 
-
         }
-
-
     }
-    //above has been changed
 
     /**
      * Open the slack app
      */
     @OnClick(R.id.slack_button)
     protected void openSlack() {
-
-        if(isAppInstalled(getActivity(),"com.Slack")) {
+        if (ExternalAppUtils.isAppInstalled(getActivity(), "com.Slack")) {
             Uri uri = Uri.parse("slack://open");
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
-        }
-        else{
-            String url = "https://play.google.com/store/apps/details?id=com.Slack";
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
-        }
-    }
-    public static boolean isAppInstalled(Context context, String packageName) {
-        try {
-            context.getPackageManager().getApplicationInfo(packageName, 0);
-            return true;
-        }
-        catch (PackageManager.NameNotFoundException e) {
-            return false;
+        } else {
+            ExternalAppUtils.openPlayStore(getActivity(), "com.Slack");
         }
     }
 

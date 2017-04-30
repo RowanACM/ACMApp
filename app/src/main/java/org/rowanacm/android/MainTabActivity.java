@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -38,34 +37,35 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.rowanacm.android.annoucement.AnnouncementListFragment;
+import org.rowanacm.android.annoucement.CreateAnnouncementDialog;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * The main activity of the app. Contains a view pager with
- * two fragments, MainFragment and AnnouncementFragment
+ * two fragments, InfoFragment and AnnouncementFragment
  */
 public class MainTabActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
-    // The log tag
-    private static final String TAG = "MainTabActivity";
+    private static final String LOG_TAG = MainTabActivity.class.getSimpleName();
 
-    // Handles firebase authentication
-    private FirebaseAuth mAuth;
-    // Handles google authentication
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private GoogleApiClient mGoogleApiClient;
-    // Get called when the user signs in/out
     private FirebaseAuth.AuthStateListener mAuthListener;
-    // Gets passed to onActivityResult after signing in
-    private static final int RC_SIGN_IN = 4;
+
+    private static final int REQUEST_CODE_GOOGLE_SIGN_IN = 4;
+
+    @BindView(R.id.tab_layout) TabLayout tabLayout;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.container) ViewPager viewPager;
+    @BindView(R.id.toolbar) Toolbar toolbar;
 
     // The PagerAdapter that will provide fragments for each of the sections
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    // The ViewPager that will host the section contents
-    private ViewPager mViewPager;
 
     // Whether the current user is an admin and is able to create announcements
     private boolean admin;
@@ -92,41 +92,31 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        viewPager.setAdapter(mSectionsPagerAdapter);
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        tabLayout.setupWithViewPager(viewPager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
-                // Only show the fab on the AnnouncementFragment and if the user is an admin
-                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-                if(position == 1 && admin)
+                if (position == 1 && admin) {
                     fab.show();
-                else
+                } else {
                     fab.hide();
+                }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-
-        mAuth = FirebaseAuth.getInstance();
-
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -134,22 +124,16 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    Log.d(LOG_TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     adminListener(user.getUid());
                 } else {
                     // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    Log.d(LOG_TAG, "onAuthStateChanged:signed_out");
                     fab.hide();
                 }
 
             }
         };
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showCreateAnnouncementDialog();
-            }
-        });
     }
 
 
@@ -186,8 +170,6 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-
-        Log.d(TAG, "onStart: " + FirebaseInstanceId.getInstance().getToken());
     }
 
     @Override
@@ -199,9 +181,9 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
     }
 
     public void signInGoogle() {
-        Toast.makeText(this, "Select your Rowan account", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.google_sign_in_prompt, Toast.LENGTH_LONG).show();
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, REQUEST_CODE_GOOGLE_SIGN_IN);
     }
 
     @Override
@@ -209,17 +191,17 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Log.d(TAG, "onActivityResult: rcsignin");
+        if (requestCode == REQUEST_CODE_GOOGLE_SIGN_IN) {
+            Log.d(LOG_TAG, "onActivityResult: rcsignin");
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-                Log.d(TAG, "onActivityResult: success");
+                Log.d(LOG_TAG, "onActivityResult: success");
 
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
-                Log.d(TAG, "onActivityResult: failed else");
+                Log.d(LOG_TAG, "onActivityResult: failed else");
                 // Google Sign In failed, update UI appropriately
             }
         }
@@ -237,19 +219,19 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "onFailure: " + e);
+                        Log.d(LOG_TAG, "onFailure: " + e);
                     }
                 })
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+                        Log.d(LOG_TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithCredential", task.getException());
+                            Log.w(LOG_TAG, "signInWithCredential", task.getException());
                             Toast.makeText(MainTabActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -259,7 +241,8 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
     /**
      * Show the dialog to create an announcement
      */
-    private void showCreateAnnouncementDialog() {
+    @OnClick(R.id.fab)
+    protected void showCreateAnnouncementDialog() {
         AlertDialog.Builder alertDialogBuilder = new CreateAnnouncementDialog(this);
         alertDialogBuilder.create().show();
     }
@@ -315,7 +298,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return MainFragment.newInstance();
+                    return InfoFragment.newInstance();
                 case 1:
                     return AnnouncementListFragment.newInstance();
                 case 2:

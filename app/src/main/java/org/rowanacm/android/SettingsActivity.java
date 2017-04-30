@@ -19,15 +19,12 @@ import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.us.acm.R;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 import java.util.Set;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -220,9 +217,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             findPreference("committeeNotificationList").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Log.d(TAG, "onPreferenceChange: " + newValue);
-                    Log.d(TAG, "onPreferenceChange: " + newValue.getClass().getName());
-
                     Set<String> selectedCommittees = (Set<String>) newValue;
                     String[] allCommittees = getResources().getStringArray(R.array.committee_array);
                     String[] allCommitteeKeys = getResources().getStringArray(R.array.committee_keys);
@@ -231,10 +225,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         String committee = allCommittees[i];
                         String committeeKey = allCommitteeKeys[i];
 
-                        if(selectedCommittees.contains(committee)) {
+                        if (selectedCommittees.contains(committee)) {
                             FirebaseMessaging.getInstance().subscribeToTopic(committeeKey);
-                        }
-                        else {
+                        } else {
                             FirebaseMessaging.getInstance().unsubscribeFromTopic(committeeKey);
                         }
                     }

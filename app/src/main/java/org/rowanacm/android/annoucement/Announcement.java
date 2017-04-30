@@ -2,6 +2,8 @@ package org.rowanacm.android.annoucement;
 
 import android.support.annotation.NonNull;
 
+import org.rowanacm.android.Searchable;
+
 import java.io.Serializable;
 
 /**
@@ -9,7 +11,7 @@ import java.io.Serializable;
  * Contains a message and committee
  */
 
-public class Announcement implements Serializable, Comparable<Announcement> {
+public class Announcement implements Serializable, Comparable<Announcement>, Searchable {
     private String author;
     private String committee;
     private String date;
@@ -103,5 +105,19 @@ public class Announcement implements Serializable, Comparable<Announcement> {
                 ", title='" + title + '\'' +
                 ", timestamp=" + timestamp +
                 '}';
+    }
+
+    @Override
+    public boolean search(String search) {
+        if (search == null || search.isEmpty())
+            return true;
+        search = search.toLowerCase();
+
+        return author.toLowerCase().contains(search) ||
+                committee.toLowerCase().contains(search) ||
+                date.toLowerCase().contains(search) ||
+                subj.toLowerCase().contains(search) ||
+                text.toLowerCase().contains(search) ||
+                title.toLowerCase().contains(search);
     }
 }

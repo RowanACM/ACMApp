@@ -7,12 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AlertDialog;
-import android.us.acm.BuildConfig;
 import android.us.acm.R;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +24,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,9 +31,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.squareup.picasso.Picasso;
+
+import org.rowanacm.android.firebase.RemoteConfig;
+import org.rowanacm.android.utils.ExternalAppUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,9 +45,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MainFragment extends Fragment {
-    private static final String TAG = "MainFragment";
-    FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
+public class InfoFragment extends BaseFragment {
+    private static final String LOG_TAG = InfoFragment.class.getSimpleName();
+
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
     private ValueEventListener attendanceListener;
@@ -62,26 +57,15 @@ public class MainFragment extends Fragment {
     private boolean signedInMeeting;
     private String currentMeeting;
 
-
-    /**
-     * Returns a new instance of this fragment
-     */
-    public static MainFragment newInstance() {
-        return new MainFragment();
+    public static InfoFragment newInstance() {
+        return new InfoFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_screen, container, false);
-        ButterKnife.bind(this, rootView);
-
-        rootView.findViewById(R.id.sign_in_google_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainTabActivity) getActivity()).signInGoogle();
-            }
-        });
+        unbinder = ButterKnife.bind(this, rootView);
         return rootView;
     }
 
@@ -109,17 +93,16 @@ public class MainFragment extends Fragment {
     }
 
     private void loadHeaderImage(View view) {
-        String headerUrl = remoteConfig.getString("header_image");
-        if (headerUrl != null && headerUrl.length() > 5 && view != null)
+        String headerUrl = RemoteConfig.getString(getActivity(), R.string.rc_header_image);
+        if (headerUrl != null && headerUrl.length() > 5 && view != null) {
             Picasso.with(getActivity()).load(headerUrl).into((ImageView) view.findViewById(R.id.header_image_view));
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
-
-        setupRemoteConfig();
     }
 
     @Override
@@ -128,30 +111,6 @@ public class MainFragment extends Fragment {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
-    }
-
-    /**
-     * Setup Firebase remote configuration
-     */
-    private void setupRemoteConfig() {
-        remoteConfig = FirebaseRemoteConfig.getInstance();
-        remoteConfig.setConfigSettings(new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG) // developer mode enabled for debug apks
-                .build());
-        remoteConfig.setDefaults(R.xml.remote_config_defaults);
-        remoteConfig.fetch(BuildConfig.DEBUG ? 0 : 12 * 60 * 60) // no cache for debug apk, 12 hours for release apk
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        remoteConfig.activateFetched();
-                        loadHeaderImage(getView());
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "onFailure() called with: e = [" + e + "]");
-            }
-        });
     }
 
     /**
@@ -173,6 +132,11 @@ public class MainFragment extends Fragment {
                         }
                     });
         }
+    }
+
+    @OnClick(R.id.sign_in_google_button)
+    public void signInGoogle() {
+        ((MainTabActivity)getActivity()).signInGoogle();
     }
 
     @OnClick(R.id.attendance_button)
@@ -249,15 +213,11 @@ public class MainFragment extends Fragment {
      * Create an email intent to contact acm@rowan.edu
      */
     @OnClick(R.id.contact_eboard_button)
-    protected void contact_eboard(){
-        ShareCompat.IntentBuilder.from(getActivity())
-                .setType("message/rfc822")
-                .addEmailTo("acm@rowan.edu")
-                .setSubject(getString(R.string.contact_eboard_subject))
-                //.setText(body)
-                //.setHtmlText(body) //If you are using HTML in your body text
-                .setChooserTitle(R.string.contact_eboard_title)
-                .startChooser();
+    protected void contact_eboard() {
+        ExternalAppUtils.sendEmail(getActivity(),
+                getString(R.string.acm_email_address),
+                getString(R.string.contact_eboard_subject),
+                getString(R.string.contact_eboard_title));
     }
 
     private void updateAttendanceViews(AttendanceMode attendanceMode) {
@@ -331,13 +291,13 @@ public class MainFragment extends Fragment {
             try {
                 URL url = new URL(urls[0]);
 
-                BufferedReader in = null;
-                in = new BufferedReader(new InputStreamReader(url.openStream()));
+                BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 
                 String response = "";
                 String inputLine;
-                while ((inputLine = in.readLine()) != null)
+                while ((inputLine = in.readLine()) != null) {
                     response += inputLine;
+                }
 
                 in.close();
 
@@ -357,47 +317,47 @@ public class MainFragment extends Fragment {
             String message;
 
             // If true, show a snackbar. If false, show an AlertDialog
-            boolean snackbar = true;
+            boolean showSnackbar = true;
 
             switch(result) {
                 case 100:
                     // Signed in successfully. New member
                     message = getString(R.string.first_sign_in);
-                    snackbar = false;
+                    showSnackbar = false;
                     break;
                 case 110:
                     // Signed in successfully. Existing member
                     message = getString(R.string.signed_in_successfully);
-                    snackbar = true;
+                    showSnackbar = true;
                     break;
                 case 120:
                     // Already signed in
                     message = getString(R.string.attendance_already_signed_in);
-                    snackbar = true;
+                    showSnackbar = true;
                     break;
                 case 200:
                     // Didn't sign in. Attendance disabled
                     message = getString(R.string.attendance_error_disabled);
-                    snackbar = true;
+                    showSnackbar = true;
                     break;
                 case 210:
                     // Invalid input
                     message = getString(R.string.attendance_error_invalid_input);
-                    snackbar = false;
+                    showSnackbar = false;
                     break;
                 case 220:
                     // Didn't sign in. Unknown error
                     message = getString(R.string.attendance_unknown_error);
-                    snackbar = false;
+                    showSnackbar = false;
                     break;
                 default:
                     // Didn't sign in. Unknown error
                     message = getString(R.string.attendance_unknown_error);
-                    snackbar = false;
+                    showSnackbar = false;
                     break;
             }
 
-            if(snackbar) {
+            if (showSnackbar) {
                 Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

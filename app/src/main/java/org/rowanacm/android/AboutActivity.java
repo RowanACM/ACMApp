@@ -1,11 +1,6 @@
 package org.rowanacm.android;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.support.customtabs.CustomTabsIntent;
-import android.us.acm.BuildConfig;
 import android.us.acm.R;
 import android.widget.Toast;
 
@@ -15,6 +10,8 @@ import com.danielstone.materialaboutlibrary.model.MaterialAboutCard;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutList;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutTitleItem;
 
+import org.rowanacm.android.utils.ExternalAppUtils;
+
 public class AboutActivity extends MaterialAboutActivity {
 
     @Override
@@ -23,7 +20,7 @@ public class AboutActivity extends MaterialAboutActivity {
         MaterialAboutCard.Builder appCardBuilder = new MaterialAboutCard.Builder();
 
         // Add items to card
-        String title = BuildConfig.DEBUG ? "Rowan ACM" : "Rowan ACM DEBUG";
+        String title = getString(R.string.app_name);
 
         appCardBuilder.addItem(new MaterialAboutTitleItem.Builder()
                 .text(title)
@@ -31,29 +28,30 @@ public class AboutActivity extends MaterialAboutActivity {
                 .build());
 
         appCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("Version")
-                .subText(getVersionName())
+                .text(R.string.version)
+                .subText(ExternalAppUtils.getVersionName(AboutActivity.this))
                 .icon(R.drawable.ic_about_info)
                 .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
                     @Override
                     public void onClick() {
-                        if(Math.random() < 0.1)
+                        if (Math.random() < 0.1) {
                             Toast.makeText(AboutActivity.this, "Easter \uD83E\uDD5A", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .build());
         appCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("Changelog")
+                .text(R.string.changelog)
                 .icon(R.drawable.ic_settings_black_48dp)
                 .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
                     @Override
                     public void onClick() {
-                        openUrl("https://github.com/RowanACM/ACMAppAndroid/commits/master");
+                        ExternalAppUtils.openUrl(AboutActivity.this, getString(R.string.changelog_url));
                     }
                 })
                 .build());
         appCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("Licenses")
+                .text(R.string.licenses)
                 .icon(R.drawable.ic_settings_black_48dp)
                 .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
                     @Override
@@ -64,7 +62,7 @@ public class AboutActivity extends MaterialAboutActivity {
                 .build());
 
         MaterialAboutCard.Builder authorCardBuilder = new MaterialAboutCard.Builder();
-        authorCardBuilder.title("Author");
+        authorCardBuilder.title(R.string.author);
 
         authorCardBuilder.addItem(new MaterialAboutActionItem.Builder()
                 .text("Rowan Mobile App Committee")
@@ -72,18 +70,18 @@ public class AboutActivity extends MaterialAboutActivity {
                 .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
                     @Override
                     public void onClick() {
-                        openUrl("https://rowanacm.org/committees.html");
+                        ExternalAppUtils.openUrl(AboutActivity.this, getString(R.string.committees_url));
                     }
                 })
                 .build());
 
         authorCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("View source on GitHub")
+                .text(R.string.view_source)
                 .icon(R.drawable.ic_settings_black_48dp)
                 .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
                     @Override
                     public void onClick() {
-                        openUrl("https://github.com/RowanACM/ACMAppAndroid");
+                        ExternalAppUtils.openUrl(AboutActivity.this, getString(R.string.github_app_url));
                     }
                 })
                 .build());
@@ -91,36 +89,36 @@ public class AboutActivity extends MaterialAboutActivity {
         MaterialAboutCard.Builder supportCardBuilder = new MaterialAboutCard.Builder();
         supportCardBuilder.title("Support Development");
         supportCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("Report Bugs")
+                .text(R.string.report_bugs)
                 .subText("Report bugs or request new features.")
                 .icon(R.drawable.ic_settings_black_48dp)
                 .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
                     @Override
                     public void onClick() {
-                        openUrl("https://github.com/RowanACM/ACMAppAndroid/issues");
+                        ExternalAppUtils.openUrl(AboutActivity.this, getString(R.string.bug_report_url));
                     }
                 })
                 .build());
 
         supportCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("Rate on the Play Store")
-                .subText("Please rate this app on the Play Store")
+                .text(R.string.rate_title)
+                .subText(R.string.rate_description)
                 .icon(R.drawable.ic_play_store)
                 .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
                     @Override
                     public void onClick() {
-                        Utils.openUrl(AboutActivity.this, "https://play.google.com/store/apps/details?id=org.rowanacm.android");
+                        ExternalAppUtils.openUrl(AboutActivity.this, getString(R.string.play_store_url));
                     }
                 })
                 .build());
 
         supportCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("Privacy Policy")
+                .text(R.string.privacy_policy)
                 .icon(R.drawable.ic_settings_black_48dp)
                 .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
                     @Override
                     public void onClick() {
-                        Utils.openUrl(AboutActivity.this, "https://rowanacm.org/privacy-policy-android.html");
+                        ExternalAppUtils.openUrl(AboutActivity.this, getString(R.string.privacy_policy_url));
                     }
                 })
                 .build());
@@ -132,30 +130,10 @@ public class AboutActivity extends MaterialAboutActivity {
                 .build();
     }
 
-    private String getVersionName() {
-        PackageInfo pInfo = null;
-        try {
-            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            return pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            return "Unknown";
-        }
-
-    }
-
     @Override
     protected CharSequence getActivityTitle() {
         return getString(R.string.mal_title_about);
     }
 
-    /**
-     * Open a url in a Chrome Custom Tab
-     * @param url the url to open
-     */
-    private void openUrl(String url) {
-        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        CustomTabsIntent customTabsIntent = builder.build();
-        customTabsIntent.launchUrl(this, Uri.parse(url));
-    }
 
 }
