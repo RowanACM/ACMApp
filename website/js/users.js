@@ -59,6 +59,9 @@ initApp = function() {
 			'<li>' +
                 '<a href="eboard.html">Eboard</a>' +
             '</li>' +
+            '<a href="https://rowanacm.slack.com/">Slack</a>' +
+            '</li>' +
+            '<li>'
             '<li>' +
                 '<a href="dashboard.html">Dashboard</a>' +
             '</li>' +
@@ -91,11 +94,16 @@ initApp = function() {
                 '<a href="eboard.html">Eboard</a>' +
             '</li>' +
               '<li>' +
+              '<a href="https://rowanacm.slack.com/">Slack</a>' +
+              '</li>' +
+              '<li>' +
                   '<a href="login.html">Login</a>' +
               '</li>' +
               '<li>' +
                   '<a href="register.html">Register</a>' +
               '</li>' +
+
+
           '</ul>' +
       '</div>';
     }
