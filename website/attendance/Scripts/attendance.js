@@ -293,6 +293,7 @@ function showAdminViews() {
 	document.getElementById("admin_title").style.visibility = "visible";
 	document.getElementById("get_attendance_button").style.visibility = "visible";
 	document.getElementById("get_all_attendance_button").style.visibility = "visible";
+	document.getElementById("get_members_button").style.visibility = "visible";
 	document.getElementById("toggle_attendance_button").style.visibility = "visible";
 	document.getElementById("current_meeting_text").style.visibility = "visible";
 	document.getElementById("change_current_meeting_button").style.visibility = "visible";
@@ -349,6 +350,27 @@ function exportAllMembers() {
 
 }
 
+var temp;
+function exportPeople() {
+	var exportRef = firebase.database().ref("members");
+	exportRef.once('value', function(snapshot) {
+		console.log("EXPORT RECEIVED");
+		temp = snapshot;
+		var result = snapshot.val()
+		
+		var attendanceExport = "Name,Email,Meeting Count\n";
+		for(var member in result) {
+			var meeting_count = result[member]["meeting_count"];
+			if(meeting_count == "undefined")
+				meeting_count = 0;
+			attendanceExport += result[member]["name"] + "," + result[member]["email"] + "," + meeting_count + "\n";
+		}
+		var fileName = "acm_members.csv";
+		download(fileName, attendanceExport);
+	}); 
+
+}
+
 
 function exportAttendance2(members) {
 	var exportRef = firebase.database().ref("attendance").child(currentMeeting);
@@ -356,10 +378,10 @@ function exportAttendance2(members) {
 		console.log("EXPORT RECEIVED");
 		result = snapshot.val()
 		
-		var attendanceExport = "Name,Email,Meeting Count\n";
+		var attendanceExport = "Name,Email\n";
 		for(var member in result) {
-			var meeting_count = members[result[member]["uid"]]["meeting_count"];
-			attendanceExport += result[member]["name"] + "," + result[member]["email"] + "," + meeting_count + "\n";
+			//var meeting_count = members[result[member]["uid"]]["meeting_count"];
+			attendanceExport += result[member]["name"] + "," + result[member]["email"] + "\n";
 		
 		}
 		var fileName = "attendance_" + currentMeeting + ".csv";
@@ -379,11 +401,11 @@ function exportAllAttendance(members) {
 			if(week != "status") {
 				console.log(week);
 		
-				var attendanceExport = "Name,Email,Meeting Count\n";
+				var attendanceExport = "Name,Email\n";
 				for(var member in result[week]) {
 					if(members[member] != null) {
-						var meeting_count = members[member]["meeting_count"];
-						attendanceExport += result[week][member]["name"] + "," + result[week][member]["email"] + "," + meeting_count + "\n";
+						//var meeting_count = members[member]["meeting_count"];
+						attendanceExport += result[week][member]["name"] + "," + result[week][member]["email"] + "\n";
 					}
 				}
 				var fileName = "attendance_" + week + ".csv";

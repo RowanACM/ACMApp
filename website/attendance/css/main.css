@@ -64,6 +64,12 @@ header {
 #change_current_meeting_button {
     visibility: hidden;
 }
+#get_members_button {
+    visibility: hidden;
+}
+#get_all_attendance_button {
+    visibility: hidden;
+}
 
 #attendance {
     font-size: 15px;
