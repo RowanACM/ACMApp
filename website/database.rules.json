@@ -66,7 +66,8 @@
           ".write": "$uid == auth.uid && data.child('admin').val() == true"
         },
         
-        ".read": "root.child('members').child(auth.uid).child('admin').val() == true"
+        ".read": "root.child('members').child(auth.uid).child('admin').val() == true",
+        ".write": "root.child('members').child(auth.uid).child('admin').val() == true"
     },
     
     ".read": false,
