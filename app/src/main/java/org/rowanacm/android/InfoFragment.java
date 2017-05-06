@@ -41,12 +41,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
 public class InfoFragment extends BaseFragment {
     private static final String LOG_TAG = InfoFragment.class.getSimpleName();
+
+    @Inject RemoteConfig remoteConfig;
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
@@ -59,6 +63,12 @@ public class InfoFragment extends BaseFragment {
 
     public static InfoFragment newInstance() {
         return new InfoFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        ((AcmApplication)getActivity().getApplication()).getFirebaseComponent().inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -93,7 +103,7 @@ public class InfoFragment extends BaseFragment {
     }
 
     private void loadHeaderImage(View view) {
-        String headerUrl = RemoteConfig.getString(getActivity(), R.string.rc_header_image);
+        String headerUrl = remoteConfig.getString(R.string.rc_header_image);
         if (headerUrl != null && headerUrl.length() > 5 && view != null) {
             Picasso.with(getActivity()).load(headerUrl).into((ImageView) view.findViewById(R.id.header_image_view));
         }
