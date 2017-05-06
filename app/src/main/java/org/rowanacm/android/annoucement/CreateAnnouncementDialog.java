@@ -22,7 +22,7 @@ public class CreateAnnouncementDialog extends AlertDialog.Builder {
 
     public CreateAnnouncementDialog(Activity activity) {
         super(activity);
-        setTitle(R.string.create_annoucement);
+        setTitle(R.string.create_announcement);
         final View dialogView = activity.getLayoutInflater().inflate(R.layout.create_announcement_view, null);
         setView(dialogView);
 

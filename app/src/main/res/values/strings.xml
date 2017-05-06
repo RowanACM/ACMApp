@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Rowan ACM</string>
-    <string name="title_activity_attendance">AttendanceActivity</string>
     <string name="attendance">Attendance</string>
     <string name="sign_in_to_the_meeting">Sign in to the meeting</string>
     <string name="title_activity_settings">Settings</string>
@@ -80,7 +79,6 @@
     <string name="about">About</string>
     <string name="help">Help</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main_tab">MainTabActivity</string>
     <string name="action_settings">Settings</string>
@@ -111,7 +109,7 @@
     <string name="signed_out">Signed out</string>
     <string name="error_sign_out_not_signed_in">You are not signed in. Unable to sign out</string>
     <string name="title_activity_announcement">Announcement</string>
-    <string name="main_info">What is ACM?\nACM is the programming club at Rowan University. I don\'t know what else to put here so please open a pull request and add more info here.\n\nWhen do you meet?\nEvery Friday at 2–4 PM in Robinson 201 a/b.</string>
+    <string name="main_info">ACM is the programming club at Rowan University. We meet every Friday at 2–4 PM in Robinson 201 a/b.</string>
     <string name="header_image">Header Image</string>
     <string name="contact_eboard">Contact Eboard</string>
     <string name="attendance_error_invalid_input">Error: Invalid input. Try to sign in again. If you still can\'t, tell someone on eboard or @tylercarberry on slack</string>
@@ -123,27 +121,20 @@
     <string name="attendance_loading">Signing in to meeting</string>
     <string name="contact_eboard_subject">ACM Feedback</string>
     <string name="contact_eboard_title">Contact ACM Eboard</string>
-    <string name="create_annoucement">Create announcement</string>
+    <string name="create_announcement">Create announcement</string>
     <string name="google_sign_in_prompt">Select your Rowan account</string>
-    <string name="acm_email_address">acm@rowan.edu</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="privacy_policy_url">https://rowanacm.org/privacy-policy-android.html</string>
-    <string name="play_store_url">https://play.google.com/store/apps/details?id=org.rowanacm.android</string>
     <string name="report_bugs">Report Bugs</string>
-    <string name="github_app_url">https://github.com/RowanACM/ACMAppAndroid</string>
-    <string name="bug_report_url">https://github.com/RowanACM/ACMAppAndroid/issues</string>
-    <string name="committees_url">https://rowanacm.org/committees.html</string>
     <string name="licenses">Licenses</string>
     <string name="changelog">Changelog</string>
     <string name="version">Version</string>
-    <string name="changelog_url">https://github.com/RowanACM/ACMAppAndroid/commits/master</string>
     <string name="rate_title">Rate on the Play Store</string>
     <string name="rate_description">Please rate this app on the Play Store</string>
     <string name="view_source">View source on GitHub</string>
-    <string name="info_title">INFO</string>
-    <string name="announcements_title">ANNOUNCEMENTS</string>
-    <string name="committee_title">COMMITTEE</string>
-    <string name="me_title">ME</string>
+    <string name="info_title">Info</string>
+    <string name="announcements_title">Announcements</string>
+    <string name="committee_title">Committee</string>
+    <string name="me_title">Me</string>
     <string name="user_on_slack">You are on slack</string>
     <string name="user_not_on_slack">You are not on slack</string>
 
