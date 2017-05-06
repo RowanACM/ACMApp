@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.util.Date;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class AnnouncementActivity extends AppCompatActivity {
     private static final String LOG_TAG = Announcement.class.getSimpleName();
@@ -21,6 +22,7 @@ public class AnnouncementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_announcement);
+        ButterKnife.bind(this);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
