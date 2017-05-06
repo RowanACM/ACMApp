@@ -140,6 +140,12 @@
     <string name="rate_title">Rate on the Play Store</string>
     <string name="rate_description">Please rate this app on the Play Store</string>
     <string name="view_source">View source on GitHub</string>
+    <string name="info_title">INFO</string>
+    <string name="announcements_title">ANNOUNCEMENTS</string>
+    <string name="committee_title">COMMITTEE</string>
+    <string name="me_title">ME</string>
+    <string name="user_on_slack">You are on slack</string>
+    <string name="user_not_on_slack">You are not on slack</string>
 
     <string-array name="committee_array">
         <item>General</item>

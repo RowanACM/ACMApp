@@ -16,8 +16,6 @@ public class AppModule {
         this.acmApplication = acmApplication;
     }
 
-
-
     @Provides
     @Singleton
     Context providesAcmApplication() {

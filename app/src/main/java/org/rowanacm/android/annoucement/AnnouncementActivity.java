@@ -30,11 +30,13 @@ public class AnnouncementActivity extends AppCompatActivity {
 
             announcementTextView.setText(announcement.getText());
             committeeTextView.setText(announcement.getCommittee());
-
-            long timestamp = announcement.getTimestamp() * 1000;
-            long now = new Date().getTime();
-            String relativeTime = DateUtils.getRelativeTimeSpanString(timestamp, now, DateUtils.SECOND_IN_MILLIS).toString();
-            dateTextView.setText(relativeTime);
+            dateTextView.setText(getRelativeDate(announcement));
         }
+    }
+
+    private String getRelativeDate(Announcement announcement) {
+        long timestamp = announcement.getTimestamp() * 1000;
+        long now = new Date().getTime();
+        return DateUtils.getRelativeTimeSpanString(timestamp, now, DateUtils.SECOND_IN_MILLIS).toString();
     }
 }
