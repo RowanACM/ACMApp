@@ -12,9 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.rowanacm.android.utils.ExternalAppUtils;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -35,6 +33,11 @@ public class MeFragment extends Fragment {
     private static final String LOG_TAG = MeFragment.class.getSimpleName();
 
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    @BindView(R.id.name_text_view) TextView nameTextView;
+    @BindView(R.id.on_slack_textview) TextView onSlackTextView;
+    @BindView(R.id.meeting_count_textview) TextView meetingCountTextView;
+    @BindView(R.id.committee_text_view) TextView committeeTextView;
 
     public MeFragment() {
         // Required empty public constructor
@@ -84,34 +87,29 @@ public class MeFragment extends Fragment {
 
                     String name = user.getDisplayName();
 
-                    ((TextView)getView().findViewById(R.id.name_text_view)).setText(name);
+                    nameTextView.setText(name);
 
                     FirebaseDatabase.getInstance().getReference("members").child(user.getUid()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             int meeting_count = dataSnapshot.child("meeting_count").getValue(Integer.class);
-                            ((TextView)getView().findViewById(R.id.meeting_count_textview)).setText("Number of meetings attended: " + meeting_count);
+                            meetingCountTextView.setText("Number of meetings attended: " + meeting_count);
 
                             String committee = dataSnapshot.child("committee").getValue(String.class);
-                            ((TextView)getView().findViewById(R.id.committee_text_view)).setText("Committee: " + committee);
+                            committeeTextView.setText("Committee: " + committee);
 
                             boolean onSlack = dataSnapshot.child("on_slack").getValue(Boolean.class);
                             String text;
                             if (onSlack) {
-                                text = "You are on slack";
+                                text = getString(R.string.user_on_slack);
                             } else {
-                                text = "You are not on slack";
+                                text = getString(R.string.user_not_on_slack);
                             }
-                            ((TextView)getView().findViewById(R.id.on_slack_textview)).setText(text);
-
-
-
+                            onSlackTextView.setText(text);
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
+                        public void onCancelled(DatabaseError databaseError) {}
                     });
 
                 } else {
@@ -134,43 +132,22 @@ public class MeFragment extends Fragment {
     @OnClick(R.id.change_committee_button)
     protected void chooseCommittee() {
         // custom dialog
-        final Dialog dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.radiobutton_dialog);
-
-        String[] stringArray = getResources().getStringArray(R.array.committee_array);
-        RadioGroup rg = (RadioGroup) dialog.findViewById(R.id.radio_group);
-
-        for (int i = 0; i < stringArray.length; i++) {
-            String committee = stringArray[i];
-            RadioButton rb = new RadioButton(getActivity());
-
-            final int finalI = i;
-            rb.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onRadioButtonClicked(view, finalI);
-                }
-            });
-
-            rb.setText(committee);
-            rg.addView(rb);
-        }
-
+        final Dialog dialog = new ChooseCommitteeDialog(getActivity()) {
+            @Override
+            public void onRadioButtonClicked(int index) {
+                onCommitteeChanged(index);
+            }
+        };
         dialog.show();
     }
 
-    public void onRadioButtonClicked(View view,int ndx) {
-        if(view instanceof RadioButton) {
+    public void onCommitteeChanged(int index) {
+        String[] stringArray = getResources().getStringArray(R.array.committee_keys); //grab key names
+        String committee = stringArray[index]; //set string based on index of
+        Log.d(LOG_TAG, "onRadioButtonClicked: "+committee);
+        //then send to firebase
 
-            String[] stringArray = getResources().getStringArray(R.array.committee_keys);//grab key names
-            String committee=stringArray[ndx];//set string based on index of
-            Log.d(LOG_TAG, "onRadioButtonClicked: "+committee);
-            //then send to firebase
-
-            //send firebase
-
-        }
+        //send firebase
     }
 
     /**

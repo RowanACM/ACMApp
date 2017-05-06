@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.us.acm.R;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -38,8 +34,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.rowanacm.android.annoucement.AnnouncementListFragment;
 import org.rowanacm.android.annoucement.CreateAnnouncementDialog;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,70 +50,51 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
 
     private static final String LOG_TAG = MainTabActivity.class.getSimpleName();
 
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private static final int REQUEST_CODE_GOOGLE_SIGN_IN = 4;
+
+    @Inject FirebaseAuth firebaseAuth;
+    @Inject GoogleSignInOptions gso;
 
     @BindView(R.id.tab_layout) TabLayout tabLayout;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.container) ViewPager viewPager;
     @BindView(R.id.toolbar) Toolbar toolbar;
 
-    // The PagerAdapter that will provide fragments for each of the sections
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-
     // Whether the current user is an admin and is able to create announcements
     private boolean admin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ((AcmApplication)getApplication()).getFirebaseComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tab);
         ButterKnife.bind(this);
 
-        mAuth = FirebaseAuth.getInstance();
-
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        viewPager.setAdapter(mSectionsPagerAdapter);
-
-        tabLayout.setupWithViewPager(viewPager);
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
+        viewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), this));
+        viewPager.addOnPageChangeListener(new EmptyTabChangeListener() {
             @Override
             public void onPageSelected(int position) {
+                super.onPageSelected(position);
                 if (position == 1 && admin) {
                     fab.show();
                 } else {
                     fab.hide();
                 }
             }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {}
         });
+        tabLayout.setupWithViewPager(viewPager);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -142,8 +120,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_activity_menu, menu);
+        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
         return true;
     }
 
@@ -169,14 +146,14 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        firebaseAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
+            firebaseAuth.removeAuthStateListener(mAuthListener);
         }
     }
 
@@ -192,17 +169,14 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == REQUEST_CODE_GOOGLE_SIGN_IN) {
-            Log.d(LOG_TAG, "onActivityResult: rcsignin");
+
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-                Log.d(LOG_TAG, "onActivityResult: success");
-
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
                 Log.d(LOG_TAG, "onActivityResult: failed else");
-                // Google Sign In failed, update UI appropriately
             }
         }
     }
@@ -215,7 +189,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         Toast.makeText(this, acct.getEmail(), Toast.LENGTH_SHORT).show();
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
+        firebaseAuth.signInWithCredential(credential)
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -266,8 +240,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
      * @param newActivity The class of the activity to switch to. Use ActivityName.class
      */
     private void switchActivity(Class newActivity) {
-        Intent intent = new Intent(this, newActivity);
-        startActivity(intent);
+        startActivity(new Intent(this, newActivity));
     }
 
     /**
@@ -281,59 +254,6 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            switch (position) {
-                case 0:
-                    return InfoFragment.newInstance();
-                case 1:
-                    return AnnouncementListFragment.newInstance();
-                case 2:
-                    return CommitteeFragment.newInstance();
-                case 3:
-                    return MeFragment.newInstance();
-
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            // Number of pages.
-            return 4;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "INFO";
-                case 1:
-                    return "ANNOUNCEMENTS";
-                case 2:
-                    return "COMMITTEE";
-                case 3:
-                    return "ME";
-
-            }
-            return null;
-        }
-    }
-
-
 
 
 }

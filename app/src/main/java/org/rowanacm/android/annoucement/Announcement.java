@@ -109,10 +109,11 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
 
     @Override
     public boolean search(String search) {
-        if (search == null || search.isEmpty())
+        if (search == null || search.isEmpty()) {
             return true;
-        search = search.toLowerCase();
+        }
 
+        search = search.toLowerCase();
         return author.toLowerCase().contains(search) ||
                 committee.toLowerCase().contains(search) ||
                 date.toLowerCase().contains(search) ||

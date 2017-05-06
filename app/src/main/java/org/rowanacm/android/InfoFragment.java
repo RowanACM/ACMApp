@@ -41,12 +41,26 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import javax.inject.Inject;
+
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
 public class InfoFragment extends BaseFragment {
     private static final String LOG_TAG = InfoFragment.class.getSimpleName();
+
+    @Inject RemoteConfig remoteConfig;
+
+    @BindView(R.id.attendance_layout) ViewGroup attendanceLayout;
+    @BindView(R.id.attendance_textview) TextView attendanceTextView;
+    @BindView(R.id.attendance_button) Button meetingButton;
+    @BindView(R.id.sign_in_google_button) SignInButton googleSignInButton;
+    @BindView(R.id.header_image_view) ImageView headerImageView;
+    @BindView(R.id.google_sign_out_textview) TextView signOutTextView;
+    @BindView(R.id.google_sign_out_button) Button signOutButton;
+
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
@@ -59,6 +73,12 @@ public class InfoFragment extends BaseFragment {
 
     public static InfoFragment newInstance() {
         return new InfoFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        ((AcmApplication)getActivity().getApplication()).getFirebaseComponent().inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -93,9 +113,9 @@ public class InfoFragment extends BaseFragment {
     }
 
     private void loadHeaderImage(View view) {
-        String headerUrl = RemoteConfig.getString(getActivity(), R.string.rc_header_image);
+        String headerUrl = remoteConfig.getString(R.string.rc_header_image);
         if (headerUrl != null && headerUrl.length() > 5 && view != null) {
-            Picasso.with(getActivity()).load(headerUrl).into((ImageView) view.findViewById(R.id.header_image_view));
+            Picasso.with(getActivity()).load(headerUrl).into(headerImageView);
         }
     }
 
@@ -179,8 +199,7 @@ public class InfoFragment extends BaseFragment {
                         //updateAttendanceViews(AttendanceMode.PROMPT_MEETING);
                     }
 
-                }
-                else {
+                } else {
                     updateAttendanceViews(AttendanceMode.HIDDEN);
                 }
             }
@@ -195,10 +214,9 @@ public class InfoFragment extends BaseFragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 signedInMeeting = (dataSnapshot.getValue() != null);
-                if(signedInMeeting) {
+                if (signedInMeeting) {
                     updateAttendanceViews(AttendanceMode.SIGNED_IN);
-                }
-                else {
+                } else {
                     updateAttendanceViews(AttendanceMode.PROMPT_MEETING);
                 }
 
@@ -222,13 +240,8 @@ public class InfoFragment extends BaseFragment {
 
     private void updateAttendanceViews(AttendanceMode attendanceMode) {
         View rootView = getView();
-        if(rootView == null)
+        if (rootView == null)
             return;
-        ViewGroup attendanceLayout = (ViewGroup) rootView.findViewById(R.id.attendance_layout);
-        TextView attendanceTextView = (TextView) rootView.findViewById(R.id.attendance_textview);
-        Button meetingButton = (Button) rootView.findViewById(R.id.attendance_button);
-        SignInButton googleSignInButton =(SignInButton) rootView.findViewById(R.id.sign_in_google_button);
-
         switch (attendanceMode) {
             case HIDDEN:
                 attendanceLayout.setVisibility(View.GONE);
@@ -266,10 +279,6 @@ public class InfoFragment extends BaseFragment {
      * @param currentlySignedIn Whether the user is currently signed in
      */
     private void updateGoogleSignInButtons(boolean currentlySignedIn) {
-        SignInButton googleSignInButton =(SignInButton) getView().findViewById(R.id.sign_in_google_button);
-        TextView signOutTextView = (TextView) getView().findViewById(R.id.google_sign_out_textview);
-        Button signOutButton = (Button) getView().findViewById(R.id.google_sign_out_button);
-
         if(currentlySignedIn) {
             googleSignInButton.setVisibility(View.GONE);
             signOutTextView.setVisibility(View.VISIBLE);

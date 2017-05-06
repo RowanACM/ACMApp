@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A RecyclerView that allows you to search items
  * @param <K> View holder
- * @param <T> Item that the list contains (ex. Facility)
+ * @param <T> Item that the list contains
  */
 public abstract class SearchableAdapter<K extends RecyclerView.ViewHolder, T extends Searchable> extends RecyclerView.Adapter<K> {
 
