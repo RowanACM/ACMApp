@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +39,7 @@ public class MeFragment extends Fragment {
     @BindView(R.id.on_slack_textview) TextView onSlackTextView;
     @BindView(R.id.meeting_count_textview) TextView meetingCountTextView;
     @BindView(R.id.committee_text_view) TextView committeeTextView;
+    @BindView(R.id.profile_pic_image_view) ImageView profilePicImageView;
 
     public MeFragment() {
         // Required empty public constructor
@@ -95,10 +97,10 @@ public class MeFragment extends Fragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             int meeting_count = dataSnapshot.child("meeting_count").getValue(Integer.class);
-                            meetingCountTextView.setText("Number of meetings attended: " + meeting_count);
+                            //meetingCountTextView.setText("Number of meetings attended: " + meeting_count);
 
                             String committee = dataSnapshot.child("committee").getValue(String.class);
-                            committeeTextView.setText("Committee: " + committee);
+                            //committeeTextView.setText("Committee: " + committee);
 
                             boolean onSlack = dataSnapshot.child("on_slack").getValue(Boolean.class);
                             String text;

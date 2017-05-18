@@ -72,15 +72,12 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tab);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
 
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
-        setSupportActionBar(toolbar);
 
         viewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), this));
         viewPager.addOnPageChangeListener(new EmptyTabChangeListener() {
@@ -221,6 +218,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         alertDialogBuilder.create().show();
     }
 
+    // TODO: Something in this method is causing a memory leak
     private void adminListener(final String userid) {
         FirebaseDatabase.getInstance().getReference().child("members").child(userid).child("admin").addValueEventListener(new ValueEventListener() {
             @Override
