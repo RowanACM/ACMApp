@@ -53,6 +53,7 @@ public class InfoFragment extends BaseFragment {
     @Inject RemoteConfig remoteConfig;
     @Inject FirebaseAuth firebaseAuth;
     @Inject DatabaseReference database;
+    @Inject GoogleApiClient googleApiClient;
 
     @BindView(R.id.attendance_layout) ViewGroup attendanceLayout;
     @BindView(R.id.attendance_textview) TextView attendanceTextView;
@@ -77,7 +78,7 @@ public class InfoFragment extends BaseFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        ((AcmApplication)getActivity().getApplication()).getFirebaseComponent().inject(this);
+        ((AcmApplication)getActivity().getApplication()).getAcmComponent().inject(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -137,7 +138,6 @@ public class InfoFragment extends BaseFragment {
      */
     @OnClick(R.id.google_sign_out_button)
     public void signOutGoogle() {
-        GoogleApiClient googleApiClient = ((MainTabActivity) getActivity()).getGoogleApiClient();
         if (!googleApiClient.isConnected()) {
             // The user is not signed in
             Toast.makeText(getActivity(), R.string.error_sign_out_not_signed_in, Toast.LENGTH_LONG).show();

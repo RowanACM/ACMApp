@@ -7,7 +7,7 @@ import com.squareup.leakcanary.LeakCanary;
 
 public class AcmApplication extends Application {
 
-    private FirebaseComponent firebaseComponent;
+    private AcmComponent acmComponent;
 
     @Override
     public void onCreate() {
@@ -17,12 +17,12 @@ public class AcmApplication extends Application {
         }
         LeakCanary.install(this);
 
-        firebaseComponent = DaggerFirebaseComponent.builder()
+        acmComponent = DaggerAcmComponent.builder()
                 .appModule(new AppModule(this)).build();
     }
 
-    public FirebaseComponent getFirebaseComponent() {
-        return firebaseComponent;
+    public AcmComponent getAcmComponent() {
+        return acmComponent;
     }
 
 }

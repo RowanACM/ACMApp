@@ -5,8 +5,8 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules={AppModule.class, FirebaseModule.class})
-public interface FirebaseComponent {
+@Component(modules={AppModule.class, AcmModule.class})
+public interface AcmComponent {
     void inject(AcmApplication application);
 
     void inject(MainTabActivity mainActivity);

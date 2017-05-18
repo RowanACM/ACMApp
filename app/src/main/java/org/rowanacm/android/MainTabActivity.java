@@ -19,7 +19,6 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -46,17 +45,17 @@ import butterknife.OnClick;
  * The main activity of the app. Contains a view pager with
  * two fragments, InfoFragment and AnnouncementFragment
  */
-public class MainTabActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class MainTabActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainTabActivity.class.getSimpleName();
 
-    private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private static final int REQUEST_CODE_GOOGLE_SIGN_IN = 4;
 
     @Inject FirebaseAuth firebaseAuth;
     @Inject GoogleSignInOptions gso;
+    @Inject GoogleApiClient googleApiClient;
 
     @BindView(R.id.tab_layout) TabLayout tabLayout;
     @BindView(R.id.fab) FloatingActionButton fab;
@@ -68,16 +67,11 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ((AcmApplication)getApplication()).getFirebaseComponent().inject(this);
+        ((AcmApplication)getApplication()).getAcmComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tab);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
 
         viewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), this));
         viewPager.addOnPageChangeListener(new EmptyTabChangeListener() {
@@ -144,6 +138,7 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
     public void onStart() {
         super.onStart();
         firebaseAuth.addAuthStateListener(mAuthListener);
+        googleApiClient.connect();
     }
 
     @Override
@@ -152,11 +147,12 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
         if (mAuthListener != null) {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
+        googleApiClient.disconnect();
     }
 
     public void signInGoogle() {
         Toast.makeText(this, R.string.google_sign_in_prompt, Toast.LENGTH_LONG).show();
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, REQUEST_CODE_GOOGLE_SIGN_IN);
     }
 
@@ -240,18 +236,5 @@ public class MainTabActivity extends AppCompatActivity implements GoogleApiClien
     private void switchActivity(Class newActivity) {
         startActivity(new Intent(this, newActivity));
     }
-
-    /**
-     * Get the google api client
-     * @return The google api client
-     */
-    protected GoogleApiClient getGoogleApiClient() {
-        return mGoogleApiClient;
-    }
-
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
-
 
 }
