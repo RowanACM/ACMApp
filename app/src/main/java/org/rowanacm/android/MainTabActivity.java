@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.us.acm.R;
@@ -210,8 +209,7 @@ public class MainTabActivity extends AppCompatActivity {
      */
     @OnClick(R.id.fab)
     protected void showCreateAnnouncementDialog() {
-        AlertDialog.Builder alertDialogBuilder = new CreateAnnouncementDialog(this);
-        alertDialogBuilder.create().show();
+        new CreateAnnouncementDialog(this).create().show();
     }
 
     // TODO: Something in this method is causing a memory leak
@@ -219,7 +217,7 @@ public class MainTabActivity extends AppCompatActivity {
         FirebaseDatabase.getInstance().getReference().child("members").child(userid).child("admin").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() != null && ((boolean)dataSnapshot.getValue())){
+                if (dataSnapshot.getValue() != null && ((boolean)dataSnapshot.getValue())) {
                     admin = true;
                 }
             }

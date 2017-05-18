@@ -19,11 +19,12 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
     private String text;
     private String title;
     private long timestamp;
+    private String imageUrl;
 
     public Announcement() {
     }
 
-    public Announcement(String author, String committee, String date, String subj, String text, String title, long timestamp) {
+    public Announcement(String author, String committee, String date, String subj, String text, String title, long timestamp, String imageUrl) {
         this.author = author;
         this.committee = committee;
         this.date = date;
@@ -31,6 +32,27 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         this.text = text;
         this.title = title;
         this.timestamp = timestamp;
+        this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public int compareTo(@NonNull Announcement announcement) {
+        return ((Long)announcement.timestamp).compareTo(timestamp);
+    }
+
+    @Override
+    public boolean search(String search) {
+        if (search == null || search.isEmpty()) {
+            return true;
+        }
+
+        search = search.toLowerCase();
+        return author.toLowerCase().contains(search) ||
+                committee.toLowerCase().contains(search) ||
+                date.toLowerCase().contains(search) ||
+                subj.toLowerCase().contains(search) ||
+                text.toLowerCase().contains(search) ||
+                title.toLowerCase().contains(search);
     }
 
     public String getAuthor() {
@@ -89,36 +111,43 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         this.timestamp = timestamp;
     }
 
-    @Override
-    public int compareTo(@NonNull Announcement announcement) {
-        return ((Long)announcement.timestamp).compareTo(timestamp);
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override
-    public String toString() {
-        return "Announcement{" +
-                "author='" + author + '\'' +
-                ", committee='" + committee + '\'' +
-                ", date='" + date + '\'' +
-                ", subj='" + subj + '\'' +
-                ", text='" + text + '\'' +
-                ", title='" + title + '\'' +
-                ", timestamp=" + timestamp +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Announcement that = (Announcement) o;
+
+        if (timestamp != that.timestamp) return false;
+        if (author != null ? !author.equals(that.author) : that.author != null) return false;
+        if (committee != null ? !committee.equals(that.committee) : that.committee != null)
+            return false;
+        if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (subj != null ? !subj.equals(that.subj) : that.subj != null) return false;
+        if (text != null ? !text.equals(that.text) : that.text != null) return false;
+        if (title != null ? !title.equals(that.title) : that.title != null) return false;
+        return imageUrl != null ? imageUrl.equals(that.imageUrl) : that.imageUrl == null;
+
     }
 
     @Override
-    public boolean search(String search) {
-        if (search == null || search.isEmpty()) {
-            return true;
-        }
-
-        search = search.toLowerCase();
-        return author.toLowerCase().contains(search) ||
-                committee.toLowerCase().contains(search) ||
-                date.toLowerCase().contains(search) ||
-                subj.toLowerCase().contains(search) ||
-                text.toLowerCase().contains(search) ||
-                title.toLowerCase().contains(search);
+    public int hashCode() {
+        int result = author != null ? author.hashCode() : 0;
+        result = 31 * result + (committee != null ? committee.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (subj != null ? subj.hashCode() : 0);
+        result = 31 * result + (text != null ? text.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
+        result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
+        return result;
     }
 }

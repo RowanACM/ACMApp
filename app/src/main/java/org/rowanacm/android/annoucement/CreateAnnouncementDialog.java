@@ -46,7 +46,7 @@ public class CreateAnnouncementDialog extends AlertDialog.Builder {
                 long timestamp = new Date().getTime() / 1000;
                 String date = DateFormat.getDateTimeInstance().format(new Date());
 
-                Announcement announcement = new Announcement(author, committee, date, subject, message, subject, timestamp);
+                Announcement announcement = new Announcement(author, committee, date, subject, message, subject, timestamp, null);
 
                 DatabaseReference database = FirebaseDatabase.getInstance().getReference();
                 DatabaseReference newRef = database.child("announcements").push();
