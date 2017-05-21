@@ -1,9 +1,12 @@
 package org.rowanacm.android;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.provider.CalendarContract.Events;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -39,6 +42,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -60,9 +65,6 @@ public class InfoFragment extends BaseFragment {
     @BindView(R.id.attendance_button) Button meetingButton;
     @BindView(R.id.sign_in_google_button) SignInButton googleSignInButton;
     @BindView(R.id.header_image_view) ImageView headerImageView;
-    @BindView(R.id.google_sign_out_textview) TextView signOutTextView;
-    @BindView(R.id.google_sign_out_button) Button signOutButton;
-
 
     private FirebaseAuth.AuthStateListener authListener;
     private ValueEventListener attendanceListener;
@@ -136,7 +138,6 @@ public class InfoFragment extends BaseFragment {
     /**
      * Revoke access to the user's Google Account and sign out
      */
-    @OnClick(R.id.google_sign_out_button)
     public void signOutGoogle() {
         if (!googleApiClient.isConnected()) {
             // The user is not signed in
@@ -274,14 +275,50 @@ public class InfoFragment extends BaseFragment {
     private void updateGoogleSignInButtons(boolean currentlySignedIn) {
         if(currentlySignedIn) {
             googleSignInButton.setVisibility(View.GONE);
-            signOutTextView.setVisibility(View.VISIBLE);
-            signOutButton.setVisibility(View.VISIBLE);
+            //signOutTextView.setVisibility(View.VISIBLE);
+            //signOutButton.setVisibility(View.VISIBLE);
         }
         else {
             googleSignInButton.setVisibility(View.VISIBLE);
-            signOutTextView.setVisibility(View.GONE);
-            signOutButton.setVisibility(View.GONE);
+            //signOutTextView.setVisibility(View.GONE);
+            //signOutButton.setVisibility(View.GONE);
         }
+    }
+
+    @OnClick(R.id.calendar_button)
+    protected void addToCalendar() {
+        final int MEETING_LENGTH_MINUTES = 90;
+
+        // If you want the start times to show up, you have to set them
+        Calendar calendar = Calendar.getInstance();
+
+        // Here we set a start time of Tuesday the 17th, 6pm
+        calendar.set(2017, Calendar.SEPTEMBER, 8, 14, 0, 0);
+        calendar.setTimeZone(TimeZone.getDefault());
+
+        long start = calendar.getTimeInMillis();
+        // add three hours in milliseconds to get end time of 9pm
+        long end = calendar.getTimeInMillis() + MEETING_LENGTH_MINUTES * 60 * 1000;
+
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(Events.CONTENT_URI)
+                .setType("vnd.android.cursor.item/event")
+                .putExtra(Events.TITLE, "ACM")
+                .putExtra(Events.DESCRIPTION, "Rowan Association for Computing Machinery")
+                .putExtra(Events.EVENT_LOCATION, "Robinson 201 a/b")
+                .putExtra(Events.RRULE, "FREQ=WEEKLY;BYDAY=FR;UNTIL=20171208")
+
+                // to specify start time use "beginTime" instead of "dtstart"
+                //.putExtra(Events.DTSTART, calendar.getTimeInMillis())
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start)
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end)
+
+                // if you want to go from 6pm to 9pm, don't specify all day
+                //.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true)
+                .putExtra(CalendarContract.Events.HAS_ALARM, 1)
+                .putExtra(Events.AVAILABILITY, Events.AVAILABILITY_BUSY);
+
+        startActivity(intent);
     }
 
 

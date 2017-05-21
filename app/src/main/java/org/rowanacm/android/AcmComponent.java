@@ -10,5 +10,6 @@ public interface AcmComponent {
     void inject(AcmApplication application);
 
     void inject(MainTabActivity mainActivity);
+    void inject(SettingsActivity settingsActivity);
     void inject(InfoFragment mainFragment);
 }

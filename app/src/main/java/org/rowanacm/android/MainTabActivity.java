@@ -33,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.rowanacm.android.annoucement.CreateAnnouncementDialog;
+import org.rowanacm.android.utils.AcmUtils;
 
 import javax.inject.Inject;
 
@@ -77,11 +78,7 @@ public class MainTabActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                if (position == 1 && admin) {
-                    fab.show();
-                } else {
-                    fab.hide();
-                }
+                AcmUtils.setFabVisibility(fab, position == 1 && admin);
             }
         });
         tabLayout.setupWithViewPager(viewPager);
@@ -92,12 +89,10 @@ public class MainTabActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Log.d(LOG_TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     adminListener(user.getUid());
                 } else {
                     // User is signed out
-                    Log.d(LOG_TAG, "onAuthStateChanged:signed_out");
-                    fab.hide();
+                    AcmUtils.setFabVisibility(fab, false);
                 }
 
             }

@@ -18,7 +18,8 @@ public class AcmApplication extends Application {
         LeakCanary.install(this);
 
         acmComponent = DaggerAcmComponent.builder()
-                .appModule(new AppModule(this)).build();
+                .appModule(new AppModule(this))
+                .build();
     }
 
     public AcmComponent getAcmComponent() {

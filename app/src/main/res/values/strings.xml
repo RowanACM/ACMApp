@@ -109,7 +109,7 @@
     <string name="signed_out">Signed out</string>
     <string name="error_sign_out_not_signed_in">You are not signed in. Unable to sign out</string>
     <string name="title_activity_announcement">Announcement</string>
-    <string name="main_info">ACM is the programming club at Rowan University. We meet every Friday at 2–4 PM in Robinson 201 a/b.</string>
+    <string name="main_info">ACM is the programming club at Rowan University</string>
     <string name="header_image">Header Image</string>
     <string name="contact_eboard">Contact Eboard</string>
     <string name="attendance_error_invalid_input">Error: Invalid input. Try to sign in again. If you still can\'t, tell someone on eboard or @tylercarberry on slack</string>
@@ -133,7 +133,7 @@
     <string name="view_source">View source on GitHub</string>
     <string name="info_title">Info</string>
     <string name="announcements_title">Announcements</string>
-    <string name="committee_title">Committee</string>
+    <string name="committee_title">Committees</string>
     <string name="me_title">Me</string>
     <string name="user_on_slack">You are on slack</string>
     <string name="user_not_on_slack">You are not on slack</string>

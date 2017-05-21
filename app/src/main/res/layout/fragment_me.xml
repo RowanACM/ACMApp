@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -10,15 +10,18 @@
               tools:context="org.rowanacm.android.MeFragment">
 
     <RelativeLayout
+        android:id="@+id/profile_badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:background="#4db6ac"
         android:paddingBottom="30dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:paddingTop="30dp">
+        android:paddingTop="30dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
 
         <ImageView
             android:id="@+id/profile_pic_image_view"
@@ -44,50 +47,133 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/activity_vertical_margin"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@id/name_text_view"
                 android:text="App Committee"
                 android:textColor="@color/white"
                 android:textSize="18sp"/>
 
-            <TextView
-                android:id="@+id/member_since_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/committee_text_view"
-                android:text="Member since 2016"
-                android:textColor="@color/white"
-                android:textSize="18sp"/>
-
-            <TextView
-                android:id="@+id/meeting_count_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/member_since_text_view"
-                android:text="15 meetings attended"
-                android:textColor="@color/white"
-                android:textSize="18sp"/>
+        <ImageView
+            android:id="@+id/change_committee_button"
+            android:src="@drawable/edit"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_alignBottom="@id/committee_text_view"
+            android:layout_toRightOf="@id/committee_text_view"/>
 
     </RelativeLayout>
 
-
-    <Button
-        android:id="@+id/change_committee_button"
+    <TextView
+        android:id="@+id/member_since_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Change Committee"/>
+        android:fontFamily="sans-serif-condensed"
+        android:text="Member since"
+        android:textColor="#b71c1c"
+        android:textSize="18sp"
+        android:layout_below="@+id/profile_badge"
+        android:layout_toLeftOf="@+id/slack_button"
+        android:layout_toStartOf="@+id/slack_button"/>
+
+
+    <TextView
+        android:id="@+id/member_since_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/meeting_count_textview"
+        android:layout_alignStart="@+id/meeting_count_textview"
+        android:layout_below="@+id/profile_badge"
+        android:text="September 2016"
+        android:textColor="@color/primary_text"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/meeting_count_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/member_since_title"
+        android:layout_marginRight="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Meetings attended"
+        android:textColor="#b71c1c"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/meeting_count_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/member_since_text_view"
+        android:layout_toEndOf="@+id/meeting_count_title"
+        android:layout_toRightOf="@+id/meeting_count_title"
+        android:text="15"
+        android:textColor="@color/primary_text"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/email_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Rowan email"
+        android:textColor="#b71c1c"
+        android:textSize="18sp"
+        android:layout_below="@+id/meeting_count_title"
+        android:layout_alignLeft="@+id/member_since_title"
+        android:layout_alignStart="@+id/member_since_title"/>
+
+    <TextView
+        android:id="@+id/email_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/meeting_count_textview"
+        android:layout_alignStart="@+id/meeting_count_textview"
+        android:layout_below="@+id/meeting_count_textview"
+        android:layout_marginBottom="20dp"
+        android:text="smithj1"
+        android:textColor="@color/primary_text"
+        android:textSize="18sp"/>
 
 
     <TextView
         android:id="@+id/on_slack_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/email_textview"
         android:text="You are on slack"/>
 
     <Button
         android:id="@+id/slack_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open slack"/>
+        android:text="Open slack"
+        android:layout_below="@+id/email_textview"
+        android:layout_toRightOf="@+id/on_slack_textview"
+        android:layout_toEndOf="@+id/on_slack_textview"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/slack_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:id="@+id/slack_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/slack"
+            android:layout_marginRight="30dp"/>
+
+        <ImageView
+            android:id="@+id/github_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/github"/>
+
+    </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

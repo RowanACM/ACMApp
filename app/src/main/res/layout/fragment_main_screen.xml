@@ -78,23 +78,27 @@
                 android:layout_below="@id/sign_in_google_button"
                 android:text="@string/main_info"/>
 
-
             <TextView
-                android:id="@+id/google_sign_out_textview"
+                android:id="@+id/meeting_time_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/about_text_view"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:visibility="gone"
-                android:text="@string/you_are_signed_into_your_google_account"/>
+                android:text="We meet every Friday from from 2-4 PM in Robinson 201a/b"/>
 
             <Button
-                android:id="@+id/google_sign_out_button"
+                android:id="@+id/calendar_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/google_sign_out_textview"
-                android:visibility="gone"
-                android:text="@string/sign_out"/>
+                android:text="Add to calendar"
+                android:layout_below="@id/meeting_time_textview"/>
+
+            <TextView
+                android:id="@+id/new_member_instructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/calendar_button"
+                android:layout_marginTop="20dp"
+                android:text="Instructions for new members:\n• Download this app ✔\n• Attend your first meeting\n• Sign in to the meeting\n• Sign up for Slack\n• Choose a committee\n• Join our Github organization"/>
 
             <Button
                 android:id="@+id/contact_eboard_button"
@@ -102,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/contact_eboard"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_below="@id/google_sign_out_button"/>
+                android:layout_below="@id/new_member_instructions"/>
 
         </RelativeLayout>
 

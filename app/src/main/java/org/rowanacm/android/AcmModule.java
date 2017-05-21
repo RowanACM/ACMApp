@@ -10,6 +10,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
@@ -74,6 +75,12 @@ public class AcmModule {
     @Singleton
     DatabaseReference providesFirebaseDatabase() {
         return FirebaseDatabase.getInstance().getReference();
+    }
+
+    @Provides
+    @Singleton
+    FirebaseMessaging providesFirebaseMessaging() {
+        return FirebaseMessaging.getInstance();
     }
 
 
