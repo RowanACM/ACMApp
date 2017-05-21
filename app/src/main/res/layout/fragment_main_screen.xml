@@ -76,14 +76,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sign_in_google_button"
-                android:text="@string/main_info"/>
+                android:text="@string/main_info"
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/meeting_time_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/about_text_view"
-                android:text="We meet every Friday from from 2-4 PM in Robinson 201a/b"/>
+                android:text="We meet every Friday from from 2-4 PM in Robinson 201a/b"
+                android:textSize="16sp"/>
 
             <Button
                 android:id="@+id/calendar_button"
@@ -98,15 +100,31 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/calendar_button"
                 android:layout_marginTop="20dp"
-                android:text="Instructions for new members:\n• Download this app ✔\n• Attend your first meeting\n• Sign in to the meeting\n• Sign up for Slack\n• Choose a committee\n• Join our Github organization"/>
+                android:text="Instructions for new members:\n• Download this app ✔\n• Attend your first meeting\n• Sign in to the meeting\n• Sign up for Slack\n• Choose a committee\n• Join our Github organization"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/have_questions_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_below="@id/new_member_instructions"
+                android:text="Have a question?"/>
 
             <Button
                 android:id="@+id/contact_eboard_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/contact_eboard"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:layout_below="@id/new_member_instructions"/>
+                android:layout_marginBottom="15dp"
+                android:layout_below="@id/have_questions_textview"/>
+
+            <TextView
+                android:id="@+id/social_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/contact_eboard_button"
+                android:text="Please like us on Facebook and follow us on Twitter! It helps us promote the club and attract more members."/>
 
         </RelativeLayout>
 
