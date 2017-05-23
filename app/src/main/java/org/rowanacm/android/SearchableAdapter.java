@@ -3,6 +3,7 @@ package org.rowanacm.android;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @param <K> View holder
  * @param <T> Item that the list contains
  */
-public abstract class SearchableAdapter<K extends RecyclerView.ViewHolder, T extends Searchable> extends RecyclerView.Adapter<K> {
+public abstract class SearchableAdapter<K extends RecyclerView.ViewHolder, T extends Searchable & Comparable<T>> extends RecyclerView.Adapter<K> {
 
     public static final int DISPLAY_DEFAULT = 10;
 
@@ -23,14 +24,13 @@ public abstract class SearchableAdapter<K extends RecyclerView.ViewHolder, T ext
         this(list, DISPLAY_DEFAULT);
     }
 
-    public SearchableAdapter(List<T> list, int numToDisplay) {
+    public SearchableAdapter(List<T> initList, int numToDisplay) {
         this.numToDisplay = numToDisplay;
-        this.listAll = list;
+        this.listAll = initList;
+        this.list = new ArrayList<>();
 
-        if (list.isEmpty()) {
-            this.list = list;
-        } else {
-            this.list = new ArrayList<>(list.subList(0, numToDisplay));
+        for (int i = 0; i < initList.size() && i < numToDisplay; i++) {
+            this.list.add(initList.get(i));
         }
     }
 
@@ -55,6 +55,21 @@ public abstract class SearchableAdapter<K extends RecyclerView.ViewHolder, T ext
         for (int i = 0; i < numToDisplay && i < result.size(); i++) {
             list.add(result.get(i));
         }
+        notifyDataSetChanged();
+    }
+
+    public void addItem(T item) {
+        listAll.add(item);
+        if (listAll.size() < numToDisplay) {
+            listAll.add(item);
+        }
+        Collections.sort(listAll);
+
+        list.clear();
+        for (int i = 0; i < listAll.size() && i < numToDisplay; i++) {
+            this.list.add(listAll.get(i));
+        }
+
         notifyDataSetChanged();
     }
 

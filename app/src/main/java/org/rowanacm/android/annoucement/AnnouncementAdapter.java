@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import org.rowanacm.android.SearchableAdapter;
 
-import java.util.Collections;
 import java.util.List;
 
 import static butterknife.ButterKnife.findById;
@@ -78,16 +77,5 @@ public class AnnouncementAdapter extends SearchableAdapter<AnnouncementAdapter.A
             });
         }
     }
-
-    public void addItem(Announcement announcement) {
-        listAll.add(announcement);
-        if (listAll.size() < numToDisplay) {
-            listAll.add(announcement);
-        }
-        Collections.sort(list);
-        Collections.sort(listAll);
-        notifyDataSetChanged();
-    }
-
 
 }

@@ -30,5 +30,16 @@ public class BaseFragment extends Fragment {
         return null;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setHasOptionsMenu(isVisible());
+
+    }
+
+    public String getTitle() {
+        return "";
+    }
+
 
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Rowan ACM</string>
+    <string name="app_name">ACM</string>
     <string name="attendance">Attendance</string>
     <string name="sign_in_to_the_meeting">Sign in to the meeting</string>
     <string name="title_activity_settings">Settings</string>
@@ -62,7 +62,7 @@
         <item>3</item>
     </string-array>
 
-    <string-array name="multi_select_list_preference_default_value" />
+    <string-array name="multi_select_list_preference_default_value"/>
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
 

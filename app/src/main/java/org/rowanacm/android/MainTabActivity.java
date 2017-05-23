@@ -51,6 +51,8 @@ public class MainTabActivity extends AppCompatActivity {
 
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    private boolean showingAdminFragment;
+
     private static final int REQUEST_CODE_GOOGLE_SIGN_IN = 4;
 
     @Inject FirebaseAuth firebaseAuth;
@@ -61,6 +63,8 @@ public class MainTabActivity extends AppCompatActivity {
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.container) ViewPager viewPager;
     @BindView(R.id.toolbar) Toolbar toolbar;
+
+    SectionsPagerAdapter sectionsPagerAdapter;
 
     // Whether the current user is an admin and is able to create announcements
     private boolean admin;
@@ -73,7 +77,8 @@ public class MainTabActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        viewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), this));
+        sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(sectionsPagerAdapter);
         viewPager.addOnPageChangeListener(new EmptyTabChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -99,13 +104,21 @@ public class MainTabActivity extends AppCompatActivity {
         };
     }
 
+    public void showAdminFragment() {
+        if (!showingAdminFragment) {
+            showingAdminFragment = true;
+            sectionsPagerAdapter.addFragment(AdminFragment.newInstance());
+            viewPager.setAdapter(sectionsPagerAdapter);
+        }
+    }
+
 
     /**
      * Create the menu bar on the top of Main Activity
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_main_tab, menu);
         return true;
     }
 
@@ -214,6 +227,7 @@ public class MainTabActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null && ((boolean)dataSnapshot.getValue())) {
                     admin = true;
+                    showAdminFragment();
                 }
             }
 

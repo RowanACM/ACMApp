@@ -2,12 +2,17 @@ package org.rowanacm.android.annoucement;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.us.acm.R;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -28,6 +33,8 @@ public class AnnouncementListFragment extends BaseFragment {
     private static final String LOG_TAG = AnnouncementListFragment.class.getSimpleName();
 
     private AnnouncementAdapter adapter;
+
+    SearchView searchView;
 
     @BindView(R.id.announcement_recycler_view) RecyclerView recyclerView;
 
@@ -52,6 +59,39 @@ public class AnnouncementListFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         setupRecyclerView();
         announcementsListener();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        menu.clear();
+        inflater.inflate(R.menu.annoucement_search_menu, menu);
+
+        final MenuItem item = menu.findItem(R.id.action_search);
+        item.setVisible(true);
+
+        searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.filter(query);
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.filter(newText);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public String getTitle() {
+        return "ANNOUNCEMENTS";
     }
 
     public ChildEventListener announcementsListener() {
@@ -88,5 +128,10 @@ public class AnnouncementListFragment extends BaseFragment {
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(adapter);
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

@@ -6,10 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.us.acm.R;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,7 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MeFragment extends Fragment {
+public class MeFragment extends BaseFragment {
 
     private static final String LOG_TAG = MeFragment.class.getSimpleName();
 
@@ -70,10 +71,17 @@ public class MeFragment extends Fragment {
         setupAuthListener();
     }
 
+
+
     @Override
     public void onStart() {
         super.onStart();
         FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public String getTitle() {
+        return "ME";
     }
 
     private void setupAuthListener() {
@@ -168,6 +176,11 @@ public class MeFragment extends Fragment {
         }
     }
 
-
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.menu_main_tab, menu);
+    }
 
 }

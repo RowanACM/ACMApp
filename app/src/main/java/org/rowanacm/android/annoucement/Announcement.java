@@ -47,12 +47,11 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         }
 
         search = search.toLowerCase();
-        return author.toLowerCase().contains(search) ||
-                committee.toLowerCase().contains(search) ||
-                date.toLowerCase().contains(search) ||
-                subj.toLowerCase().contains(search) ||
-                text.toLowerCase().contains(search) ||
-                title.toLowerCase().contains(search);
+        return  (author != null && author.toLowerCase().contains(search))       ||
+                (committee != null && committee.toLowerCase().contains(search)) ||
+                (subj != null && subj.toLowerCase().contains(search))           ||
+                (text != null && text.toLowerCase().contains(search))           ||
+                (title != null && title.toLowerCase().contains(search));
     }
 
     public String getAuthor() {

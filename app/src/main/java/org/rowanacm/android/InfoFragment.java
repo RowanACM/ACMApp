@@ -13,6 +13,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.us.acm.R;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -112,6 +114,13 @@ public class InfoFragment extends BaseFragment {
                 updateGoogleSignInButtons(user != null);
             }
         };
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.menu_main_tab, menu);
     }
 
     private void loadHeaderImage(View view) {
@@ -413,5 +422,10 @@ public class InfoFragment extends BaseFragment {
             progressDialog.setMessage(getString(R.string.attendance_loading));
             progressDialog.show();
         }
+    }
+
+    @Override
+    public String getTitle() {
+        return "INFO";
     }
 }
