@@ -1,22 +1,24 @@
 language: android
-jdk:
-    - oraclejdk8
+jdk: oraclejdk8
+
 android:
   components:
-    # Uncomment the lines below if you want to
-    # use the latest revision of Android SDK Tools
+    # Use the latest revision of Android SDK Tools
     - platform-tools
     - tools
 
-    # The BuildTools version used by your project
     - build-tools-25.0.0
-
-    # The SDK version used to compile your project
     - android-25
 
     # Additional components
     - addon
     - extra
+    
+before_install:
+    # Unencypt the keystore files
+    - openssl aes-256-cbc -K $encrypted_b2f7ee7d0bbd_key -iv $encrypted_b2f7ee7d0bbd_iv -in travis_ci_secrets.tar.enc -out travis_ci_secrets.tar -d
+    - tar xvf travis_ci_secrets.tar
+    - mv rowan-acm-service-account.json app
     
 script:
     # Accept the licenses. See http://stackoverflow.com/questions/38096225/automatically-accept-all-sdk-licences
@@ -25,15 +27,9 @@ script:
     - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
     - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
     
-    # Build the app
-    - ./gradlew build
+    # Compile and test the app
+    - ./gradlew test
     
     # If the commit message contains DEPLOYALPHA, deploy the apk to the Play Store
     - test "${TRAVIS_COMMIT_MESSAGE#*DEPLOYALPHA}" != "$TRAVIS_COMMIT_MESSAGE" && echo "DEPLOYALPHA found in $TRAVIS_COMMIT_MESSAGE" && ./gradlew publishApkRelease || true
     
-before_install:
-    - echo "$TRAVIS_COMMIT_MESSAGE"
-    - echo "$TRAVIS_COMMIT"
-    - openssl aes-256-cbc -K $encrypted_b2f7ee7d0bbd_key -iv $encrypted_b2f7ee7d0bbd_iv -in travis_ci_secrets.tar.enc -out travis_ci_secrets.tar -d
-    - tar xvf travis_ci_secrets.tar
-    - mv rowan-acm-service-account.json app
