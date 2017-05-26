@@ -2,10 +2,11 @@ package org.rowanacm.android.firebase;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.us.acm.BuildConfig;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+
+import org.rowanacm.android.BuildConfig;
 
 /**
  * A wrapper for FirebaseRemoteConfig

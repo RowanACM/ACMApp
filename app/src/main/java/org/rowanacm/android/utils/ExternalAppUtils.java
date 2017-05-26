@@ -9,7 +9,8 @@ import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
-import android.us.acm.R;
+
+import org.rowanacm.android.R;
 
 
 public class ExternalAppUtils {

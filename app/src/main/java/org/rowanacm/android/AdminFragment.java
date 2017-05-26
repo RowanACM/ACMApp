@@ -2,7 +2,6 @@ package org.rowanacm.android;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.us.acm.R;
 
 
 public class AdminFragment extends BaseFragment {

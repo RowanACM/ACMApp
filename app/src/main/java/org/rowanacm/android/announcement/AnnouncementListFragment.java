@@ -1,4 +1,4 @@
-package org.rowanacm.android.annoucement;
+package org.rowanacm.android.announcement;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.us.acm.R;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import org.rowanacm.android.BaseFragment;
+import org.rowanacm.android.R;
 
 import java.util.ArrayList;
 

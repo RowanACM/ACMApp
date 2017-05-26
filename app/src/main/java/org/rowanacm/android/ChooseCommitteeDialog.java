@@ -3,7 +3,6 @@ package org.rowanacm.android;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.us.acm.R;
 import android.view.View;
 import android.view.Window;
 import android.widget.RadioButton;

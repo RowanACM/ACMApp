@@ -1,10 +1,9 @@
-package org.rowanacm.android.annoucement;
+package org.rowanacm.android.announcement;
 
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.us.acm.R;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -14,6 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.rowanacm.android.R;
 
 import java.text.DateFormat;
 import java.util.Date;

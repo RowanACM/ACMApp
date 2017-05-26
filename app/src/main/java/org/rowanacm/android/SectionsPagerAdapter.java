@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import org.rowanacm.android.annoucement.AnnouncementListFragment;
+import org.rowanacm.android.announcement.AnnouncementListFragment;
 
 import java.util.ArrayList;
 import java.util.List;

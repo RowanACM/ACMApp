@@ -1,8 +1,6 @@
 package org.rowanacm.android;
 
 import android.content.Context;
-import android.us.acm.BuildConfig;
-import android.us.acm.R;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;

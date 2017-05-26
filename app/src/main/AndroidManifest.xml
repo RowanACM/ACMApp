@@ -1,65 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.us.acm">
+          package="org.rowanacm.android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.NFC" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.NFC"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <uses-feature
         android:name="android.hardware.nfc"
-        android:required="true" />
+        android:required="false"/>
 
     <application
-        android:name="org.rowanacm.android.AcmApplication"
+        android:name=".AcmApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name="org.rowanacm.android.firebase.MessagingService">
+        <service android:name=".firebase.MessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
-
         <activity
-            android:name="org.rowanacm.android.SettingsActivity"
+            android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="org.rowanacm.android.MainTabActivity">
-
+            android:parentActivityName=".MainTabActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.rowanacm.android.MainTabActivity" />
-
-            </activity>
-
+                android:value="org.rowanacm.android.MainTabActivity"/>
+        </activity>
         <activity
-            android:name="org.rowanacm.android.MainTabActivity"
+            android:name=".MainTabActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name="org.rowanacm.android.annoucement.AnnouncementActivity"
+            android:name=".announcement.AnnouncementActivity"
             android:label="@string/title_activity_announcement"
             android:parentActivityName="org.rowanacm.android.MainTabActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.rowanacm.android.MainTabActivity" />
-        </activity>
-        <activity
-            android:name="org.rowanacm.android.AboutActivity"
-            android:label="@string/title_activity_about"
-            android:parentActivityName="org.rowanacm.android.MainTabActivity"
-            android:theme="@style/AppTheme.MaterialAboutActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.rowanacm.android.MainTabActivity" />
+                android:value="org.rowanacm.android.MainTabActivity"/>
         </activity>
     </application>
 

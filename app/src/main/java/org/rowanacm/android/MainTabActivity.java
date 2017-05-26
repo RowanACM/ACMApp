@@ -8,7 +8,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.us.acm.R;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.rowanacm.android.annoucement.CreateAnnouncementDialog;
+import org.rowanacm.android.announcement.CreateAnnouncementDialog;
 import org.rowanacm.android.utils.AcmUtils;
 
 import javax.inject.Inject;
@@ -132,9 +131,6 @@ public class MainTabActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.settings:
                 switchActivity(SettingsActivity.class);
-                return true;
-            case R.id.about:
-                startActivity(new Intent(this, AboutActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

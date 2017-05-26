@@ -1,15 +1,15 @@
-package org.rowanacm.android.annoucement;
+package org.rowanacm.android.announcement;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.us.acm.R;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.rowanacm.android.R;
 import org.rowanacm.android.SearchableAdapter;
 
 import java.util.List;

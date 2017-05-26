@@ -6,13 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.us.acm.R;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import org.rowanacm.android.MainTabActivity;
+import org.rowanacm.android.R;
 
 /**
  * Handles messages received by Firebase Messaging Service

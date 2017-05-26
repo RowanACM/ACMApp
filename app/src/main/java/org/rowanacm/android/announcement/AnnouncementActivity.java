@@ -1,9 +1,8 @@
-package org.rowanacm.android.annoucement;
+package org.rowanacm.android.announcement;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
-import android.us.acm.R;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.rowanacm.android.R;
 import org.rowanacm.android.utils.ExternalAppUtils;
 
 import java.util.Date;

@@ -1,7 +1,6 @@
 package org.rowanacm.android;
 
 import android.support.annotation.LayoutRes;
-import android.us.acm.R;
 import android.view.Menu;
 import android.view.MenuInflater;
 

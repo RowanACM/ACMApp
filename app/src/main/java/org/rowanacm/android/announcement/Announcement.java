@@ -1,4 +1,4 @@
-package org.rowanacm.android.annoucement;
+package org.rowanacm.android.announcement;
 
 import android.support.annotation.NonNull;
 
