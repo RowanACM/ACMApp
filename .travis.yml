@@ -28,7 +28,7 @@ script:
     - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
     
     # Compile and test the app
-    - ./gradlew test
+    - ./gradlew test --quiet
     
     # If the commit message contains DEPLOYALPHA, deploy the apk to the Play Store
     - test "${TRAVIS_COMMIT_MESSAGE#*DEPLOYALPHA}" != "$TRAVIS_COMMIT_MESSAGE" && echo "DEPLOYALPHA found in $TRAVIS_COMMIT_MESSAGE" && ./gradlew publishApkRelease || true
