@@ -1,6 +1,7 @@
 package org.rowanacm.android.annoucement;
 
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,24 +10,22 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.us.acm.R;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import org.rowanacm.android.BaseFragment;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class AnnouncementListFragment extends BaseFragment {
 
@@ -46,12 +45,8 @@ public class AnnouncementListFragment extends BaseFragment {
         return new AnnouncementListFragment();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_announcement_list, container, false);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
+    public @LayoutRes int getLayout() {
+        return R.layout.fragment_announcement_list;
     }
 
     @Override
@@ -118,6 +113,13 @@ public class AnnouncementListFragment extends BaseFragment {
     }
     public void addAnnouncement(Announcement announcement) {
         adapter.addItem(announcement);
+        if (announcement.getImageUrl() != null && announcement.getImageUrl().length() > 0) {
+            preloadAnnouncementImage(announcement);
+        }
+    }
+
+    private void preloadAnnouncementImage(Announcement announcement) {
+        Picasso.with(getActivity()).load(announcement.getImageUrl()).fetch();
     }
 
     private void setupRecyclerView() {
@@ -130,8 +132,4 @@ public class AnnouncementListFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
 }

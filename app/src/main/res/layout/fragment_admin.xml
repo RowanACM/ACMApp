@@ -2,13 +2,39 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin"
              tools:context="org.rowanacm.android.AdminFragment">
 
     <TextView
+        android:id="@+id/admin_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textSize="20sp"
         android:text="Admin"/>
+
+    <Button
+        android:id="@+id/toggle_attendance_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/admin_title"
+        android:text="Enable attendance"/>
+
+    <Button
+        android:id="@+id/export_attendance_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toggle_attendance_button"
+        android:text="Export attendance"/>
+
+    <Button
+        android:id="@+id/create_announcement_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/export_attendance_button"
+        android:text="Create Announcement"/>
 
 </RelativeLayout>

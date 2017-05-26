@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.ContextCompat;
+import android.us.acm.R;
 
 
 public class ExternalAppUtils {
@@ -29,12 +31,9 @@ public class ExternalAppUtils {
         }
     }
 
-    /**
-     * Open a url in a Chrome Custom Tab
-     * @param url the url to open
-     */
     public static void openUrl(Context context, String url) {
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        builder.setToolbarColor(ContextCompat.getColor(context, R.color.primary));
         CustomTabsIntent customTabsIntent = builder.build();
         customTabsIntent.launchUrl(context, Uri.parse(url));
     }

@@ -1,6 +1,9 @@
 package org.rowanacm.android;
 
 import android.content.Context;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.us.acm.R;
 import android.widget.Toast;
 
@@ -19,27 +22,21 @@ public class AboutActivity extends MaterialAboutActivity {
 
         MaterialAboutCard.Builder appCardBuilder = new MaterialAboutCard.Builder();
 
-        // Add items to card
-        String title = getString(R.string.app_name);
+        appCardBuilder.addItem(new MaterialAboutTitleItem(R.string.app_name, R.mipmap.ic_launcher));
 
-        appCardBuilder.addItem(new MaterialAboutTitleItem.Builder()
-                .text(title)
-                .icon(R.mipmap.ic_launcher)
-                .build());
-
-        appCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text(R.string.version)
-                .subText(ExternalAppUtils.getVersionName(AboutActivity.this))
-                .icon(R.drawable.ic_about_info)
-                .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
+        appCardBuilder.addItem(new MaterialAboutActionItem(
+                getString(R.string.version),
+                ExternalAppUtils.getVersionName(AboutActivity.this),
+                ContextCompat.getDrawable(this, R.drawable.ic_about_info),
+                new MaterialAboutActionItem.OnClickListener() {
                     @Override
                     public void onClick() {
                         if (Math.random() < 0.1) {
                             Toast.makeText(AboutActivity.this, "Easter \uD83E\uDD5A", Toast.LENGTH_SHORT).show();
                         }
                     }
-                })
-                .build());
+                }));
+
         appCardBuilder.addItem(new MaterialAboutActionItem.Builder()
                 .text(R.string.changelog)
                 .icon(R.drawable.ic_settings_black_48dp)
@@ -56,7 +53,7 @@ public class AboutActivity extends MaterialAboutActivity {
                 .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
                     @Override
                     public void onClick() {
-                        Toast.makeText(AboutActivity.this, "Coming Soon", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AboutActivity.this, "Coming soon", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .build());
@@ -87,30 +84,9 @@ public class AboutActivity extends MaterialAboutActivity {
                 .build());
 
         MaterialAboutCard.Builder supportCardBuilder = new MaterialAboutCard.Builder();
-        supportCardBuilder.title("Support Development");
-        supportCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text(R.string.report_bugs)
-                .subText("Report bugs or request new features.")
-                .icon(R.drawable.ic_settings_black_48dp)
-                .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
-                    @Override
-                    public void onClick() {
-                        ExternalAppUtils.openUrl(AboutActivity.this, getString(R.string.bug_report_url));
-                    }
-                })
-                .build());
-
-        supportCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text(R.string.rate_title)
-                .subText(R.string.rate_description)
-                .icon(R.drawable.ic_play_store)
-                .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
-                    @Override
-                    public void onClick() {
-                        ExternalAppUtils.openUrl(AboutActivity.this, getString(R.string.play_store_url));
-                    }
-                })
-                .build());
+        supportCardBuilder.title(R.string.support_development);
+        supportCardBuilder.addItem(buildCard(R.string.report_bugs, R.string.bug_subtext, R.drawable.ic_settings_black_48dp, getString(R.string.bug_report_url)));
+        supportCardBuilder.addItem(buildCard(R.string.rate_title, R.string.rate_description, R.drawable.ic_play_store,  getString(R.string.play_store_url)));
 
         supportCardBuilder.addItem(new MaterialAboutActionItem.Builder()
                 .text(R.string.privacy_policy)
@@ -128,6 +104,18 @@ public class AboutActivity extends MaterialAboutActivity {
                 .addCard(authorCardBuilder.build())
                 .addCard(supportCardBuilder.build())
                 .build();
+    }
+
+    private MaterialAboutActionItem buildCard(@StringRes int text, @StringRes int subtext, @DrawableRes int icon, final String url) {
+        return new MaterialAboutActionItem.Builder()
+                .text(text).subText(subtext)
+                .icon(icon)
+                .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
+                    @Override
+                    public void onClick() {
+                        ExternalAppUtils.openUrl(AboutActivity.this, url);
+                    }
+                }).build();
     }
 
     @Override

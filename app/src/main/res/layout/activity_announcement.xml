@@ -60,6 +60,15 @@
             android:textSize="18sp"
             tools:text="There is no meeting next week"/>
 
+        <Button
+            android:id="@+id/announcement_url_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/announcement_text_view"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="Open url"/>
+
 
     </RelativeLayout>
 

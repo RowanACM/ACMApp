@@ -7,12 +7,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.us.acm.R;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +51,6 @@ import java.util.TimeZone;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -87,11 +87,8 @@ public class InfoFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_main_screen, container, false);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
+    public @LayoutRes int getLayout() {
+        return R.layout.fragment_main_screen;
     }
 
     @Override
@@ -427,5 +424,24 @@ public class InfoFragment extends BaseFragment {
     @Override
     public String getTitle() {
         return "INFO";
+    }
+
+    @OnClick(R.id.uninstall_check)
+    public void uninstall(CheckBox checkBox) {
+        if(!checkBox.isChecked()) {
+            Intent intent = new Intent(Intent.ACTION_DELETE);
+            intent.setData(Uri.parse("package:" + getActivity().getPackageName()));
+            startActivity(intent);
+        }
+    }
+
+    @OnClick(R.id.facebook_button)
+    public void openFacebook() {
+        ExternalAppUtils.openUrl(getActivity(), "https://www.facebook.com/rowanacm");
+    }
+
+    @OnClick(R.id.twitter_button)
+    public void openTwitter() {
+        ExternalAppUtils.openUrl(getActivity(), "https://www.twitter.com/rowanacm");
     }
 }

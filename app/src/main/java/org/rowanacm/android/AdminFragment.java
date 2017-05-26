@@ -1,10 +1,8 @@
 package org.rowanacm.android;
 
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.us.acm.R;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 
 public class AdminFragment extends BaseFragment {
@@ -23,10 +21,8 @@ public class AdminFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin, container, false);
+    public @LayoutRes int getLayout() {
+        return R.layout.fragment_admin;
     }
 
     @Override

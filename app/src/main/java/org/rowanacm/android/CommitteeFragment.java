@@ -1,12 +1,9 @@
 package org.rowanacm.android;
 
-import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.us.acm.R;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 
 public class CommitteeFragment extends BaseFragment {
@@ -20,9 +17,8 @@ public class CommitteeFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_committee, container, false);
+    public @LayoutRes int getLayout() {
+        return R.layout.fragment_committee;
     }
 
     @Override

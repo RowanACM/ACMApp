@@ -13,12 +13,24 @@
         android:layout_height="wrap_content"
         tools:context="org.rowanacm.android.MainActivity">
 
+        <ImageView
+            android:id="@+id/header_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:contentDescription="@string/header_image"
+            android:scaleType="fitXY"/>
+
 
         <RelativeLayout
             android:id="@+id/attendance_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary"
+            android:background="@color/accent"
+            android:layout_below="@id/header_image_view"
+            android:layout_marginTop="20dp"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
@@ -29,7 +41,9 @@
                 android:id="@+id/attendance_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:text="@string/attendance"
+                android:textSize="18sp"
                 android:textColor="@color/white"/>
 
             <Button
@@ -42,17 +56,6 @@
 
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/header_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:cropToPadding="true"
-            android:contentDescription="@string/header_image"
-            android:layout_below="@id/attendance_layout"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:scaleType="fitXY"/>
-
         <RelativeLayout
             android:id="@+id/info_layout"
             android:layout_width="match_parent"
@@ -61,15 +64,15 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:paddingBottom="@dimen/activity_vertical_margin"
-            android:layout_below="@id/header_image_view">
+            android:layout_below="@id/attendance_layout">
 
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/sign_in_google_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"/>
 
             <TextView
                 android:id="@+id/about_text_view"
@@ -125,6 +128,37 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/contact_eboard_button"
                 android:text="Please like us on Facebook and follow us on Twitter! It helps us promote the club and attract more members."/>
+
+            <Button
+                android:id="@+id/facebook_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Facebook"
+                android:layout_below="@id/social_textview"/>
+
+            <Button
+                android:id="@+id/twitter_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Twitter"
+                android:layout_alignTop="@id/facebook_button"
+                android:layout_toRightOf="@id/facebook_button"/>
+
+            <TextView
+                android:id="@+id/app_installed_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/facebook_button"
+                android:layout_marginTop="20dp"
+                android:text="This app is installed"/>
+
+            <CheckBox
+                android:id="@+id/uninstall_check"
+                android:layout_below="@id/app_installed_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:enabled="true"/>
 
         </RelativeLayout>
 

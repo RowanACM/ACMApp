@@ -99,13 +99,13 @@
     <string name="subject">Subject</string>
     <string name="text">Text</string>
     <string name="meeting_sign_in">Meeting sign in</string>
-    <string name="you_are_signed_into_your_google_account">You are signed into your Google Account</string>
+    <string name="you_are_signed_into_your_google_account">You signed in to your Google Account</string>
     <string name="sign_out">Sign Out</string>
     <string name="on_slack">You are on slack ✓</string>
     <string name="not_on_slack">You are not on slack</string>
     <string name="sign_up_slack">Sign Up</string>
-    <string name="signed_into_meeting">You are signed in to the meeting ✓</string>
-    <string name="sign_in_google_before_meeting">Sign in to your google account before you can sign in to the meeting</string>
+    <string name="signed_into_meeting">You signed in to the meeting ✓</string>
+    <string name="sign_in_google_before_meeting">Sign in to your Google account</string>
     <string name="signed_out">Signed out</string>
     <string name="error_sign_out_not_signed_in">You are not signed in. Unable to sign out</string>
     <string name="title_activity_announcement">Announcement</string>
@@ -137,6 +137,8 @@
     <string name="me_title">Me</string>
     <string name="user_on_slack">You are on slack</string>
     <string name="user_not_on_slack">You are not on slack</string>
+    <string name="bug_subtext">Report bugs or request new features.</string>
+    <string name="support_development">Support Development</string>
 
     <string-array name="committee_array">
         <item>General</item>

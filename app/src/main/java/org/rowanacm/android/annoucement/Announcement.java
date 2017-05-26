@@ -20,11 +20,12 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
     private String title;
     private long timestamp;
     private String imageUrl;
+    private String url;
 
     public Announcement() {
     }
 
-    public Announcement(String author, String committee, String date, String subj, String text, String title, long timestamp, String imageUrl) {
+    public Announcement(String author, String committee, String date, String subj, String text, String title, long timestamp, String imageUrl, String url) {
         this.author = author;
         this.committee = committee;
         this.date = date;
@@ -33,6 +34,7 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         this.title = title;
         this.timestamp = timestamp;
         this.imageUrl = imageUrl;
+        this.url = url;
     }
 
     @Override
@@ -118,6 +120,14 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         this.imageUrl = imageUrl;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -133,7 +143,9 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         if (subj != null ? !subj.equals(that.subj) : that.subj != null) return false;
         if (text != null ? !text.equals(that.text) : that.text != null) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        return imageUrl != null ? imageUrl.equals(that.imageUrl) : that.imageUrl == null;
+        if (imageUrl != null ? !imageUrl.equals(that.imageUrl) : that.imageUrl != null)
+            return false;
+        return url != null ? url.equals(that.url) : that.url == null;
 
     }
 
@@ -147,6 +159,7 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
         result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
+        result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
     }
 }

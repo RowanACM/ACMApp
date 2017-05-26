@@ -4,15 +4,14 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.us.acm.R;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,7 +25,6 @@ import com.google.firebase.database.ValueEventListener;
 import org.rowanacm.android.utils.ExternalAppUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -56,13 +54,8 @@ public class MeFragment extends BaseFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_me, container, false);
-        ButterKnife.bind(this, rootView);
-        return rootView;
+    public @LayoutRes int getLayout() {
+        return R.layout.fragment_me;
     }
 
     @Override
