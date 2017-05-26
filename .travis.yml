@@ -1,18 +1,5 @@
 language: android
 jdk: oraclejdk8
-
-android:
-  components:
-    # Use the latest revision of Android SDK Tools
-    - platform-tools
-    - tools
-
-    - build-tools-25.0.0
-    - android-25
-
-    # Additional components
-    - addon
-    - extra
     
 before_install:
     # Unencypt the keystore files
