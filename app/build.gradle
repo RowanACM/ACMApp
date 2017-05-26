@@ -28,8 +28,8 @@ android {
         applicationId "org.rowanacm.android"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 16
-        versionName "0.1.6"
+        versionCode 17
+        versionName "0.1.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -78,7 +78,7 @@ dependencies {
     // Butter knife
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-    
+
     compile 'com.squareup.picasso:picasso:2.5.2'
 
     // Leak canary
@@ -94,7 +94,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-if(System.getenv("CI")) {
+if (System.getenv("CI")) {
     play {
         jsonFile = file('rowan-acm-service-account.json')
     }
