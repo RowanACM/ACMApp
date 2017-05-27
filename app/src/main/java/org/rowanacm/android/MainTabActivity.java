@@ -28,7 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import org.rowanacm.android.announcement.CreateAnnouncementDialog;
@@ -54,6 +54,7 @@ public class MainTabActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_GOOGLE_SIGN_IN = 4;
 
+    @Inject DatabaseReference database;
     @Inject FirebaseAuth firebaseAuth;
     @Inject GoogleSignInOptions gso;
     @Inject GoogleApiClient googleApiClient;
@@ -67,6 +68,7 @@ public class MainTabActivity extends AppCompatActivity {
 
     // Whether the current user is an admin and is able to create announcements
     private boolean admin;
+    private ValueEventListener adminListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,16 +78,7 @@ public class MainTabActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(sectionsPagerAdapter);
-        viewPager.addOnPageChangeListener(new EmptyTabChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                AcmUtils.setFabVisibility(fab, position == 1 && admin);
-            }
-        });
-        tabLayout.setupWithViewPager(viewPager);
+        setupTabLayout();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -103,6 +96,19 @@ public class MainTabActivity extends AppCompatActivity {
         };
     }
 
+    private void setupTabLayout() {
+        sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.addOnPageChangeListener(new EmptyTabChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                AcmUtils.setFabVisibility(fab, position == 1 && admin);
+            }
+        });
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
     public void showAdminFragment() {
         if (!showingAdminFragment) {
             showingAdminFragment = true;
@@ -110,7 +116,6 @@ public class MainTabActivity extends AppCompatActivity {
             viewPager.setAdapter(sectionsPagerAdapter);
         }
     }
-
 
     /**
      * Create the menu bar on the top of Main Activity
@@ -151,6 +156,9 @@ public class MainTabActivity extends AppCompatActivity {
             firebaseAuth.removeAuthStateListener(mAuthListener);
         }
         googleApiClient.disconnect();
+        if (adminListener != null && firebaseAuth.getCurrentUser() != null) {
+            database.child("members").child(firebaseAuth.getCurrentUser().getUid()).child("admin").removeEventListener(adminListener);
+        }
     }
 
     public void signInGoogle() {
@@ -168,7 +176,7 @@ public class MainTabActivity extends AppCompatActivity {
 
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-                // Google Sign In was successful, authenticate with Firebase
+                // Google sign in was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
@@ -216,20 +224,25 @@ public class MainTabActivity extends AppCompatActivity {
         new CreateAnnouncementDialog(this).create().show();
     }
 
-    // TODO: Something in this method is causing a memory leak
     private void adminListener(final String userid) {
-        FirebaseDatabase.getInstance().getReference().child("members").child(userid).child("admin").addValueEventListener(new ValueEventListener() {
+        if (adminListener != null) {
+            database.child("members").child(userid).child("admin").removeEventListener(adminListener);
+        }
+
+        adminListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null && ((boolean)dataSnapshot.getValue())) {
+                if (dataSnapshot.getValue() != null && ((boolean) dataSnapshot.getValue())) {
                     admin = true;
                     showAdminFragment();
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        database.child("members").child(userid).child("admin").addValueEventListener(adminListener);
     }
 
     /**

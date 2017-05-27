@@ -8,8 +8,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,10 +35,11 @@ public class MeFragment extends BaseFragment {
     @BindView(R.id.on_slack_textview) TextView onSlackTextView;
     @BindView(R.id.meeting_count_textview) TextView meetingCountTextView;
     @BindView(R.id.committee_text_view) TextView committeeTextView;
+    @BindView(R.id.email_textview) TextView emailTextView;
     @BindView(R.id.profile_pic_image_view) ImageView profilePicImageView;
 
     public MeFragment() {
-        // Required empty public constructor
+
     }
 
     public static MeFragment newInstance() {
@@ -63,8 +62,6 @@ public class MeFragment extends BaseFragment {
         setupAuthListener();
     }
 
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -80,27 +77,21 @@ public class MeFragment extends BaseFragment {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                Log.d(LOG_TAG, "onAuthStateChanged() called with: firebaseAuth = [" + firebaseAuth + "]");
-
                 FirebaseUser user = firebaseAuth.getCurrentUser();
 
                 if (user != null) {
                     // User is signed in
-                    String uid = user.getUid();
-                    Log.d(LOG_TAG, "onAuthStateChanged:signed_in:" + uid);
-
-                    String name = user.getDisplayName();
-
-                    nameTextView.setText(name);
+                    nameTextView.setText(user.getDisplayName());
+                    emailTextView.setText(user.getEmail());
 
                     FirebaseDatabase.getInstance().getReference("members").child(user.getUid()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             int meeting_count = dataSnapshot.child("meeting_count").getValue(Integer.class);
-                            //meetingCountTextView.setText("Number of meetings attended: " + meeting_count);
+                            meetingCountTextView.setText(String.valueOf(meeting_count));
 
                             String committee = dataSnapshot.child("committee").getValue(String.class);
-                            //committeeTextView.setText("Committee: " + committee);
+                            committeeTextView.setText(String.valueOf(committee) + " Committee");
 
                             boolean onSlack = dataSnapshot.child("on_slack").getValue(Boolean.class);
                             String text;
@@ -166,13 +157,6 @@ public class MeFragment extends BaseFragment {
         } else {
             ExternalAppUtils.openPlayStore(getActivity(), "com.Slack");
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
-        inflater.inflate(R.menu.menu_main_tab, menu);
     }
 
 }

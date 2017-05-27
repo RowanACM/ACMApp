@@ -17,17 +17,27 @@
         android:text="Admin"/>
 
     <Button
-        android:id="@+id/toggle_attendance_button"
+        android:id="@+id/enable_attendance_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/admin_title"
         android:text="Enable attendance"/>
 
     <Button
+        android:id="@+id/disable_attendance_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/admin_title"
+        android:layout_toRightOf="@id/enable_attendance_button"
+        android:text="Disable attendance"/>
+
+
+    <Button
         android:id="@+id/export_attendance_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toggle_attendance_button"
+        android:layout_below="@id/enable_attendance_button"
+        android:enabled="false"
         android:text="Export attendance"/>
 
     <Button
@@ -35,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/export_attendance_button"
+        android:enabled="false"
         android:text="Create Announcement"/>
 
 </RelativeLayout>

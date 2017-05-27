@@ -60,9 +60,6 @@ public abstract class SearchableAdapter<K extends RecyclerView.ViewHolder, T ext
 
     public void addItem(T item) {
         listAll.add(item);
-        if (listAll.size() < numToDisplay) {
-            listAll.add(item);
-        }
         Collections.sort(listAll);
 
         list.clear();

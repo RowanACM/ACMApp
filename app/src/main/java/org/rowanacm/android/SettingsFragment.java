@@ -3,9 +3,14 @@ package org.rowanacm.android;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.rowanacm.android.utils.ExternalAppUtils;
@@ -18,6 +23,7 @@ import javax.inject.Inject;
 public class SettingsFragment extends PreferenceFragment {
 
     @Inject FirebaseAuth firebaseAuth;
+    @Inject GoogleApiClient googleApiClient;
 
     public SettingsFragment() {
     }
@@ -52,12 +58,23 @@ public class SettingsFragment extends PreferenceFragment {
         google_sign_out.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                firebaseAuth.signOut();
+                signOut();
                 google_sign_out.setTitle("Sign in");
                 return true;
             }
         });
 
 
+    }
+
+    private void signOut() {
+        Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        firebaseAuth.signOut();
+                        Toast.makeText(getActivity(), R.string.signed_out, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

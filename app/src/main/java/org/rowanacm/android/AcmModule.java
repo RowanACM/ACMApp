@@ -71,7 +71,7 @@ public class AcmModule {
 
     @Provides
     @Singleton
-    DatabaseReference providesFirebaseDatabase() {
+    DatabaseReference providesFirebaseDatabaseReference() {
         return FirebaseDatabase.getInstance().getReference();
     }
 
@@ -82,4 +82,15 @@ public class AcmModule {
     }
 
 
+    @Provides
+    @Singleton
+    FirebaseDatabase providesFirebaseDatabase() {
+        return FirebaseDatabase.getInstance();
+    }
+
+    @Provides
+    @Singleton
+    AdminManager providesAdminManager() {
+        return new AdminManager();
+    }
 }

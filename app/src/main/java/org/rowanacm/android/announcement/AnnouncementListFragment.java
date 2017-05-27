@@ -16,12 +16,12 @@ import android.view.View;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import org.rowanacm.android.BaseFragment;
 import org.rowanacm.android.R;
+import org.rowanacm.android.firebase.ChildListener;
 
 import java.util.ArrayList;
 
@@ -56,10 +56,9 @@ public class AnnouncementListFragment extends BaseFragment {
         announcementsListener();
     }
 
+    // TODO: There is a memory leak caused by the searchview
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
         menu.clear();
         inflater.inflate(R.menu.annoucement_search_menu, menu);
 
@@ -91,20 +90,12 @@ public class AnnouncementListFragment extends BaseFragment {
 
     public ChildEventListener announcementsListener() {
         try {
-            return FirebaseDatabase.getInstance().getReference().child("announcements").addChildEventListener(new ChildEventListener() {
+            return FirebaseDatabase.getInstance().getReference().child("announcements").addChildEventListener(new ChildListener() {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                     Announcement announcement = dataSnapshot.getValue(Announcement.class);
                     addAnnouncement(announcement);
                 }
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                @Override
-                public void onCancelled(DatabaseError databaseError) {}
             });
         } catch (Exception e) {
             Log.d("Firebase job list Error", e.getMessage());
