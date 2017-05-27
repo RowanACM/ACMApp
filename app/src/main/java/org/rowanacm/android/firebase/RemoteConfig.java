@@ -13,6 +13,8 @@ import org.rowanacm.android.BuildConfig;
  */
 public class RemoteConfig {
 
+    private static final int CACHE_LENGTH_SECONDS = 12*60*60;
+
     private FirebaseRemoteConfig firebaseRemoteConfig;
     private Context context;
 
@@ -23,7 +25,7 @@ public class RemoteConfig {
     }
 
     public void fetch() {
-        fetch(BuildConfig.DEBUG ? 0 : 12*60*60);
+        fetch(BuildConfig.DEBUG ? 0 : CACHE_LENGTH_SECONDS);
     }
 
     public void fetch(int cacheSeconds) {

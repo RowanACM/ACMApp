@@ -10,5 +10,4 @@ public class AdminManager {
                 .child("status").child("enabled").setValue(enabled);
     }
 
-
 }

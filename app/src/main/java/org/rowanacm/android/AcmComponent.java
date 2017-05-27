@@ -1,5 +1,7 @@
 package org.rowanacm.android;
 
+import org.rowanacm.android.announcement.AnnouncementListFragment;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -14,4 +16,6 @@ public interface AcmComponent {
     void inject(SettingsFragment settingsFragment);
     void inject(AdminFragment adminFragment);
     void inject(InfoFragment mainFragment);
+    void inject(AnnouncementListFragment announcementListFragment);
+
 }

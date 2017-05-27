@@ -35,6 +35,12 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setHasOptionsMenu(isVisible());
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
@@ -49,12 +55,6 @@ public abstract class BaseFragment extends Fragment {
             return (ViewGroup) getView();
         }
         return null;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setHasOptionsMenu(isVisible());
     }
 
     public String getTitle() {

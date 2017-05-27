@@ -64,7 +64,18 @@ public class SettingsFragment extends PreferenceFragment {
             }
         });
 
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        googleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        googleApiClient.disconnect();
     }
 
     private void signOut() {

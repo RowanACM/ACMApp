@@ -69,6 +69,14 @@ public class MeFragment extends BaseFragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    @Override
     public String getTitle() {
         return "ME";
     }
@@ -110,18 +118,9 @@ public class MeFragment extends BaseFragment {
                 } else {
                     // User is signed out
                     Log.d(LOG_TAG, "onAuthStateChanged:signed_out");
-                    //updateGoogleSignInButtons(false);
                 }
             }
         };
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
-        }
     }
 
     @OnClick(R.id.change_committee_button)

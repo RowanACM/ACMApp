@@ -35,13 +35,13 @@ public class CreateAnnouncementDialog extends AlertDialog.Builder {
             public void onClick(DialogInterface dialogInterface, int i) {}
         });
 
-        setPositiveButton("Create", new DialogInterface.OnClickListener() {
+        setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String author = ((EditText)dialogView.findViewById(R.id.author_edit_text)).getText().toString();
-                String subject = ((EditText)dialogView.findViewById(R.id.subject_edit_text)).getText().toString();
-                String message = ((EditText)dialogView.findViewById(R.id.message_edit_text)).getText().toString();
-                String committee = ((Spinner)dialogView.findViewById(R.id.committee_spinner)).getSelectedItem().toString();
+                String author = ((EditText) findById(dialogView, R.id.author_edit_text)).getText().toString();
+                String subject = ((EditText) findById(dialogView, R.id.subject_edit_text)).getText().toString();
+                String message = ((EditText) findById(dialogView, R.id.message_edit_text)).getText().toString();
+                String committee = ((Spinner) findById(dialogView, R.id.committee_spinner)).getSelectedItem().toString();
 
                 // Date uses a timestamp with milliseconds. Dividing makes it match the system
                 long timestamp = new Date().getTime() / 1000;

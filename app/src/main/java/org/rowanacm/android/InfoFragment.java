@@ -22,13 +22,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -137,25 +133,6 @@ public class InfoFragment extends BaseFragment {
         super.onStop();
         if (firebaseAuth != null) {
             firebaseAuth.removeAuthStateListener(authListener);
-        }
-    }
-
-    /**
-     * Revoke access to the user's Google Account and sign out
-     */
-    public void signOutGoogle() {
-        if (!googleApiClient.isConnected()) {
-            // The user is not signed in
-            Toast.makeText(getActivity(), R.string.error_sign_out_not_signed_in, Toast.LENGTH_LONG).show();
-        } else {
-            Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
-                    new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(@NonNull Status status) {
-                            firebaseAuth.signOut();
-                            Toast.makeText(getActivity(), R.string.signed_out, Toast.LENGTH_SHORT).show();
-                        }
-                    });
         }
     }
 

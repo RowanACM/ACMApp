@@ -38,7 +38,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     public void addFragment(BaseFragment fragment) {
         fragments.add(fragment);
-        //notifyDataSetChanged();
     }
 
 }

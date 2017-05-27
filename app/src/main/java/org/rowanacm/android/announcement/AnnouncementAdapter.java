@@ -71,7 +71,7 @@ public class AnnouncementAdapter extends SearchableAdapter<AnnouncementAdapter.A
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), AnnouncementActivity.class);
-                    intent.putExtra("announcement", announcement);
+                    intent.putExtra(AnnouncementActivity.ANNOUNCEMENT_EXTRA_KEY, announcement);
                     v.getContext().startActivity(intent);
                 }
             });

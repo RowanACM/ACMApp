@@ -8,32 +8,35 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
 import com.squareup.picasso.Picasso;
 
+import org.rowanacm.android.AcmApplication;
 import org.rowanacm.android.BaseFragment;
 import org.rowanacm.android.R;
 import org.rowanacm.android.firebase.ChildListener;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 
 public class AnnouncementListFragment extends BaseFragment {
 
-    private static final String LOG_TAG = AnnouncementListFragment.class.getSimpleName();
-
     private AnnouncementAdapter adapter;
 
     SearchView searchView;
+
+    @Inject DatabaseReference database;
 
     @BindView(R.id.announcement_recycler_view) RecyclerView recyclerView;
 
@@ -47,6 +50,12 @@ public class AnnouncementListFragment extends BaseFragment {
 
     public @LayoutRes int getLayout() {
         return R.layout.fragment_announcement_list;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        ((AcmApplication)getActivity().getApplication()).getAcmComponent().inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -90,7 +99,8 @@ public class AnnouncementListFragment extends BaseFragment {
 
     public ChildEventListener announcementsListener() {
         try {
-            return FirebaseDatabase.getInstance().getReference().child("announcements").addChildEventListener(new ChildListener() {
+            return database.child("announcements")
+                    .addChildEventListener(new ChildListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                     Announcement announcement = dataSnapshot.getValue(Announcement.class);
@@ -98,7 +108,7 @@ public class AnnouncementListFragment extends BaseFragment {
                 }
             });
         } catch (Exception e) {
-            Log.d("Firebase job list Error", e.getMessage());
+            FirebaseCrash.report(e);
             return null;
         }
     }

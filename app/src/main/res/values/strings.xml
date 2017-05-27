@@ -140,6 +140,7 @@
     <string name="bug_subtext">Report bugs or request new features.</string>
     <string name="support_development">Support Development</string>
     <string name="app_committee">Rowan Mobile App Committee</string>
+    <string name="create">Create</string>
 
     <string-array name="committee_array">
         <item>General</item>

@@ -37,6 +37,10 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         this.url = url;
     }
 
+    /**
+     * The newest announcements comes first in a sorted list
+     * @return -1 if this announcement was created after the parameter
+     */
     @Override
     public int compareTo(@NonNull Announcement announcement) {
         return ((Long)announcement.timestamp).compareTo(timestamp);

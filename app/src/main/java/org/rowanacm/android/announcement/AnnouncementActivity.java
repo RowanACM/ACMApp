@@ -22,6 +22,9 @@ import butterknife.OnClick;
 public class AnnouncementActivity extends AppCompatActivity {
     private static final String LOG_TAG = Announcement.class.getSimpleName();
 
+    public static final String ANNOUNCEMENT_EXTRA_KEY = "announcement";
+    private static final String ANNOUNCEMENT_INSTANT_STATE_KEY = "announcement";
+
     private Announcement announcement;
 
     @BindView(R.id.announcement_imageview) ImageView announcementImageView;
@@ -37,11 +40,11 @@ public class AnnouncementActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         if (savedInstanceState != null) {
-            announcement = (Announcement) savedInstanceState.getSerializable("announcement");
+            announcement = (Announcement) savedInstanceState.getSerializable(ANNOUNCEMENT_INSTANT_STATE_KEY);
         }
         if (announcement == null) {
             Bundle extras = getIntent().getExtras();
-            announcement = (Announcement) extras.getSerializable("announcement");
+            announcement = (Announcement) extras.getSerializable(ANNOUNCEMENT_EXTRA_KEY);
         }
 
         announcementTextView.setText(announcement.getText());
@@ -52,10 +55,7 @@ public class AnnouncementActivity extends AppCompatActivity {
         }
 
         if (announcement.getImageUrl() != null) {
-            Picasso.with(this)
-                    .load(announcement.getImageUrl())
-                    .fit()
-                    .into(announcementImageView);
+            loadHeaderImage();
         } else {
             announcementImageView.setVisibility(View.GONE);
 
@@ -64,8 +64,15 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("announcement", announcement);
+        outState.putSerializable(ANNOUNCEMENT_INSTANT_STATE_KEY, announcement);
         super.onSaveInstanceState(outState);
+    }
+
+    private void loadHeaderImage() {
+        Picasso.with(this)
+                .load(announcement.getImageUrl())
+                .fit()
+                .into(announcementImageView);
     }
 
     private String getRelativeDate(Announcement announcement) {
@@ -75,7 +82,7 @@ public class AnnouncementActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.announcement_url_button)
-    public void openAnnoucementUrl() {
+    public void openAnnouncementUrl() {
         ExternalAppUtils.openUrl(this, announcement.getUrl());
     }
 }
