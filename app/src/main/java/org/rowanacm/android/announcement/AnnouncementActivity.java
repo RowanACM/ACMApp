@@ -28,6 +28,7 @@ public class AnnouncementActivity extends AppCompatActivity {
     private Announcement announcement;
 
     @BindView(R.id.announcement_imageview) ImageView announcementImageView;
+    @BindView(R.id.title_text_view) TextView titleTextView;
     @BindView(R.id.announcement_text_view) TextView announcementTextView;
     @BindView(R.id.committee_text_view) TextView committeeTextView;
     @BindView(R.id.date_text_view) TextView dateTextView;
@@ -47,6 +48,7 @@ public class AnnouncementActivity extends AppCompatActivity {
             announcement = (Announcement) extras.getSerializable(ANNOUNCEMENT_EXTRA_KEY);
         }
 
+        titleTextView.setText(announcement.getTitle());
         announcementTextView.setText(announcement.getText());
         committeeTextView.setText(announcement.getCommittee());
         dateTextView.setText(getRelativeDate(announcement));
@@ -54,11 +56,12 @@ public class AnnouncementActivity extends AppCompatActivity {
             urlButton.setVisibility(View.GONE);
         }
 
+        setTitle(announcement.getCommittee());
+
         if (announcement.getImageUrl() != null) {
             loadHeaderImage();
         } else {
             announcementImageView.setVisibility(View.GONE);
-
         }
     }
 

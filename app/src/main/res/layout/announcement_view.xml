@@ -34,6 +34,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="start"
+            android:transitionName="announcement_title"
             android:lines="1"
             android:maxLines="2"
 

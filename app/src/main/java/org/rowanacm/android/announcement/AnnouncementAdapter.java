@@ -1,6 +1,7 @@
 package org.rowanacm.android.announcement;
 
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -72,7 +73,12 @@ public class AnnouncementAdapter extends SearchableAdapter<AnnouncementAdapter.A
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), AnnouncementActivity.class);
                     intent.putExtra(AnnouncementActivity.ANNOUNCEMENT_EXTRA_KEY, announcement);
-                    v.getContext().startActivity(intent);
+
+
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(fragment.getActivity(), holder.titleTextView, "announcement_title");
+
+                    v.getContext().startActivity(intent, options.toBundle());
                 }
             });
         }

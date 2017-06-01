@@ -22,30 +22,55 @@
             tools:src="@drawable/ic_info_black_24dp"/>
 
         <TextView
-            android:id="@+id/committee_text_view"
+            android:id="@+id/title_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/announcement_imageview"
+            android:layout_below="@id/announcement_imageview"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:textAlignment="center"
             android:textColor="@color/primary_text"
-            android:textSize="32sp"
-            tools:text="App Committee"/>
+            android:textSize="24sp"
+            tools:text="No meeting tomorrow"
+            android:transitionName="announcement_title"/>
 
-        <TextView
-            android:id="@+id/date_text_view"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/announcement_info_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/committee_text_view"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            tools:text="5 minutes ago"/>
+            android:layout_below="@id/title_text_view"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/committee_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp"
+                tools:text="App Committee"/>
+
+            <TextView
+                android:text="-"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
+
+            <TextView
+                android:id="@+id/date_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:textSize="18sp"
+                tools:text="5 minutes ago"/>
+
+
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/announcement_text_view"
@@ -53,7 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@id/date_text_view"
+            android:layout_below="@id/announcement_info_layout"
+            android:paddingTop="30dp"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:textColor="@color/dark_grey"
