@@ -28,8 +28,8 @@ android {
         applicationId "org.rowanacm.android"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 18
-        versionName "0.1.8"
+        versionCode 19
+        versionName "0.1.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -74,6 +74,11 @@ dependencies {
     compile "com.google.firebase:firebase-crash:$googlePlayServicesVersion"
     compile "com.google.firebase:firebase-config:$googlePlayServicesVersion"
     compile "com.google.firebase:firebase-perf:$googlePlayServicesVersion"
+
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile 'com.google.code.gson:gson:2.7'
 
     // Butter knife
     compile 'com.jakewharton:butterknife:8.4.0'

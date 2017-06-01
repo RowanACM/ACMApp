@@ -3,7 +3,6 @@ package org.rowanacm.android;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
@@ -36,10 +35,6 @@ import com.squareup.picasso.Picasso;
 import org.rowanacm.android.firebase.RemoteConfig;
 import org.rowanacm.android.utils.ExternalAppUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -47,21 +42,34 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class InfoFragment extends BaseFragment {
     private static final String LOG_TAG = InfoFragment.class.getSimpleName();
 
+    private final int RESPONSE_NEW = 100;
+    private final int RESPONSE_EXISTING = 110;
+    private final int RESPONSE_ALREADY = 120;
+    private final int RESPONSE_DISABLED = 200;
+    private final int RESPONSE_INVALID = 210;
+    private final int RESPONSE_UNKNOWN = 220;
+
     @Inject RemoteConfig remoteConfig;
     @Inject FirebaseAuth firebaseAuth;
     @Inject DatabaseReference database;
     @Inject GoogleApiClient googleApiClient;
+    @Inject AttendanceClient attendanceClient;
 
     @BindView(R.id.attendance_layout) ViewGroup attendanceLayout;
     @BindView(R.id.attendance_textview) TextView attendanceTextView;
     @BindView(R.id.attendance_button) Button meetingButton;
     @BindView(R.id.sign_in_google_button) SignInButton googleSignInButton;
     @BindView(R.id.header_image_view) ImageView headerImageView;
+
+    private ProgressDialog progressDialog;
 
     private FirebaseAuth.AuthStateListener authListener;
     private ValueEventListener attendanceListener;
@@ -145,18 +153,45 @@ public class InfoFragment extends BaseFragment {
     protected void signInToMeeting() {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if(currentUser != null) {
-            Uri.Builder builder = new Uri.Builder();
-            builder.scheme("https")
-                    .authority("2dvdaw7sq1.execute-api.us-east-1.amazonaws.com")
-                    .appendPath("prod")
-                    .appendPath("attendance")
-                    .appendQueryParameter("uid", currentUser.getUid())
-                    .appendQueryParameter("name", currentUser.getDisplayName())
-                    .appendQueryParameter("email", currentUser.getEmail())
-                    .appendQueryParameter("method", "android");
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage(getString(R.string.attendance_loading));
+            progressDialog.show();
 
-            String myUrl = builder.build().toString();
-            new AttendanceAsyncTask().execute(myUrl);
+            Call<Integer> result = attendanceClient.signIn(currentUser.getUid(), currentUser.getDisplayName(), currentUser.getEmail(), "android");
+            result.enqueue(new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    int resultCode = response.body();
+
+                    progressDialog.dismiss();
+
+                    String message = getAttendanceResult(resultCode);
+                    boolean showSnackbar = shouldShowSnackbar(resultCode);
+
+                    showAttendanceResult(message, showSnackbar);
+                }
+
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
+                    progressDialog.dismiss();
+
+                    String message = getAttendanceResult(RESPONSE_UNKNOWN);
+                    boolean showSnackbar = shouldShowSnackbar(RESPONSE_UNKNOWN);
+
+                    showAttendanceResult(message, showSnackbar);
+                }
+            });
+
+        }
+    }
+
+    private void showAttendanceResult(String message, boolean useSnackbar) {
+        if (useSnackbar) {
+            Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(message);
+            builder.create().show();
         }
     }
 
@@ -303,97 +338,39 @@ public class InfoFragment extends BaseFragment {
         startActivity(intent);
     }
 
-
-    private class AttendanceAsyncTask extends AsyncTask<String, Void, String> {
-        private ProgressDialog progressDialog;
-
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                URL url = new URL(urls[0]);
-
-                BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-
-                String response = "";
-                String inputLine;
-                while ((inputLine = in.readLine()) != null) {
-                    response += inputLine;
-                }
-
-                in.close();
-
-                return response;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return "";
+    private String getAttendanceResult(int resultCode) {
+        switch(resultCode) {
+            case RESPONSE_NEW:
+                // Signed in successfully. New member
+                return getString(R.string.first_sign_in);
+            case RESPONSE_EXISTING:
+                // Signed in successfully. Existing member
+                return getString(R.string.signed_in_successfully);
+            case RESPONSE_ALREADY:
+                // Already signed in
+                return getString(R.string.attendance_already_signed_in);
+            case RESPONSE_DISABLED:
+                // Didn't sign in. Attendance disabled
+                return getString(R.string.attendance_error_disabled);
+            case RESPONSE_INVALID:
+                // Invalid input
+                return getString(R.string.attendance_error_invalid_input);
+            case RESPONSE_UNKNOWN:
+                // Didn't sign in. Unknown error
+                return getString(R.string.attendance_unknown_error);
+            default:
+                return getString(R.string.attendance_unknown_error);
         }
+    }
 
-        @Override
-        protected void onPostExecute(String resultStr) {
-            progressDialog.dismiss();
-
-            int result = Integer.parseInt(resultStr);
-            String message;
-
-            // If true, show a snackbar. If false, show an AlertDialog
-            boolean showSnackbar = true;
-
-            switch(result) {
-                case 100:
-                    // Signed in successfully. New member
-                    message = getString(R.string.first_sign_in);
-                    showSnackbar = false;
-                    break;
-                case 110:
-                    // Signed in successfully. Existing member
-                    message = getString(R.string.signed_in_successfully);
-                    showSnackbar = true;
-                    break;
-                case 120:
-                    // Already signed in
-                    message = getString(R.string.attendance_already_signed_in);
-                    showSnackbar = true;
-                    break;
-                case 200:
-                    // Didn't sign in. Attendance disabled
-                    message = getString(R.string.attendance_error_disabled);
-                    showSnackbar = true;
-                    break;
-                case 210:
-                    // Invalid input
-                    message = getString(R.string.attendance_error_invalid_input);
-                    showSnackbar = false;
-                    break;
-                case 220:
-                    // Didn't sign in. Unknown error
-                    message = getString(R.string.attendance_unknown_error);
-                    showSnackbar = false;
-                    break;
-                default:
-                    // Didn't sign in. Unknown error
-                    message = getString(R.string.attendance_unknown_error);
-                    showSnackbar = false;
-                    break;
-            }
-
-            if (showSnackbar) {
-                Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
-            } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(message);
-                builder.create().show();
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage(getString(R.string.attendance_loading));
-            progressDialog.show();
+    private boolean shouldShowSnackbar(int resultCode) {
+        switch(resultCode) {
+            case RESPONSE_EXISTING:
+            case RESPONSE_ALREADY:
+            case RESPONSE_DISABLED:
+                return true;
+            default:
+                return false;
         }
     }
 

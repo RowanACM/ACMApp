@@ -95,20 +95,22 @@ public class MeFragment extends BaseFragment {
                     FirebaseDatabase.getInstance().getReference("members").child(user.getUid()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            int meeting_count = dataSnapshot.child("meeting_count").getValue(Integer.class);
-                            meetingCountTextView.setText(String.valueOf(meeting_count));
+                            if (isVisible()) {
+                                int meeting_count = dataSnapshot.child("meeting_count").getValue(Integer.class);
+                                meetingCountTextView.setText(String.valueOf(meeting_count));
 
-                            String committee = dataSnapshot.child("committee").getValue(String.class);
-                            committeeTextView.setText(String.valueOf(committee) + " Committee");
+                                String committee = dataSnapshot.child("committee").getValue(String.class);
+                                committeeTextView.setText(String.valueOf(committee) + " Committee");
 
-                            boolean onSlack = dataSnapshot.child("on_slack").getValue(Boolean.class);
-                            String text;
-                            if (onSlack) {
-                                text = getString(R.string.user_on_slack);
-                            } else {
-                                text = getString(R.string.user_not_on_slack);
+                                boolean onSlack = dataSnapshot.child("on_slack").getValue(Boolean.class);
+                                String text;
+                                if (onSlack) {
+                                    text = getString(R.string.user_on_slack);
+                                } else {
+                                    text = getString(R.string.user_not_on_slack);
+                                }
+                                onSlackTextView.setText(text);
                             }
-                            onSlackTextView.setText(text);
                         }
 
                         @Override
