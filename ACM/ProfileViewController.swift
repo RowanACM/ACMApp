@@ -37,17 +37,5 @@ class ProfileViewController:BaseViewController {
     @IBAction func OpenSlackBtnPressed(_ sender: Any) {
         var url  = NSURL(string: "slack://open"); // Change the URL with your URL Scheme
      
-        if UIApplication.shared.canOpenURL(url! as URL) == true
-        {
-            print(true)
-            
-            UIApplication.shared.open(url! as URL, options: [:], completionHandler: { (success) in
-                print(success)
-               
-                })
-        }else if  let itunesUrl = NSURL(string: "https://itunes.apple.com/us/app/slack/id803453959?mt=12"), UIApplication.shared.canOpenURL(itunesUrl as URL) {
-            UIApplication.shared.open(itunesUrl as URL, options: [:], completionHandler: { (success) in
-            })
-        }
-    }
+            }
 }

@@ -353,7 +353,7 @@
 				TargetAttributes = {
 					BDFC96161E3315DA001D5670 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = AQMDNGRP82;
+						DevelopmentTeam = 2JL7JVYTG6;
 						ProvisioningStyle = Automatic;
 					};
 					BDFC962A1E3315DA001D5670 = {
@@ -777,7 +777,9 @@
 			baseConfigurationReference = 65F0965C1077FF531659124E /* Pods-ACM.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = AQMDNGRP82;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2JL7JVYTG6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseDatabase/Frameworks",
@@ -786,9 +788,11 @@
 					"$(PROJECT_DIR)/Pods/FirebaseInstanceID/Frameworks/frameworks",
 				);
 				INFOPLIST_FILE = ACM/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.rowanacm.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = org.rowanacm.ios.acm1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -798,7 +802,9 @@
 			baseConfigurationReference = 29A0BB5EC17C5F7FC19CC669 /* Pods-ACM.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = AQMDNGRP82;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2JL7JVYTG6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Pods/FirebaseDatabase/Frameworks",
@@ -807,9 +813,11 @@
 					"$(PROJECT_DIR)/Pods/FirebaseInstanceID/Frameworks/frameworks",
 				);
 				INFOPLIST_FILE = ACM/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.rowanacm.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = org.rowanacm.ios.acm1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
