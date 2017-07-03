@@ -107,6 +107,7 @@
 		7E29250CEAE01A87346CF2F0 /* Pods-ACMTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACMTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ACMTests/Pods-ACMTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BD2AF26F1E5A29870035C184 /* AuthUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthUtils.swift; sourceTree = "<group>"; };
 		BD37F2B21E5929A3007A20E7 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		BD454E091F0AF44C00002B07 /* ACM.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ACM.entitlements; sourceTree = "<group>"; };
 		BD9F0C791E5D39EB00159107 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		BDF58F1B1E5D3FC5007624CF /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		BDFC96171E3315DA001D5670 /* ACM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ACM.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,6 +213,7 @@
 		BDFC96191E3315DA001D5670 /* ACM */ = {
 			isa = PBXGroup;
 			children = (
+				BD454E091F0AF44C00002B07 /* ACM.entitlements */,
 				BDFC96661E33B424001D5670 /* AnnouncementViewController.swift */,
 				BDFC965E1E33228C001D5670 /* BaseViewController.swift */,
 				BDFC961A1E3315DA001D5670 /* AppDelegate.swift */,
@@ -355,6 +357,11 @@
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 2JL7JVYTG6;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					BDFC962A1E3315DA001D5670 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -778,6 +785,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = ACM/ACM.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 2JL7JVYTG6;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -803,6 +811,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = ACM/ACM.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 2JL7JVYTG6;
 				FRAMEWORK_SEARCH_PATHS = (

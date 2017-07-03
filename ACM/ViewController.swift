@@ -11,6 +11,8 @@ class AnnouncementTableViewCell: UITableViewCell {
     @IBOutlet weak var committee: UILabel!
     @IBOutlet weak var body: UILabel!
     
+    @IBOutlet var committeLogo: UIImageView!
+    @IBOutlet var CardBackgroundView: UIView!
 }
 class ViewController: BaseViewController , UITableViewDelegate, UITableViewDataSource{
     
@@ -58,12 +60,35 @@ class ViewController: BaseViewController , UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell:AnnouncementTableViewCell = self.tableView.dequeueReusableCell(withIdentifier:"AnnouncementTableViewCell")! as! AnnouncementTableViewCell
         var announcement = self.items[indexPath.row]
+        
         cell.committee.text = announcement.committee
         cell.body.text = announcement.text
+        var card = cell.CardBackgroundView
+        card?.layer.cornerRadius = 2.0
+        card?.clipsToBounds = true
+        card?.layer.masksToBounds = false
+        card?.layer.shadowColor = UIColor.black.cgColor
+        card?.layer.shadowOpacity = 0.5
+        card?.layer.shadowOffset = CGSize(width: -1, height: 1)
+        card?.layer.shadowRadius = 1
+        
+        cell = loadComitteeLogo(cell: cell, announcement: announcement)
         
         return cell
     }
-    
+    func loadComitteeLogo(cell: AnnouncementTableViewCell, announcement:Announcement) -> AnnouncementTableViewCell{
+        print("committee:" + announcement.committee)
+        switch announcement.committee {
+        case "RU MAD (App)":
+            cell.committeLogo.image = UIImage(named: "appLogo")
+        case "Webdev":
+            cell.committeLogo.image = UIImage(named: "webDevLogo")
+        default:
+            break
+        }
+        return cell
+        
+    }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = UIStoryboard(name:"Main", bundle:nil).instantiateViewController(withIdentifier: "AnnouncementViewController") as? AnnouncementViewController
         vc?.announcement = items[indexPath.row]

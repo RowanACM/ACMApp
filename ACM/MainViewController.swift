@@ -72,7 +72,7 @@ class MainViewController: BaseViewController,  GIDSignInUIDelegate, GIDSignInDel
                     case "100":
                         signInTxt  = "Welcome to ACM! \n Have a happy first meeting. 😄"
                     case "110":
-                        signInTxt  = "Sign-in successfull. 😎 \n Welcome Back!"
+                        signInTxt  = "Sign-in successful. 😎 \n Welcome Back!"
                         
                     case "120":
                         signInTxt  = "You are already signed in, no need to sign in again. 😁"
