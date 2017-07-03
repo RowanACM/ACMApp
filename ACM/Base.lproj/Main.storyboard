@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Kdk-Ph-603">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Kdk-Ph-603">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -14,7 +14,7 @@
         <scene sceneID="gzl-y8-8Y5">
             <objects>
                 <navigationController title="ACM" id="Kdk-Ph-603" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cIc-Hd-4wQ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="cIc-Hd-4wQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -96,7 +96,7 @@
                             <constraint firstItem="wLV-0q-wjj" firstAttribute="top" secondItem="9vI-Hj-Odb" secondAttribute="bottom" id="ov3-Y8-BdX"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="ACM" id="xwn-yk-pFS"/>
+                    <tabBarItem key="tabBarItem" title="ACM" image="ACM_Sq_filled_65x_1x_only" id="xwn-yk-pFS"/>
                     <connections>
                         <outlet property="generalLabel" destination="dxp-E2-BVt" id="eII-cb-3vH"/>
                         <outlet property="googleSignInBtn" destination="V3b-7X-HVc" id="s9c-s9-HyT"/>
@@ -142,14 +142,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z9c-f2-f7w">
-                                <rect key="frame" x="21" y="69" width="42" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not signed in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z9c-f2-f7w">
+                                <rect key="frame" x="21" y="69" width="101" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9U-hS-pxI">
-                                <rect key="frame" x="21" y="95" width="42" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not signed in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9U-hS-pxI">
+                                <rect key="frame" x="21" y="95" width="101" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -172,7 +172,7 @@
                             <constraint firstItem="4bf-zw-Nri" firstAttribute="leading" secondItem="m9M-Jz-mtn" secondAttribute="leadingMargin" constant="5" id="l87-n4-WDG"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Profile" id="dmR-Qv-yAR"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="Profile_Light_65_1x_only" id="dmR-Qv-yAR"/>
                     <connections>
                         <outlet property="meetingCountLbl" destination="J9U-hS-pxI" id="0jy-zt-wdg"/>
                         <outlet property="nameLbl" destination="Z9c-f2-f7w" id="c1K-UB-pLa"/>
@@ -248,7 +248,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="P0W-Hx-e7g" secondAttribute="trailing" id="ynj-qO-D0d"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Announcements" id="YmN-8U-joL"/>
+                    <tabBarItem key="tabBarItem" title="Announcements" image="Rowan_Torch_65_1x_only" id="YmN-8U-joL"/>
                     <navigationItem key="navigationItem" title="Announcements" id="hUh-Qf-Ob3"/>
                     <connections>
                         <outlet property="tableView" destination="P0W-Hx-e7g" id="ino-ee-726"/>
@@ -314,6 +314,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ACM_Sq_filled_65x_1x_only" width="33" height="33"/>
         <image name="MainScreenBanner" width="1920" height="850"/>
+        <image name="Profile_Light_65_1x_only" width="33" height="33"/>
+        <image name="Rowan_Torch_65_1x_only" width="33" height="33"/>
     </resources>
 </document>

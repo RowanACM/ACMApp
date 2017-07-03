@@ -23,8 +23,8 @@ class ProfileViewController:BaseViewController {
             }
             let name = value?["name"] as? String ?? ""
             let meetingCount = value?["meeting_count"] as? Int ?? 0
+        
             self.nameLbl.text = name
-           
             self.meetingCountLbl.text = "Number of meetings attended: " + String(meetingCount)
             
             // ...
