@@ -1,4 +1,4 @@
-package org.rowanacm.android;
+package org.rowanacm.android.settings;
 
 import android.os.Bundle;
 import android.preference.Preference;
@@ -13,6 +13,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.rowanacm.android.AcmApplication;
+import org.rowanacm.android.R;
 import org.rowanacm.android.utils.ExternalAppUtils;
 
 import javax.inject.Inject;

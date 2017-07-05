@@ -1,11 +1,7 @@
 package org.rowanacm.android;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.CalendarContract;
-import android.provider.CalendarContract.Events;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,6 +30,7 @@ import com.squareup.picasso.Picasso;
 
 import org.rowanacm.android.firebase.RemoteConfig;
 import org.rowanacm.android.utils.ExternalAppUtils;
+import org.rowanacm.android.utils.ViewUtils;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -48,7 +45,6 @@ import retrofit2.Response;
 
 
 public class InfoFragment extends BaseFragment {
-    private static final String LOG_TAG = InfoFragment.class.getSimpleName();
 
     private final int RESPONSE_NEW = 100;
     private final int RESPONSE_EXISTING = 110;
@@ -152,7 +148,7 @@ public class InfoFragment extends BaseFragment {
     @OnClick(R.id.attendance_button)
     protected void signInToMeeting() {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if(currentUser != null) {
+        if (currentUser != null) {
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setMessage(getString(R.string.attendance_loading));
             progressDialog.show();
@@ -161,10 +157,9 @@ public class InfoFragment extends BaseFragment {
             result.enqueue(new Callback<Integer>() {
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
-                    int resultCode = response.body();
-
                     progressDialog.dismiss();
 
+                    int resultCode = response.body();
                     String message = getAttendanceResult(resultCode);
                     boolean showSnackbar = shouldShowSnackbar(resultCode);
 
@@ -177,7 +172,6 @@ public class InfoFragment extends BaseFragment {
 
                     String message = getAttendanceResult(RESPONSE_UNKNOWN);
                     boolean showSnackbar = shouldShowSnackbar(RESPONSE_UNKNOWN);
-
                     showAttendanceResult(message, showSnackbar);
                 }
             });
@@ -200,11 +194,11 @@ public class InfoFragment extends BaseFragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean attendanceEnabled = (boolean) dataSnapshot.child("enabled").getValue();
-                if(attendanceEnabled) {
+                if (attendanceEnabled) {
                     signedInMeeting = false;
 
                     FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-                    if(currentUser == null) {
+                    if (currentUser == null) {
                         signedInMeeting = false;
                         updateAttendanceViews(AttendanceMode.PROMPT_GOOGLE);
                     }
@@ -290,16 +284,7 @@ public class InfoFragment extends BaseFragment {
      * @param currentlySignedIn Whether the user is currently signed in
      */
     private void updateGoogleSignInButtons(boolean currentlySignedIn) {
-        if(currentlySignedIn) {
-            googleSignInButton.setVisibility(View.GONE);
-            //signOutTextView.setVisibility(View.VISIBLE);
-            //signOutButton.setVisibility(View.VISIBLE);
-        }
-        else {
-            googleSignInButton.setVisibility(View.VISIBLE);
-            //signOutTextView.setVisibility(View.GONE);
-            //signOutButton.setVisibility(View.GONE);
-        }
+        ViewUtils.setVisibility(googleSignInButton, !currentlySignedIn);
     }
 
     @OnClick(R.id.calendar_button)
@@ -307,35 +292,20 @@ public class InfoFragment extends BaseFragment {
         final int MEETING_LENGTH_MINUTES = 90;
 
         // If you want the start times to show up, you have to set them
-        Calendar calendar = Calendar.getInstance();
+        Calendar startTime = Calendar.getInstance();
 
         // Here we set a start time of Tuesday the 17th, 6pm
-        calendar.set(2017, Calendar.SEPTEMBER, 8, 14, 0, 0);
-        calendar.setTimeZone(TimeZone.getDefault());
+        startTime.set(2017, Calendar.SEPTEMBER, 8, 14, 0, 0);
+        startTime.setTimeZone(TimeZone.getDefault());
 
-        long start = calendar.getTimeInMillis();
-        // add three hours in milliseconds to get end time of 9pm
-        long end = calendar.getTimeInMillis() + MEETING_LENGTH_MINUTES * 60 * 1000;
+        CalendarItem calendarItem = new CalendarItem("ACM",
+                "Rowan Association for Computing Machinery",
+                "Robinson 201 a/b",
+                "FREQ=WEEKLY;BYDAY=FR;UNTIL=20171208",
+                startTime,
+                MEETING_LENGTH_MINUTES);
 
-        Intent intent = new Intent(Intent.ACTION_INSERT)
-                .setData(Events.CONTENT_URI)
-                .setType("vnd.android.cursor.item/event")
-                .putExtra(Events.TITLE, "ACM")
-                .putExtra(Events.DESCRIPTION, "Rowan Association for Computing Machinery")
-                .putExtra(Events.EVENT_LOCATION, "Robinson 201 a/b")
-                .putExtra(Events.RRULE, "FREQ=WEEKLY;BYDAY=FR;UNTIL=20171208")
-
-                // to specify start time use "beginTime" instead of "dtstart"
-                //.putExtra(Events.DTSTART, calendar.getTimeInMillis())
-                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start)
-                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end)
-
-                // if you want to go from 6pm to 9pm, don't specify all day
-                //.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true)
-                .putExtra(CalendarContract.Events.HAS_ALARM, 1)
-                .putExtra(Events.AVAILABILITY, Events.AVAILABILITY_BUSY);
-
-        startActivity(intent);
+        ExternalAppUtils.addEventToCalendar(getActivity(), calendarItem);
     }
 
     private String getAttendanceResult(int resultCode) {
@@ -381,20 +351,18 @@ public class InfoFragment extends BaseFragment {
 
     @OnClick(R.id.uninstall_check)
     public void uninstall(CheckBox checkBox) {
-        if(!checkBox.isChecked()) {
-            Intent intent = new Intent(Intent.ACTION_DELETE);
-            intent.setData(Uri.parse("package:" + getActivity().getPackageName()));
-            startActivity(intent);
+        if (!checkBox.isChecked()) {
+           ExternalAppUtils.uninstallThisApp(getActivity());
         }
     }
 
     @OnClick(R.id.facebook_button)
     public void openFacebook() {
-        ExternalAppUtils.openUrl(getActivity(), "https://www.facebook.com/rowanacm");
+        ExternalAppUtils.openUrl(getActivity(), getString(R.string.acm_facebook_url));
     }
 
     @OnClick(R.id.twitter_button)
     public void openTwitter() {
-        ExternalAppUtils.openUrl(getActivity(), "https://www.twitter.com/rowanacm");
+        ExternalAppUtils.openUrl(getActivity(), getString(R.string.acm_twitter_url));
     }
 }

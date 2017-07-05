@@ -1,8 +1,10 @@
-package org.rowanacm.android;
+package org.rowanacm.android.settings;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import org.rowanacm.android.R;
 
 import static butterknife.ButterKnife.findById;
 

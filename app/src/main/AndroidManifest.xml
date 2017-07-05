@@ -24,7 +24,7 @@
         </service>
 
         <activity
-            android:name=".SettingsActivity"
+            android:name=".settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainTabActivity"
             android:theme="@style/AppTheme.NoActionBar">

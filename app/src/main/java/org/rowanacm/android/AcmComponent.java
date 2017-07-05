@@ -1,6 +1,8 @@
 package org.rowanacm.android;
 
 import org.rowanacm.android.announcement.AnnouncementListFragment;
+import org.rowanacm.android.settings.SettingsActivity;
+import org.rowanacm.android.settings.SettingsFragment;
 
 import javax.inject.Singleton;
 

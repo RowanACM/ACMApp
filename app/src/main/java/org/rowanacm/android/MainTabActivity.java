@@ -32,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import org.rowanacm.android.announcement.CreateAnnouncementDialog;
+import org.rowanacm.android.settings.SettingsActivity;
 import org.rowanacm.android.utils.AcmUtils;
 
 import javax.inject.Inject;

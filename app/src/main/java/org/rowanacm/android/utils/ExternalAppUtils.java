@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.provider.CalendarContract;
+import android.provider.CalendarContract.Events;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 
+import org.rowanacm.android.CalendarItem;
 import org.rowanacm.android.R;
 
 
@@ -58,6 +61,31 @@ public class ExternalAppUtils {
                 //.setHtmlText(body) //If you are using HTML in your body text
                 .setChooserTitle(chooserTitle)
                 .startChooser();
+    }
+
+    public static void addEventToCalendar(Context context, CalendarItem calendarItem) {
+        long start = calendarItem.getStartTime().getTimeInMillis();
+        long end = start + calendarItem.getLengthMinutes() * 60 * 1000;
+
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(Events.CONTENT_URI)
+                .setType("vnd.android.cursor.item/event")
+                .putExtra(Events.TITLE, calendarItem.getTitle())
+                .putExtra(Events.DESCRIPTION, calendarItem.getDescription())
+                .putExtra(Events.EVENT_LOCATION, calendarItem.getLocation())
+                .putExtra(Events.RRULE, calendarItem.getRepeatRule())
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start)
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end)
+                .putExtra(Events.HAS_ALARM, 1)
+                .putExtra(Events.AVAILABILITY, Events.AVAILABILITY_BUSY);
+
+        context.startActivity(intent);
+    }
+
+    public static void uninstallThisApp(Context context) {
+        Intent intent = new Intent(Intent.ACTION_DELETE);
+        intent.setData(Uri.parse("package:" + context.getPackageName()));
+        context.startActivity(intent);
     }
 
 }
