@@ -13,7 +13,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.rowanacm.android.AcmApplication;
+import org.rowanacm.android.App;
 import org.rowanacm.android.R;
 import org.rowanacm.android.utils.ExternalAppUtils;
 
@@ -32,7 +32,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        ((AcmApplication)getActivity().getApplication()).getAcmComponent().inject(this);
+        App.get().getAcmComponent().inject(this);
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 

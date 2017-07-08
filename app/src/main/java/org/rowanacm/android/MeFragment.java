@@ -78,7 +78,7 @@ public class MeFragment extends BaseFragment {
 
     @Override
     public String getTitle() {
-        return "ME";
+        return App.get().getString(R.string.me_title);
     }
 
     private void setupAuthListener() {
@@ -96,20 +96,22 @@ public class MeFragment extends BaseFragment {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (isVisible()) {
-                                int meeting_count = dataSnapshot.child("meeting_count").getValue(Integer.class);
-                                meetingCountTextView.setText(String.valueOf(meeting_count));
-
-                                String committee = dataSnapshot.child("committee").getValue(String.class);
-                                committeeTextView.setText(String.valueOf(committee) + " Committee");
-
-                                boolean onSlack = dataSnapshot.child("on_slack").getValue(Boolean.class);
-                                String text;
-                                if (onSlack) {
-                                    text = getString(R.string.user_on_slack);
-                                } else {
-                                    text = getString(R.string.user_not_on_slack);
+                                DataSnapshot meetingCount = dataSnapshot.child("meeting_count");
+                                if (meetingCount != null) {
+                                    meetingCountTextView.setText(meetingCount.getValue(String.class));
                                 }
-                                onSlackTextView.setText(text);
+
+                                DataSnapshot committee = dataSnapshot.child("committee");
+                                if (meetingCount != null) {
+                                    committeeTextView.setText(committee.getValue(String.class));
+                                }
+
+                                DataSnapshot onSlack = dataSnapshot.child("on_slack");
+                                if (onSlack != null && onSlack.getValue(Boolean.class)) {
+                                    onSlackTextView.setText(R.string.user_on_slack);
+                                } else {
+                                    onSlackTextView.setText(R.string.not_on_slack);
+                                }
                             }
                         }
 

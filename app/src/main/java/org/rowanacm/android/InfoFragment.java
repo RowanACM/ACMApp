@@ -81,7 +81,7 @@ public class InfoFragment extends BaseFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        ((AcmApplication)getActivity().getApplication()).getAcmComponent().inject(this);
+        App.get().getAcmComponent().inject(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -346,7 +346,7 @@ public class InfoFragment extends BaseFragment {
 
     @Override
     public String getTitle() {
-        return "INFO";
+        return App.get().getString(R.string.info_title);
     }
 
     @OnClick(R.id.uninstall_check)

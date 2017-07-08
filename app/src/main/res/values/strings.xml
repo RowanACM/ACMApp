@@ -143,6 +143,7 @@
     <string name="create">Create</string>
     <string name="acm_facebook_url">https://www.facebook.com/rowanacm</string>
     <string name="acm_twitter_url">https://www.twitter.com/rowanacm</string>
+    <string name="admin_title">ADMIN</string>
 
     <string-array name="committee_array">
         <item>General</item>

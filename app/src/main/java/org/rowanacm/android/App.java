@@ -6,7 +6,9 @@ import com.google.firebase.crash.FirebaseCrash;
 import com.squareup.leakcanary.LeakCanary;
 
 
-public class AcmApplication extends Application {
+public class App extends Application {
+
+    private static App INSTANCE;
 
     private AcmComponent acmComponent;
 
@@ -18,6 +20,8 @@ public class AcmApplication extends Application {
         }
         LeakCanary.install(this);
 
+        INSTANCE = this;
+
         acmComponent = DaggerAcmComponent.builder()
                 .appModule(new AppModule(this))
                 .build();
@@ -28,6 +32,10 @@ public class AcmApplication extends Application {
 
     public AcmComponent getAcmComponent() {
         return acmComponent;
+    }
+
+    public static App get() {
+        return INSTANCE;
     }
 
 }

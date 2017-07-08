@@ -10,16 +10,16 @@ import dagger.Provides;
 @Module
 public class AppModule {
 
-    private AcmApplication acmApplication;
+    private App app;
 
-    public AppModule(AcmApplication acmApplication) {
-        this.acmApplication = acmApplication;
+    public AppModule(App app) {
+        this.app = app;
     }
 
     @Provides
     @Singleton
     Context providesAcmApplication() {
-        return acmApplication;
+        return app;
     }
 
 }

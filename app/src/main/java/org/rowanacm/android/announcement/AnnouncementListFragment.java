@@ -19,7 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.squareup.picasso.Picasso;
 
-import org.rowanacm.android.AcmApplication;
+import org.rowanacm.android.App;
 import org.rowanacm.android.BaseFragment;
 import org.rowanacm.android.R;
 import org.rowanacm.android.firebase.ChildListener;
@@ -54,7 +54,7 @@ public class AnnouncementListFragment extends BaseFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        ((AcmApplication)getActivity().getApplication()).getAcmComponent().inject(this);
+        App.get().getAcmComponent().inject(this);
         super.onCreate(savedInstanceState);
     }
 

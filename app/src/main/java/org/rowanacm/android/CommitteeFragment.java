@@ -20,6 +20,6 @@ public class CommitteeFragment extends BaseFragment {
 
     @Override
     public String getTitle() {
-        return "COMMITTEES";
+        return App.get().getString(R.string.committee_title);
     }
 }

@@ -23,7 +23,7 @@ public class AdminFragment extends BaseFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        ((AcmApplication)getActivity().getApplication()).getAcmComponent().inject(this);
+        App.get().getAcmComponent().inject(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -34,7 +34,7 @@ public class AdminFragment extends BaseFragment {
 
     @Override
     public String getTitle() {
-        return "ADMIN";
+        return App.get().getString(R.string.admin_title);
     }
 
     @OnClick(R.id.enable_attendance_button)

@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,7 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.rowanacm.android.announcement.CreateAnnouncementDialog;
 import org.rowanacm.android.settings.SettingsActivity;
-import org.rowanacm.android.utils.AcmUtils;
+import org.rowanacm.android.utils.ViewUtils;
 
 import javax.inject.Inject;
 
@@ -49,15 +48,8 @@ public class MainTabActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainTabActivity.class.getSimpleName();
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
-
-    private boolean showingAdminFragment;
-
-    private static final int REQUEST_CODE_GOOGLE_SIGN_IN = 4;
-
     @Inject DatabaseReference database;
     @Inject FirebaseAuth firebaseAuth;
-    @Inject GoogleSignInOptions gso;
     @Inject GoogleApiClient googleApiClient;
 
     @BindView(R.id.tab_layout) TabLayout tabLayout;
@@ -66,14 +58,15 @@ public class MainTabActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
 
     SectionsPagerAdapter sectionsPagerAdapter;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private boolean showingAdminFragment;
 
-    // Whether the current user is an admin and is able to create announcements
     private boolean admin;
     private ValueEventListener adminListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ((AcmApplication)getApplication()).getAcmComponent().inject(this);
+        App.get().getAcmComponent().inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tab);
         ButterKnife.bind(this);
@@ -90,7 +83,7 @@ public class MainTabActivity extends AppCompatActivity {
                     adminListener(user.getUid());
                 } else {
                     // User is signed out
-                    AcmUtils.setFabVisibility(fab, false);
+                    ViewUtils.setVisibility(fab, false);
                 }
 
             }
@@ -104,7 +97,7 @@ public class MainTabActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                AcmUtils.setFabVisibility(fab, position == 1 && admin);
+                ViewUtils.setVisibility(fab, position == 1 && admin);
             }
         });
         tabLayout.setupWithViewPager(viewPager);
@@ -165,39 +158,43 @@ public class MainTabActivity extends AppCompatActivity {
     public void signInGoogle() {
         Toast.makeText(this, R.string.google_sign_in_prompt, Toast.LENGTH_LONG).show();
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-        startActivityForResult(signInIntent, REQUEST_CODE_GOOGLE_SIGN_IN);
+        startActivityForResult(signInIntent, RequestCode.GOOGLE_SIGN_IN);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == REQUEST_CODE_GOOGLE_SIGN_IN) {
-
+        if (requestCode == RequestCode.GOOGLE_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 // Google sign in was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
-                Log.d(LOG_TAG, "onActivityResult: failed else");
+                Toast.makeText(MainTabActivity.this, "Unable to sign in. Try again later.", Toast.LENGTH_LONG).show();
             }
         }
     }
 
     /**
      * Sign the user into Firebase after they have signed into their google account
-     * @param acct The user's GoogleSignInAccount
+     * @param account The user's GoogleSignInAccount
      */
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Toast.makeText(this, acct.getEmail(), Toast.LENGTH_SHORT).show();
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        Toast.makeText(this, account.getEmail(), Toast.LENGTH_SHORT).show();
+        if (!isRowanEmailAddress(account.getEmail())) {
+            Toast.makeText(this, "Invalid email. Sign in with your Rowan email address.", Toast.LENGTH_LONG).show();
+            Auth.GoogleSignInApi.revokeAccess(googleApiClient);
+            return;
+        }
 
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MainTabActivity.this, "Unable to sign in. Try again later.", Toast.LENGTH_LONG).show();
                         Log.d(LOG_TAG, "onFailure: " + e);
                     }
                 })
@@ -211,10 +208,14 @@ public class MainTabActivity extends AppCompatActivity {
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.w(LOG_TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(MainTabActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainTabActivity.this, "Unable to sign in. Try again later.", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
+    }
+
+    private boolean isRowanEmailAddress(String email) {
+        return email.endsWith("rowan.edu");
     }
 
     /**
