@@ -11,11 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -56,6 +58,7 @@ public class MainTabActivity extends AppCompatActivity {
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.container) ViewPager viewPager;
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.google_sign_in_button) SignInButton googleSignInButton;
 
     SectionsPagerAdapter sectionsPagerAdapter;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -155,10 +158,23 @@ public class MainTabActivity extends AppCompatActivity {
         }
     }
 
+    @OnClick(R.id.google_sign_in_button)
     public void signInGoogle() {
         Toast.makeText(this, R.string.google_sign_in_prompt, Toast.LENGTH_LONG).show();
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(signInIntent, RequestCode.GOOGLE_SIGN_IN);
+    }
+
+    public void showGoogleSignInButton() {
+        googleSignInButton.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Update the views related to Google sign in
+     * @param currentlySignedIn Whether the user is currently signed in
+     */
+    public void updateGoogleSignInButtons(boolean currentlySignedIn) {
+        ViewUtils.setVisibility(googleSignInButton, !currentlySignedIn);
     }
 
     @Override
@@ -182,7 +198,7 @@ public class MainTabActivity extends AppCompatActivity {
      * @param account The user's GoogleSignInAccount
      */
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        Toast.makeText(this, account.getEmail(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, account.getEmail(), Toast.LENGTH_SHORT).show();
         if (!isRowanEmailAddress(account.getEmail())) {
             Toast.makeText(this, "Invalid email. Sign in with your Rowan email address.", Toast.LENGTH_LONG).show();
             Auth.GoogleSignInApi.revokeAccess(googleApiClient);

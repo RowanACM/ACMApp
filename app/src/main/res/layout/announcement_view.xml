@@ -43,7 +43,7 @@
             android:textAlignment="center"
             android:textColor="@color/primary_text"
             android:textSize="24sp"
-            android:textStyle="normal|bold"/>
+            />
 
         <TextView
             android:id="@+id/announcement_desc_view"

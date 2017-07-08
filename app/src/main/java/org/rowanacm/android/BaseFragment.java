@@ -58,7 +58,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public String getTitle() {
-        return "";
+        return App.get().getString(R.string.app_name);
     }
 
 }

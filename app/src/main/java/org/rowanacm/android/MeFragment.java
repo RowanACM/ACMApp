@@ -98,7 +98,7 @@ public class MeFragment extends BaseFragment {
                             if (isVisible()) {
                                 DataSnapshot meetingCount = dataSnapshot.child("meeting_count");
                                 if (meetingCount != null) {
-                                    meetingCountTextView.setText(meetingCount.getValue(String.class));
+                                    meetingCountTextView.setText(meetingCount.getValue().toString());
                                 }
 
                                 DataSnapshot committee = dataSnapshot.child("committee");

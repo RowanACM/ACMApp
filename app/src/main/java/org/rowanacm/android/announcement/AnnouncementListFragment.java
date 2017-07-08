@@ -94,7 +94,7 @@ public class AnnouncementListFragment extends BaseFragment {
 
     @Override
     public String getTitle() {
-        return "ANNOUNCEMENTS";
+        return App.get().getString(R.string.title_activity_announcement);
     }
 
     public ChildEventListener announcementsListener() {

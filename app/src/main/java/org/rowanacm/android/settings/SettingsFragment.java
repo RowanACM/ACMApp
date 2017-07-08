@@ -60,8 +60,12 @@ public class SettingsFragment extends PreferenceFragment {
         google_sign_out.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                signOut();
-                google_sign_out.setTitle("Sign in");
+                if (firebaseAuth.getCurrentUser() == null) {
+                    google_sign_out.setTitle("Sign out");
+                } else {
+                    signOut();
+                    google_sign_out.setTitle("Sign in");
+                }
                 return true;
             }
         });
@@ -81,13 +85,17 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     private void signOut() {
-        Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        firebaseAuth.signOut();
-                        Toast.makeText(getActivity(), R.string.signed_out, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        if (googleApiClient.isConnected()) {
+            Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(@NonNull Status status) {
+                            firebaseAuth.signOut();
+                            Toast.makeText(getActivity(), R.string.signed_out, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            Toast.makeText(getActivity(), "Unable to sign out. Do you have an internet connection?", Toast.LENGTH_LONG).show();
+        }
     }
 }

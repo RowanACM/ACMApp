@@ -5,8 +5,6 @@ import android.support.annotation.LayoutRes;
 
 import javax.inject.Inject;
 
-import butterknife.OnClick;
-
 
 public class AdminFragment extends BaseFragment {
 
@@ -36,16 +34,5 @@ public class AdminFragment extends BaseFragment {
     public String getTitle() {
         return App.get().getString(R.string.admin_title);
     }
-
-    @OnClick(R.id.enable_attendance_button)
-    public void enableAttendance() {
-        adminManager.setAttendanceEnabled(true);
-    }
-
-    @OnClick(R.id.disable_attendance_button)
-    public void disableAttendance() {
-        adminManager.setAttendanceEnabled(false);
-    }
-
 
 }

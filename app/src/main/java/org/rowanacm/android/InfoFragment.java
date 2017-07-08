@@ -18,7 +18,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,7 +61,6 @@ public class InfoFragment extends BaseFragment {
     @BindView(R.id.attendance_layout) ViewGroup attendanceLayout;
     @BindView(R.id.attendance_textview) TextView attendanceTextView;
     @BindView(R.id.attendance_button) Button meetingButton;
-    @BindView(R.id.sign_in_google_button) SignInButton googleSignInButton;
     @BindView(R.id.header_image_view) ImageView headerImageView;
 
     private ProgressDialog progressDialog;
@@ -107,7 +105,7 @@ public class InfoFragment extends BaseFragment {
                 database.removeEventListener(attendanceListener);
                 attendanceListener = attendanceListener();
 
-                updateGoogleSignInButtons(user != null);
+                ((MainTabActivity)getActivity()).updateGoogleSignInButtons(user != null);
             }
         };
     }
@@ -138,11 +136,6 @@ public class InfoFragment extends BaseFragment {
         if (firebaseAuth != null) {
             firebaseAuth.removeAuthStateListener(authListener);
         }
-    }
-
-    @OnClick(R.id.sign_in_google_button)
-    public void signInGoogle() {
-        ((MainTabActivity)getActivity()).signInGoogle();
     }
 
     @OnClick(R.id.attendance_button)
@@ -258,7 +251,9 @@ public class InfoFragment extends BaseFragment {
                 attendanceLayout.setVisibility(View.VISIBLE);
                 attendanceTextView.setVisibility(View.VISIBLE);
                 attendanceTextView.setText(R.string.sign_in_google_before_meeting);
-                googleSignInButton.setVisibility(View.VISIBLE);
+
+                ((MainTabActivity)getActivity()).showGoogleSignInButton();
+
                 meetingButton.setAnimation(null);
                 meetingButton.setVisibility(View.GONE);
                 break;
@@ -277,14 +272,6 @@ public class InfoFragment extends BaseFragment {
                 meetingButton.startAnimation(pulse);
                 break;
         }
-    }
-
-    /**
-     * Update the views related to Google sign in
-     * @param currentlySignedIn Whether the user is currently signed in
-     */
-    private void updateGoogleSignInButtons(boolean currentlySignedIn) {
-        ViewUtils.setVisibility(googleSignInButton, !currentlySignedIn);
     }
 
     @OnClick(R.id.calendar_button)

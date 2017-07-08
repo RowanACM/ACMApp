@@ -67,18 +67,11 @@
             android:layout_below="@id/attendance_layout">
 
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_google_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"/>
-
             <TextView
                 android:id="@+id/about_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sign_in_google_button"
+                android:layout_below="@id/google_sign_in_button"
                 android:text="@string/main_info"
                 android:textSize="16sp"/>
 
