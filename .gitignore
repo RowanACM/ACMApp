@@ -87,3 +87,25 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+google_auth-1\.0\.1\.dist-info/
+
+\.DS_Store
+
+client_secret\.json
+
+firebase_admin-2\.1\.0\.dist-info/
+
+google/auth/
+
+ids\.py
+
+rowan-acm-firebase-adminsdk-ahv7o-17efd6aa30\.json
+
+integration/
+
+google/oauth2/
+
+google_auth-1\.0\.1-py2\.7-nspkg\.pth
+
+firebase_admin/
