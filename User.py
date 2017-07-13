@@ -14,7 +14,10 @@ default_app = firebase_admin.initialize_app(cred)
 
 
 def get_member_info(user_id_token):
-    decoded_token = auth.verify_id_token(user_id_token)
+    try:
+        decoded_token = auth.verify_id_token(user_id_token)
+    except:
+        return None
     uid = decoded_token['uid']
 
     member = myfirebase.get("/members/", uid)
@@ -30,4 +33,4 @@ def get_member_info(user_id_token):
 
     phone_number = None
 
-    return {"name": name, "rowan_email": rowan_email, "on_github": on_github, "on_slack": on_slack}
+    return {"name": name, "rowan_email": rowan_email, "on_github": on_github, "on_slack": on_slack, "uid": uid}

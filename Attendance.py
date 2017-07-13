@@ -8,6 +8,7 @@ import firebase
 from Email import Email
 import Slack
 import ids
+import User
 
 
 # Response codes
@@ -19,62 +20,93 @@ RESPONSE_ATTENDANCE_DISABLED = 200
 RESPONSE_INVALID_INPUT = 210
 RESPONSE_UNKNOWN_ERROR = 220
 
-
-def valid_input(uid, name, email):
-    return uid is not None and name is not None and email is not None and \
-           len(uid) > 0 and len(name) > 0 and len(email) > 0 and email.endswith("rowan.edu")
+myfirebase = ids.myfirebase
 
 
-def setup_firebase():
-    return ids.myfirebase
+def sign_in(google_login_token):
+    user = User.get_member_info(google_login_token)
+
+    if user is None:
+        return RESPONSE_INVALID_INPUT
+
+    is_new_member = update_user_info(user)
+
+    # If they are already on slack this won't do anything
+    Slack.invite_to_slack(email=user["rowan_email"])
+
+    if is_new_member:
+        email_new_member(user)
+
+    if not is_attendance_enabled():
+        if is_new_member:
+            return RESPONSE_REGISTERED
+        return RESPONSE_ATTENDANCE_DISABLED
+
+    # The location of the current attendance in the database
+    current = myfirebase.get('/attendance/status/current', None)
+
+    # If the member already signed in, return RESPONSE_ALREADY_SIGNED_IN
+    if is_already_signed_in(current, user):
+        return RESPONSE_ALREADY_SIGNED_IN
+
+    # Sign the user in to the meeting
+    myfirebase.put('/attendance/', current + "/" + user["uid"], {"uid": user["uid"], "name": user["name"], "email": user["rowan_email"]})
+
+    # Increment signed in count
+    increment_signed_in_count(current)
+
+    if is_new_member:
+        increment_new_member_count()
+
+    increment_meeting_count(user)
+
+    if is_new_member:
+        return RESPONSE_SUCCESSFUL_NEW
+    return RESPONSE_SUCCESSFUL_EXISTING
 
 
-def register(myfirebase, name, email, uid):
-    """
-    Update user info. Creates it if new member
-    :param myfirebase:
-    :param name:
-    :param email:
-    :param uid:
-    :return:
-    """
+def update_user_info(user):
+    name = user["name"]
+    email = user["rowan_email"]
+    uid = user["uid"]
+
     username = email.split("@")[0]
-    onSlack = Slack.is_user_on_slack(email)
+    on_slack = Slack.is_user_on_slack(email)
 
-    new_member = myfirebase.get('/members/' + uid + "/email", None) != email
+    is_member_new = myfirebase.get('/members/' + uid + "/email", None) != email
 
     myfirebase.put('/members/', uid + "/email", email)
     myfirebase.put('/members/', uid + "/username", username)
     myfirebase.put('/members/', uid + "/name", name)
     myfirebase.put('/members/', uid + "/uid", uid)
-    myfirebase.put('/members/', uid + "/on_slack", onSlack)
+    myfirebase.put('/members/', uid + "/on_slack", on_slack)
 
-    return new_member
-
-
-def is_already_signed_in(current, myfirebase, uid):
-    return myfirebase.get('/attendance/' + current + '/' + uid, None) is not None
+    return is_member_new
 
 
-def is_attendance_enabled(myfirebase):
+def is_already_signed_in(current, user):
+    return myfirebase.get('/attendance/' + current + '/' + user["uid"], None) is not None
+
+
+def is_attendance_enabled():
     return myfirebase.get('/attendance/status/enabled', None)
 
 
-def increment_signed_in_count(current, myfirebase):
+def increment_signed_in_count(current):
     signed_in_people = myfirebase.get('/attendance/' + current, None)
     signed_in_count = len(signed_in_people)
     myfirebase.put('/attendance/status', "/signed_in_count", signed_in_count)
 
 
-def increment_new_member_count(myfirebase):
-    increment_firebase(myfirebase, '/attendance/status/new_member_count')
+def increment_new_member_count():
+    increment_firebase('/attendance/status/new_member_count')
 
 
-def increment_meeting_count(myfirebase, uid):
-    increment_firebase(myfirebase, '/members/' + uid + "/meeting_count")
+def increment_meeting_count(user):
+    increment_firebase('/members/' + user["uid"] + "/meeting_count")
 
 
-def increment_firebase(myfirebase, path):
+def increment_firebase(path):
     count = myfirebase.get(path, None)
     if count is None:
         count = 0
@@ -82,16 +114,9 @@ def increment_firebase(myfirebase, path):
     myfirebase.put("/", path, count)
 
 
-def email_new_member(email, myfirebase):
-    """
-    Send a welcome email to a new user of ACM
-    :param email: Email address to send to
-    :param the_subject: Subject of the email
-    :param the_text: Message of the email in plain text
-    :param the_html: Message of the email formatted with html
-    :param from_email: The email address to send the email from
-    :return:
-    """
+def email_new_member(user):
+    email = user["rowan_email"]
+
     print("Sending email to " + email)
 
     email_enabled = myfirebase.get('/new_member_email/enabled', None)
@@ -110,57 +135,23 @@ def email_new_member(email, myfirebase):
         email.send(from_addr=from_address)
 
     # The following code could be used to send an sms
-    # It is not currently used
     # sns = boto3.client('sns')
     # number = '+18005551234'
     # sns.publish(PhoneNumber=number, Message='example text message')
 
-    return True
 
+def code_to_message(code):
+    if code == RESPONSE_SUCCESSFUL_NEW:
+        return "New member. Welcome to ACM!"
+    if code == RESPONSE_SUCCESSFUL_EXISTING:
+        return "Signed in successfully"
+    if code == RESPONSE_ALREADY_SIGNED_IN:
+        return "Already signed in"
+    if code == RESPONSE_REGISTERED:
+        return "Successfully registered for ACM"
+    if code == RESPONSE_ATTENDANCE_DISABLED:
+        return "Attendance is disabled and you already registered for ACM"
+    if code == RESPONSE_INVALID_INPUT:
+        return "Invalid input. Check that you are signing in with your rowan email and the token has not expired"
+    return "Unknown error"
 
-def sign_in(uid, name, email):
-
-    if not valid_input(uid, name, email):
-        print("Invalid parameters")
-        return RESPONSE_INVALID_INPUT
-
-    myfirebase = setup_firebase()
-
-    print("Step 2")
-
-    # Register the user. Doesn't do anything if they are already registered
-    new_member = register(myfirebase, name, email, uid)
-
-    if new_member:
-        email_new_member(email, myfirebase)
-        # If they are already on slack, this won't do anything
-        print("Inviting", name, "to slack", Slack.invite_to_slack(email=email))
-
-    if not is_attendance_enabled(myfirebase):
-        if new_member:
-            return RESPONSE_REGISTERED
-        return RESPONSE_ATTENDANCE_DISABLED
-
-    # The location of the current attendance in the database
-    current = myfirebase.get('/attendance/status/current', None)
-
-    # If the member already signed in, return RESPONSE_ALREADY_SIGNED_IN
-    if is_already_signed_in(current, myfirebase, uid):
-        return RESPONSE_ALREADY_SIGNED_IN
-
-    # Sign the user in to the meeting
-    myfirebase.put('/attendance/', current + "/" + uid, {"uid": uid, "name": name, "email": email})
-    print("You signed in")
-
-    # Increment signed in count
-    increment_signed_in_count(current, myfirebase)
-
-    if new_member:
-        print("First meeting")
-        increment_new_member_count(myfirebase)
-
-    increment_meeting_count(myfirebase, uid)
-
-    if new_member:
-        return RESPONSE_SUCCESSFUL_NEW
-    return RESPONSE_SUCCESSFUL_EXISTING

@@ -58,9 +58,15 @@ def is_auto_manage_event(event):
 
 def sign_in(event, context):
     params = event["queryStringParameters"]
-    response_code = Attendance.sign_in(uid=params["uid"], name=params["name"], email=params["email"])
+    response_code = Attendance.sign_in(google_login_token=params["token"])
 
-    return {"status": "OK", "response_code": response_code}
+    message = Attendance.code_to_message(response_code)
+
+    status = "OK"
+    if response_code >= 200:
+        status = "ERROR"
+
+    return {"message": message, "status": status, "response_code": response_code}
 
 
 def github_sign_up(event, context):

@@ -93,14 +93,6 @@ def check_github_member(github_member, email):
 def is_user_on_github(email):
     members = acm.get_members()
 
-    me = NamedUser.NamedUser(email="carberryt9@students.rowan.edu")
-    result = acm.has_in_members(me)
-
-
-    #for github_member in members:
-     #   if check_github_member(github_member, email):
-     #       return True
-
     num_cores = 1 #multiprocessing.cpu_count()
     results = Parallel(n_jobs=num_cores)(delayed(check_github_member)(i, email) for i in members)
 
