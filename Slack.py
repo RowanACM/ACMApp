@@ -17,3 +17,29 @@ def is_user_on_slack(email):
         if member.get("profile").get("email") == email:
             return True
     return False
+
+
+def get_slack_username(email):
+    members = ids.slackbot.users.list().body["members"]
+    for member in members:
+        if member.get("profile").get("email") == email:
+            return member.get("name")
+    return None
+
+
+def get_slack_user_id(email):
+    members = ids.slackbot.users.list().body["members"]
+    for member in members:
+        if member.get("profile").get("email") == email:
+            return member.get("id")
+    return None
+
+
+def invite_user_to_channel(channel_id, email):
+    slack_user_id = get_slack_user_id(email)
+
+    try:
+        ids.adminbot.channels.invite(channel_id, slack_user_id)
+    except slacker.Error as e:
+        pass
+

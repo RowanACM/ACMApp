@@ -14,6 +14,12 @@ def add_username_to_members(username):
     return members_team.add_to_members(user)
 
 
+def add_member_to_team(username, team_id):
+    team = acm.get_team(team_id)
+    user = ids.github.get_user(username)
+    return team.add_to_members(user)
+
+
 def get_recursively(search_dict, field):
     """Takes a dict with nested lists and dicts,
     and searches all dicts for a key of the field
@@ -90,12 +96,8 @@ def check_github_member(github_member, email):
     return False
 
 
-def is_user_on_github(email):
-    members = acm.get_members()
-
-    num_cores = 1 #multiprocessing.cpu_count()
-    results = Parallel(n_jobs=num_cores)(delayed(check_github_member)(i, email) for i in members)
-
-    if results.count(True) == 0:
-        return False
-    return True
+def get_github_username(email):
+    for member in acm.get_members():
+        if check_github_member(member, email):
+            return member._login.value
+    return None

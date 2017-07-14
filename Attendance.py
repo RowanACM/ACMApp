@@ -24,7 +24,7 @@ myfirebase = ids.myfirebase
 
 
 def sign_in(google_login_token):
-    user = User.get_member_info(google_login_token)
+    user = User.get_member_info(user_id_token=google_login_token)
 
     if user is None:
         return RESPONSE_INVALID_INPUT
