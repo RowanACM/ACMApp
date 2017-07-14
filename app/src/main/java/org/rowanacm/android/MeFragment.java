@@ -12,8 +12,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -21,15 +24,24 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.rowanacm.android.utils.ExternalAppUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MeFragment extends BaseFragment {
 
     private static final String LOG_TAG = MeFragment.class.getSimpleName();
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    @Inject FirebaseAuth firebaseAuth;
+    @Inject AcmClient acmClient;
 
     @BindView(R.id.name_text_view) TextView nameTextView;
     @BindView(R.id.on_slack_textview) TextView onSlackTextView;
@@ -37,6 +49,11 @@ public class MeFragment extends BaseFragment {
     @BindView(R.id.committee_text_view) TextView committeeTextView;
     @BindView(R.id.email_textview) TextView emailTextView;
     @BindView(R.id.profile_pic_image_view) ImageView profilePicImageView;
+
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private String googleAuthToken;
+
+    private String currentCommittee;
 
     public MeFragment() {
 
@@ -48,7 +65,20 @@ public class MeFragment extends BaseFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        App.get().getAcmComponent().inject(this);
         super.onCreate(savedInstanceState);
+
+        firebaseAuth.addIdTokenListener(new FirebaseAuth.IdTokenListener() {
+            @Override
+            public void onIdTokenChanged(@NonNull FirebaseAuth firebaseAuth) {
+                firebaseAuth.getCurrentUser().getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        googleAuthToken = task.getResult().getToken();
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -101,10 +131,21 @@ public class MeFragment extends BaseFragment {
                                     meetingCountTextView.setText(meetingCount.getValue().toString());
                                 }
 
-                                DataSnapshot committee = dataSnapshot.child("committee");
-                                if (meetingCount != null) {
-                                    committeeTextView.setText(committee.getValue(String.class));
+
+                                DataSnapshot committees = dataSnapshot.child("committees");
+                                List<String> selectedCommittees = new ArrayList<String>();
+                                for (DataSnapshot child : committees.getChildren()) {
+                                    if (child.getValue(Boolean.class)) {
+
+                                        if (!child.getKey().equalsIgnoreCase("eboard")) {
+                                            currentCommittee = child.getKey();
+                                        }
+                                        selectedCommittees.add(child.getKey());
+                                    }
                                 }
+
+                                String displayMessage = getCommitteeText(selectedCommittees);
+                                committeeTextView.setText(displayMessage);
 
                                 DataSnapshot onSlack = dataSnapshot.child("on_slack");
                                 if (onSlack != null && onSlack.getValue(Boolean.class)) {
@@ -127,10 +168,34 @@ public class MeFragment extends BaseFragment {
         };
     }
 
-    @OnClick(R.id.change_committee_button)
+    private String getCommitteeText(List<String> selectedCommittees) {
+        if (selectedCommittees.isEmpty()) {
+            return "Committee: None";
+        }
+
+        if (selectedCommittees.contains("eboard")) {
+            return "Eboard";
+        }
+
+        if (selectedCommittees.contains("ai")) {
+            return "Committee: AI";
+        }
+
+        if (selectedCommittees.contains("game")) {
+            return "Committee: Animation/Game";
+        }
+
+        return "Committee: " + capitalizeFirstLetterOfString(selectedCommittees.get(0));
+    }
+
+    private String capitalizeFirstLetterOfString(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
+    @OnClick({R.id.change_committee_button, R.id.committee_text_view})
     protected void chooseCommittee() {
         // custom dialog
-        final Dialog dialog = new ChooseCommitteeDialog(getActivity()) {
+        final Dialog dialog = new ChooseCommitteeDialog(getActivity(), currentCommittee) {
             @Override
             public void onRadioButtonClicked(int index) {
                 onCommitteeChanged(index);
@@ -141,11 +206,21 @@ public class MeFragment extends BaseFragment {
 
     public void onCommitteeChanged(int index) {
         String[] stringArray = getResources().getStringArray(R.array.committee_keys); //grab key names
-        String committee = stringArray[index]; //set string based on index of
-        Log.d(LOG_TAG, "onRadioButtonClicked: "+committee);
-        //then send to firebase
+        final String committee = stringArray[index]; //set string based on index of
 
-        //send firebase
+        Call<AttendanceResult> result = acmClient.setCommittees(googleAuthToken, committee);
+        result.enqueue(new Callback<AttendanceResult>() {
+            @Override
+            public void onResponse(Call<AttendanceResult> call, Response<AttendanceResult> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<AttendanceResult> call, Throwable t) {
+
+            }
+        });
+
     }
 
     /**

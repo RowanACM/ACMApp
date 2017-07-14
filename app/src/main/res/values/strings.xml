@@ -149,10 +149,9 @@
         <item>General</item>
         <item>Animation/Game</item>
         <item>Web Dev</item>
-        <item>RU MAD (App)</item>
+        <item>App</item>
         <item>AI</item>
         <item>Robotics</item>
-        <item>ACM-W</item>
     </string-array>
 
     <string-array name="committee_keys">
@@ -161,8 +160,7 @@
         <item>web</item>
         <item>app</item>
         <item>ai</item>
-        <item>robot</item>
-        <item>acmw</item>
+        <item>robotics</item>
     </string-array>
 
     <string-array name="empty_array"/>

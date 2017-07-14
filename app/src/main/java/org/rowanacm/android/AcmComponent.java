@@ -15,11 +15,15 @@ public interface AcmComponent {
     void inject(App application);
 
     void inject(MainTabActivity mainActivity);
+
     void inject(SettingsActivity settingsActivity);
     void inject(SettingsFragment settingsFragment);
+
     void inject(AdminFragment adminFragment);
-    void inject(InfoFragment mainFragment);
+    void inject(InfoFragment infoFragment);
+    void inject(MeFragment meFragment);
     void inject(AnnouncementListFragment announcementListFragment);
+
     void inject(CreateAnnouncementDialog createAnnouncementDialog);
 
 }
