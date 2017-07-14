@@ -46,7 +46,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="@string/attendance"
                 android:textSize="18sp"
-                android:textColor="@color/white"/>
+                />
 
             <Button
                 android:id="@+id/attendance_button"

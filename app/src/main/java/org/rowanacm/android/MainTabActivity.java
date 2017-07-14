@@ -26,6 +26,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -91,6 +92,19 @@ public class MainTabActivity extends AppCompatActivity {
 
             }
         };
+
+        firebaseAuth.addIdTokenListener(new FirebaseAuth.IdTokenListener() {
+            @Override
+            public void onIdTokenChanged(@NonNull FirebaseAuth firebaseAuth) {
+                firebaseAuth.getCurrentUser().getIdToken(true).addOnCompleteListener(MainTabActivity.this, new OnCompleteListener<GetTokenResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        String token = task.getResult().getToken();
+                        Log.d("FIRETOKEN", token);
+                    }
+                });
+            }
+        });
     }
 
     private void setupTabLayout() {

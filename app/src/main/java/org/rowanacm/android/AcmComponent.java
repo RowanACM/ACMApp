@@ -1,6 +1,7 @@
 package org.rowanacm.android;
 
 import org.rowanacm.android.announcement.AnnouncementListFragment;
+import org.rowanacm.android.announcement.CreateAnnouncementDialog;
 import org.rowanacm.android.settings.SettingsActivity;
 import org.rowanacm.android.settings.SettingsFragment;
 
@@ -19,5 +20,6 @@ public interface AcmComponent {
     void inject(AdminFragment adminFragment);
     void inject(InfoFragment mainFragment);
     void inject(AnnouncementListFragment announcementListFragment);
+    void inject(CreateAnnouncementDialog createAnnouncementDialog);
 
 }

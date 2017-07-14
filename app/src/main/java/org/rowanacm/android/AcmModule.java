@@ -99,13 +99,13 @@ public class AcmModule {
 
     @Provides
     @Singleton
-    AttendanceClient providesAttendanceClient() {
+    AcmClient providesAttendanceClient() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://2dvdaw7sq1.execute-api.us-east-1.amazonaws.com")
+                .baseUrl("https://api.rowanacm.org/prod/")
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        return retrofit.create(AttendanceClient.class);
+        return retrofit.create(AcmClient.class);
     }
 }

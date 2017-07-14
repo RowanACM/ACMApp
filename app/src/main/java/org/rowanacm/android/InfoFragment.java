@@ -19,8 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +32,6 @@ import com.squareup.picasso.Picasso;
 
 import org.rowanacm.android.firebase.RemoteConfig;
 import org.rowanacm.android.utils.ExternalAppUtils;
-import org.rowanacm.android.utils.ViewUtils;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -56,7 +58,8 @@ public class InfoFragment extends BaseFragment {
     @Inject FirebaseAuth firebaseAuth;
     @Inject DatabaseReference database;
     @Inject GoogleApiClient googleApiClient;
-    @Inject AttendanceClient attendanceClient;
+    @Inject
+    AcmClient acmClient;
 
     @BindView(R.id.attendance_layout) ViewGroup attendanceLayout;
     @BindView(R.id.attendance_textview) TextView attendanceTextView;
@@ -142,34 +145,47 @@ public class InfoFragment extends BaseFragment {
     protected void signInToMeeting() {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage(getString(R.string.attendance_loading));
-            progressDialog.show();
+            showSigningInDialog();
 
-            Call<Integer> result = attendanceClient.signIn(currentUser.getUid(), currentUser.getDisplayName(), currentUser.getEmail(), "android");
-            result.enqueue(new Callback<Integer>() {
+            firebaseAuth.getCurrentUser().getIdToken(true).addOnCompleteListener(getActivity(), new OnCompleteListener<GetTokenResult>() {
                 @Override
-                public void onResponse(Call<Integer> call, Response<Integer> response) {
-                    progressDialog.dismiss();
+                public void onComplete(@NonNull Task<GetTokenResult> task) {
+                    String token = task.getResult().getToken();
 
-                    int resultCode = response.body();
-                    String message = getAttendanceResult(resultCode);
-                    boolean showSnackbar = shouldShowSnackbar(resultCode);
+                    Call<AttendanceResult> result = acmClient.signIn(token);
+                    result.enqueue(new Callback<AttendanceResult>() {
+                        @Override
+                        public void onResponse(Call<AttendanceResult> call, Response<AttendanceResult> response) {
+                            progressDialog.dismiss();
 
-                    showAttendanceResult(message, showSnackbar);
-                }
+                            int resultCode = response.body().getResponseCode();
+                            String message = getAttendanceResult(resultCode);
+                            boolean showSnackbar = shouldShowSnackbar(resultCode);
 
-                @Override
-                public void onFailure(Call<Integer> call, Throwable t) {
-                    progressDialog.dismiss();
+                            showAttendanceResult(message, showSnackbar);
+                        }
 
-                    String message = getAttendanceResult(RESPONSE_UNKNOWN);
-                    boolean showSnackbar = shouldShowSnackbar(RESPONSE_UNKNOWN);
-                    showAttendanceResult(message, showSnackbar);
+                        @Override
+                        public void onFailure(Call<AttendanceResult> call, Throwable t) {
+                            progressDialog.dismiss();
+
+                            String message = getAttendanceResult(RESPONSE_UNKNOWN);
+                            boolean showSnackbar = shouldShowSnackbar(RESPONSE_UNKNOWN);
+                            showAttendanceResult(message, showSnackbar);
+                        }
+                    });
                 }
             });
 
+
+
         }
+    }
+
+    private void showSigningInDialog() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage(getString(R.string.attendance_loading));
+        progressDialog.show();
     }
 
     private void showAttendanceResult(String message, boolean useSnackbar) {
