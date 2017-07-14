@@ -27,6 +27,14 @@ def get_slack_username(email):
     return None
 
 
+def get_slack_picture(email):
+    members = ids.slackbot.users.list().body["members"]
+    for member in members:
+        if member.get("profile").get("email") == email:
+            return member.get("profile").get("image_512")
+    return None
+
+
 def get_slack_user_id(email):
     members = ids.slackbot.users.list().body["members"]
     for member in members:
@@ -42,4 +50,3 @@ def invite_user_to_channel(channel_id, email):
         ids.adminbot.channels.invite(channel_id, slack_user_id)
     except slacker.Error as e:
         pass
-

@@ -27,19 +27,29 @@ def get_member_info(user_id_token=None, uid=None):
     member = myfirebase.get("/members/", uid)
 
     slack_username = Slack.get_slack_username(member["email"])
-    on_slack = slack_username is not None
+    slack_picture = Slack.get_slack_picture(member["email"])
 
     github_username = myfirebase.get("members/" + uid, "github-username")
-
     if github_username is None:
         github_username = Github.get_github_username(member["email"])
         myfirebase.put("members/" + uid, "github-username", github_username)
+
+    is_eboard = myfirebase.get("members/" + uid, "committees/eboard") is True
+    is_admin = myfirebase.get("members/" + uid, "admin") is True
 
     name = member["name"]
     rowan_email = member["email"]
 
     phone_number = None
 
-    return {"name": name, "rowan_email": rowan_email,
-            "on_github": github_username is not None, "github_username": github_username,
-            "on_slack": on_slack, "uid": uid}
+    return {"name": name,
+            "rowan_email": rowan_email,
+            "phone_number": phone_number,
+            "is_eboard": is_eboard,
+            "is_admin": is_admin,
+            "on_github": github_username is not None,
+            "github_username": github_username,
+            "on_slack": slack_username is not None,
+            "slack_username": slack_username,
+            "profile_picture": slack_picture,
+            "uid": uid}

@@ -10,6 +10,7 @@ import Github
 import github
 import ids
 import ManageCommittee
+import User
 
 NO_CACHE = 0
 SHORT_CACHE = 2*60*60
@@ -32,6 +33,9 @@ def main(event, context):
         cache_length = NO_CACHE
     elif event["resource"] == "/set-committees":
         response = set_committees(event, context)
+        cache_length = NO_CACHE
+    elif event["resource"] == "/get-user-info":
+        response = get_user_info(event, context)
         cache_length = NO_CACHE
     elif event["resource"] == "/post-announcement":
         response = sign_in(event, context)
@@ -93,6 +97,17 @@ def set_committees(event, context):
     try:
         ManageCommittee.set_user_committees(my_committees=committees, token=token)
         return {"message": "You signed up for committees " + str(committees), "status": "OK"}
+    except Exception as e:
+        return {"message": "An unknown error occurred " + str(e), "status": "ERROR"}
+
+
+def get_user_info(event, context):
+    params = event["queryStringParameters"]
+
+    token = params["token"]
+
+    try:
+        return User.get_member_info(user_id_token=token)
     except Exception as e:
         return {"message": "An unknown error occurred " + str(e), "status": "ERROR"}
 
