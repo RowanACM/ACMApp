@@ -11,6 +11,7 @@
         android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         tools:context="org.rowanacm.android.MainActivity">
 
         <ImageView
@@ -28,14 +29,15 @@
             android:id="@+id/attendance_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/accent"
             android:layout_below="@id/header_image_view"
             android:layout_marginTop="20dp"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:paddingBottom="@dimen/activity_vertical_margin"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible"
+            >
 
             <TextView
                 android:id="@+id/attendance_textview"
@@ -48,11 +50,14 @@
 
             <Button
                 android:id="@+id/attendance_button"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/attendance_textview"
                 android:layout_centerHorizontal="true"
-                android:text="@string/meeting_sign_in"/>
+                android:elevation="20dp"
+                android:text="@string/meeting_sign_in"
+                />
 
         </RelativeLayout>
 
@@ -85,6 +90,7 @@
 
             <Button
                 android:id="@+id/calendar_button"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add to calendar"
@@ -109,6 +115,7 @@
 
             <Button
                 android:id="@+id/contact_eboard_button"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/contact_eboard"
@@ -124,6 +131,7 @@
 
             <Button
                 android:id="@+id/facebook_button"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Facebook"
@@ -131,6 +139,7 @@
 
             <Button
                 android:id="@+id/twitter_button"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Twitter"
