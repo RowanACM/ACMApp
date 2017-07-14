@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import org.rowanacm.android.utils.ExternalAppUtils;
 
@@ -75,6 +77,7 @@ public class MeFragment extends BaseFragment {
                     @Override
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
                         googleAuthToken = task.getResult().getToken();
+                        Log.d("AUTHTOKEN", googleAuthToken);
                     }
                 });
             }
@@ -96,6 +99,36 @@ public class MeFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
+
+        if (firebaseAuth.getCurrentUser() != null) {
+            firebaseAuth.getCurrentUser().getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                @Override
+                public void onComplete(@NonNull Task<GetTokenResult> task) {
+                    acmClient.getUserInfo(task.getResult().getToken()).enqueue(new Callback<UserInfo>() {
+                        @Override
+                        public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                            UserInfo userInfo = response.body();
+                            if (userInfo == null) {
+                                return;
+                            }
+
+                            if (userInfo.getProfilePicture() != null) {
+                                Picasso.with(getActivity())
+                                        .load(userInfo.getProfilePicture())
+                                        .placeholder(R.drawable.person)
+                                        .into(profilePicImageView);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<UserInfo> call, Throwable t) {
+
+                        }
+                    });
+                }
+            });
+        }
+
     }
 
     @Override
@@ -235,6 +268,10 @@ public class MeFragment extends BaseFragment {
         } else {
             ExternalAppUtils.openPlayStore(getActivity(), "com.Slack");
         }
+    }
+
+    protected void showProfilePictureToast() {
+        Toast.makeText(getActivity(), "Change your slack profile picture to change the picture in the app", Toast.LENGTH_LONG).show();
     }
 
 }
