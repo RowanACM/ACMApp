@@ -11,6 +11,9 @@ import github
 import ids
 import ManageCommittee
 import User
+import os
+
+os.environ['TZ'] = 'US/Eastern'
 
 NO_CACHE = 0
 SHORT_CACHE = 2*60*60
@@ -113,17 +116,17 @@ def get_user_info(event, context):
 
 
 def manage_attendance():
-    day_of_week = time.strftime("%A").lower()
+    day_of_week = int(time.strftime("%w")) # 0=Sunday
+    hour = int(time.strftime("%H"))
+
     meeting_key = time.strftime("%B_%d").lower()
 
-    print(day_of_week, meeting_key)
-
-    if day_of_week == "friday":
-        print("friday")
+    if day_of_week == 5 and 13 < hour < 17:
+        print("meeting time")
         Admin.set_current_meeting(meeting_key)
         Admin.enable_attendance()
     else:
-        print("otherday")
+        print("not meeting time")
         if Admin.is_attendance_enabled():
             Export.export_attendance()
         Admin.disable_attendance()
