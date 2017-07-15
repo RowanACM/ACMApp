@@ -34,8 +34,32 @@ def get_member_info(user_id_token=None, uid=None):
         github_username = Github.get_github_username(member["email"])
         myfirebase.put("members/" + uid, "github-username", github_username)
 
+    committees = myfirebase.get("members/" + uid, "committees")
+    my_committees = []
+    for key, value in committees.iteritems():
+        if value:
+            my_committees.append(key)
+
+    committee_text = "No committee selected"
+    if "eboard" in my_committees:
+        committee_text = "Eboard"
+    elif "ai" in my_committees:
+        committee_text = "AI Committee"
+    elif "app" in my_committees:
+        committee_text = "App Committee"
+    elif "game" in my_committees:
+        committee_text = "Animation/Game Committee"
+    elif "robotics" in my_committees:
+        committee_text = "Robotics Committee"
+    elif "web" in my_committees:
+        committee_text = "Web Dev Committee"
+
     is_eboard = myfirebase.get("members/" + uid, "committees/eboard") is True
     is_admin = myfirebase.get("members/" + uid, "admin") is True
+
+    meeting_count = myfirebase.get("members/" + uid, "meeting_count")
+    if meeting_count is None:
+        meeting_count = 0
 
     name = member["name"]
     rowan_email = member["email"]
@@ -52,4 +76,8 @@ def get_member_info(user_id_token=None, uid=None):
             "on_slack": slack_username is not None,
             "slack_username": slack_username,
             "profile_picture": slack_picture,
+            "meeting_count": meeting_count,
+            "committee_list": my_committees,
+            "committee_string": committee_text,
+            "member_since": "September 2016",       # TODO
             "uid": uid}
