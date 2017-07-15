@@ -19,32 +19,21 @@ def is_user_on_slack(email):
     return False
 
 
-def get_slack_username(email):
+def get_user_info(email):
     members = ids.slackbot.users.list().body["members"]
     for member in members:
         if member.get("profile").get("email") == email:
-            return member.get("name")
-    return None
+            id = member.get("id")
+            username = member.get("name")
+            picture = member.get("profile").get("image_512")
 
+            return id, username, picture
 
-def get_slack_picture(email):
-    members = ids.slackbot.users.list().body["members"]
-    for member in members:
-        if member.get("profile").get("email") == email:
-            return member.get("profile").get("image_512")
-    return None
-
-
-def get_slack_user_id(email):
-    members = ids.slackbot.users.list().body["members"]
-    for member in members:
-        if member.get("profile").get("email") == email:
-            return member.get("id")
     return None
 
 
 def invite_user_to_channel(channel_id, email):
-    slack_user_id = get_slack_user_id(email)
+    slack_user_id, _, _ = get_user_info(email)
 
     try:
         ids.adminbot.channels.invite(channel_id, slack_user_id)

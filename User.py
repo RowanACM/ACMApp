@@ -26,8 +26,7 @@ def get_member_info(user_id_token=None, uid=None):
 
     member = myfirebase.get("/members/", uid)
 
-    slack_username = Slack.get_slack_username(member["email"])
-    slack_picture = Slack.get_slack_picture(member["email"])
+    slack_id, slack_username, slack_picture = Slack.get_user_info(email=member["email"])
 
     github_username = myfirebase.get("members/" + uid, "github-username")
     if github_username is None:
