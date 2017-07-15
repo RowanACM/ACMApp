@@ -1,5 +1,7 @@
 package org.rowanacm.android;
 
+import org.rowanacm.android.user.UserInfo;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

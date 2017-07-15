@@ -13,6 +13,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import org.rowanacm.android.firebase.RemoteConfig;
+import org.rowanacm.android.user.UserManager;
 
 import javax.inject.Singleton;
 
@@ -107,5 +108,11 @@ public class AcmModule {
                 .build();
 
         return retrofit.create(AcmClient.class);
+    }
+
+    @Provides
+    @Singleton
+    UserManager providesUserManager(FirebaseAuth firebaseAuth) {
+        return new UserManager();
     }
 }

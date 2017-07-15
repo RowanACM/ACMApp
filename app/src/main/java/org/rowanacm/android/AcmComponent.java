@@ -4,6 +4,7 @@ import org.rowanacm.android.announcement.AnnouncementListFragment;
 import org.rowanacm.android.announcement.CreateAnnouncementDialog;
 import org.rowanacm.android.settings.SettingsActivity;
 import org.rowanacm.android.settings.SettingsFragment;
+import org.rowanacm.android.user.UserManager;
 
 import javax.inject.Singleton;
 
@@ -25,5 +26,7 @@ public interface AcmComponent {
     void inject(AnnouncementListFragment announcementListFragment);
 
     void inject(CreateAnnouncementDialog createAnnouncementDialog);
+
+    void inject(UserManager userManager);
 
 }

@@ -25,16 +25,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 
 import org.rowanacm.android.announcement.CreateAnnouncementDialog;
 import org.rowanacm.android.settings.SettingsActivity;
+import org.rowanacm.android.user.UserInfo;
+import org.rowanacm.android.user.UserListener;
+import org.rowanacm.android.user.UserManager;
 import org.rowanacm.android.utils.ViewUtils;
 
 import javax.inject.Inject;
@@ -54,6 +52,8 @@ public class MainTabActivity extends AppCompatActivity {
     @Inject DatabaseReference database;
     @Inject FirebaseAuth firebaseAuth;
     @Inject GoogleApiClient googleApiClient;
+    @Inject
+    UserManager userManager;
 
     @BindView(R.id.tab_layout) TabLayout tabLayout;
     @BindView(R.id.fab) FloatingActionButton fab;
@@ -61,12 +61,9 @@ public class MainTabActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.google_sign_in_button) SignInButton googleSignInButton;
 
-    SectionsPagerAdapter sectionsPagerAdapter;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    private UserListener userListener;
+    private SectionsPagerAdapter sectionsPagerAdapter;
     private boolean showingAdminFragment;
-
-    private boolean admin;
-    private ValueEventListener adminListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,33 +75,20 @@ public class MainTabActivity extends AppCompatActivity {
 
         setupTabLayout();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        userListener = new UserListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    adminListener(user.getUid());
+            public void onUserChanged(UserInfo currentUser) {
+                if (currentUser != null && currentUser.getIsAdmin()) {
+                    showAdminFragment();
+                    //fab.show();
                 } else {
-                    // User is signed out
-                    ViewUtils.setVisibility(fab, false);
+                    //fab.hide();
                 }
-
             }
         };
 
-        firebaseAuth.addIdTokenListener(new FirebaseAuth.IdTokenListener() {
-            @Override
-            public void onIdTokenChanged(@NonNull FirebaseAuth firebaseAuth) {
-                firebaseAuth.getCurrentUser().getIdToken(true).addOnCompleteListener(MainTabActivity.this, new OnCompleteListener<GetTokenResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-                        String token = task.getResult().getToken();
-                        Log.d("FIRETOKEN", token);
-                    }
-                });
-            }
-        });
+
+        userManager.addUserListener(userListener);
     }
 
     private void setupTabLayout() {
@@ -114,7 +98,7 @@ public class MainTabActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                ViewUtils.setVisibility(fab, position == 1 && admin);
+                ViewUtils.setVisibility(fab, position == 1 && userManager.getCurrentUser() != null && userManager.getCurrentUser().getIsAdmin());
             }
         });
         tabLayout.setupWithViewPager(viewPager);
@@ -124,7 +108,7 @@ public class MainTabActivity extends AppCompatActivity {
         if (!showingAdminFragment) {
             showingAdminFragment = true;
             sectionsPagerAdapter.addFragment(AdminFragment.newInstance());
-            viewPager.setAdapter(sectionsPagerAdapter);
+            sectionsPagerAdapter.notifyDataSetChanged();
         }
     }
 
@@ -156,20 +140,14 @@ public class MainTabActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        firebaseAuth.addAuthStateListener(mAuthListener);
         googleApiClient.connect();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
-            firebaseAuth.removeAuthStateListener(mAuthListener);
-        }
+        userManager.removeUserListener(userListener);
         googleApiClient.disconnect();
-        if (adminListener != null && firebaseAuth.getCurrentUser() != null) {
-            database.child("members").child(firebaseAuth.getCurrentUser().getUid()).child("admin").removeEventListener(adminListener);
-        }
     }
 
     @OnClick(R.id.google_sign_in_button)
@@ -254,27 +232,6 @@ public class MainTabActivity extends AppCompatActivity {
     @OnClick(R.id.fab)
     protected void showCreateAnnouncementDialog() {
         new CreateAnnouncementDialog(this).create().show();
-    }
-
-    private void adminListener(final String userid) {
-        if (adminListener != null) {
-            database.child("members").child(userid).child("admin").removeEventListener(adminListener);
-        }
-
-        adminListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null && ((boolean) dataSnapshot.getValue())) {
-                    admin = true;
-                    showAdminFragment();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        };
-        database.child("members").child(userid).child("admin").addValueEventListener(adminListener);
     }
 
     /**

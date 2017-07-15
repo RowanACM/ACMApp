@@ -1,4 +1,4 @@
-package org.rowanacm.android;
+package org.rowanacm.android.user;
 
 
 public class UserInfo {
@@ -6,14 +6,16 @@ public class UserInfo {
     private String phone_number;
     private String uid;
     private String profile_picture;
-    private Boolean is_admin;
+    private boolean is_admin;
     private String github_username;
     private String name;
     private String slack_username;
-    private Boolean on_slack;
-    private Boolean is_eboard;
-    private Boolean on_github;
+    private boolean on_slack;
+    private boolean is_eboard;
+    private boolean on_github;
     private String rowan_email;
+    private int meeting_count;
+    private String committee_string;
 
     public UserInfo() {
     }
@@ -42,11 +44,11 @@ public class UserInfo {
         this.profile_picture = profilePicture;
     }
 
-    public Boolean getIsAdmin() {
+    public boolean getIsAdmin() {
         return is_admin;
     }
 
-    public void setIsAdmin(Boolean isAdmin) {
+    public void setIsAdmin(boolean isAdmin) {
         this.is_admin = isAdmin;
     }
 
@@ -74,27 +76,27 @@ public class UserInfo {
         this.slack_username = slack_username;
     }
 
-    public Boolean getOnSlack() {
+    public boolean getOnSlack() {
         return on_slack;
     }
 
-    public void setOnSlack(Boolean onSlack) {
+    public void setOnSlack(boolean onSlack) {
         this.on_slack = onSlack;
     }
 
-    public Boolean getIsEboard() {
+    public boolean getIsEboard() {
         return is_eboard;
     }
 
-    public void setIsEboard(Boolean isEboard) {
+    public void setIsEboard(boolean isEboard) {
         this.is_eboard = isEboard;
     }
 
-    public Boolean getOn_github() {
+    public boolean getOn_github() {
         return on_github;
     }
 
-    public void setOn_github(Boolean on_github) {
+    public void setOn_github(boolean on_github) {
         this.on_github = on_github;
     }
 
@@ -106,6 +108,22 @@ public class UserInfo {
         this.rowan_email = rowanEmail;
     }
 
+    public int getMeetingCount() {
+        return meeting_count;
+    }
+
+    public void setMeetingCount(int meeting_count) {
+        this.meeting_count = meeting_count;
+    }
+
+    public String getCommitteeText() {
+        return committee_string;
+    }
+
+    public void setCommitteeText(String committee_text) {
+        this.committee_string = committee_text;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -113,27 +131,25 @@ public class UserInfo {
 
         UserInfo userInfo = (UserInfo) o;
 
+        if (is_admin != userInfo.is_admin) return false;
+        if (on_slack != userInfo.on_slack) return false;
+        if (is_eboard != userInfo.is_eboard) return false;
+        if (on_github != userInfo.on_github) return false;
+        if (meeting_count != userInfo.meeting_count) return false;
         if (phone_number != null ? !phone_number.equals(userInfo.phone_number) : userInfo.phone_number != null)
             return false;
         if (uid != null ? !uid.equals(userInfo.uid) : userInfo.uid != null) return false;
         if (profile_picture != null ? !profile_picture.equals(userInfo.profile_picture) : userInfo.profile_picture != null)
-            return false;
-        if (is_admin != null ? !is_admin.equals(userInfo.is_admin) : userInfo.is_admin != null)
             return false;
         if (github_username != null ? !github_username.equals(userInfo.github_username) : userInfo.github_username != null)
             return false;
         if (name != null ? !name.equals(userInfo.name) : userInfo.name != null) return false;
         if (slack_username != null ? !slack_username.equals(userInfo.slack_username) : userInfo.slack_username != null)
             return false;
-        if (on_slack != null ? !on_slack.equals(userInfo.on_slack) : userInfo.on_slack != null)
-            return false;
-        if (is_eboard != null ? !is_eboard.equals(userInfo.is_eboard) : userInfo.is_eboard != null)
-            return false;
-        if (on_github != null ? !on_github.equals(userInfo.on_github) : userInfo.on_github != null)
-            return false;
         if (rowan_email != null ? !rowan_email.equals(userInfo.rowan_email) : userInfo.rowan_email != null)
             return false;
-        return true;
+        return committee_string != null ? committee_string.equals(userInfo.committee_string) : userInfo.committee_string == null;
+
     }
 
     @Override
@@ -141,14 +157,16 @@ public class UserInfo {
         int result = phone_number != null ? phone_number.hashCode() : 0;
         result = 31 * result + (uid != null ? uid.hashCode() : 0);
         result = 31 * result + (profile_picture != null ? profile_picture.hashCode() : 0);
-        result = 31 * result + (is_admin != null ? is_admin.hashCode() : 0);
+        result = 31 * result + (is_admin ? 1 : 0);
         result = 31 * result + (github_username != null ? github_username.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (slack_username != null ? slack_username.hashCode() : 0);
-        result = 31 * result + (on_slack != null ? on_slack.hashCode() : 0);
-        result = 31 * result + (is_eboard != null ? is_eboard.hashCode() : 0);
-        result = 31 * result + (on_github != null ? on_github.hashCode() : 0);
+        result = 31 * result + (on_slack ? 1 : 0);
+        result = 31 * result + (is_eboard ? 1 : 0);
+        result = 31 * result + (on_github ? 1 : 0);
         result = 31 * result + (rowan_email != null ? rowan_email.hashCode() : 0);
+        result = 31 * result + meeting_count;
+        result = 31 * result + (committee_string != null ? committee_string.hashCode() : 0);
         return result;
     }
 
@@ -166,6 +184,8 @@ public class UserInfo {
                 ", is_eboard=" + is_eboard +
                 ", on_github=" + on_github +
                 ", rowan_email='" + rowan_email + '\'' +
+                ", meeting_count=" + meeting_count +
+                ", committee_string='" + committee_string + '\'' +
                 '}';
     }
 }

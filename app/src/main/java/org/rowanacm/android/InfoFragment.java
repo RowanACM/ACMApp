@@ -58,8 +58,7 @@ public class InfoFragment extends BaseFragment {
     @Inject FirebaseAuth firebaseAuth;
     @Inject DatabaseReference database;
     @Inject GoogleApiClient googleApiClient;
-    @Inject
-    AcmClient acmClient;
+    @Inject AcmClient acmClient;
 
     @BindView(R.id.attendance_layout) ViewGroup attendanceLayout;
     @BindView(R.id.attendance_textview) TextView attendanceTextView;

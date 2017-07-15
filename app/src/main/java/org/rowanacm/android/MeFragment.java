@@ -5,29 +5,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.rowanacm.android.user.UserInfo;
+import org.rowanacm.android.user.UserListener;
+import org.rowanacm.android.user.UserManager;
 import org.rowanacm.android.utils.ExternalAppUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -42,6 +32,8 @@ public class MeFragment extends BaseFragment {
 
     private static final String LOG_TAG = MeFragment.class.getSimpleName();
 
+    @Inject
+    UserManager userManager;
     @Inject FirebaseAuth firebaseAuth;
     @Inject AcmClient acmClient;
 
@@ -52,9 +44,7 @@ public class MeFragment extends BaseFragment {
     @BindView(R.id.email_textview) TextView emailTextView;
     @BindView(R.id.profile_pic_image_view) ImageView profilePicImageView;
 
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private String googleAuthToken;
-
+    UserListener listener;
     private String currentCommittee;
 
     public MeFragment() {
@@ -69,19 +59,6 @@ public class MeFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         App.get().getAcmComponent().inject(this);
         super.onCreate(savedInstanceState);
-
-        firebaseAuth.addIdTokenListener(new FirebaseAuth.IdTokenListener() {
-            @Override
-            public void onIdTokenChanged(@NonNull FirebaseAuth firebaseAuth) {
-                firebaseAuth.getCurrentUser().getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-                        googleAuthToken = task.getResult().getToken();
-                        Log.d("AUTHTOKEN", googleAuthToken);
-                    }
-                });
-            }
-        });
     }
 
     @Override
@@ -92,51 +69,28 @@ public class MeFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupAuthListener();
+
+        listener = new UserListener() {
+            @Override
+            public void onUserChanged(UserInfo currentUser) {
+                if (currentUser != null) {
+                    updateUserUi(currentUser);
+                }
+            }
+        };
+
+        userManager.addUserListener(listener);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseAuth.getInstance().addAuthStateListener(mAuthListener);
-
-        if (firebaseAuth.getCurrentUser() != null) {
-            firebaseAuth.getCurrentUser().getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                @Override
-                public void onComplete(@NonNull Task<GetTokenResult> task) {
-                    acmClient.getUserInfo(task.getResult().getToken()).enqueue(new Callback<UserInfo>() {
-                        @Override
-                        public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
-                            UserInfo userInfo = response.body();
-                            if (userInfo == null) {
-                                return;
-                            }
-
-                            if (userInfo.getProfilePicture() != null) {
-                                Picasso.with(getActivity())
-                                        .load(userInfo.getProfilePicture())
-                                        .placeholder(R.drawable.person)
-                                        .into(profilePicImageView);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<UserInfo> call, Throwable t) {
-
-                        }
-                    });
-                }
-            });
-        }
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
-            FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
-        }
+        userManager.removeUserListener(listener);
     }
 
     @Override
@@ -144,85 +98,32 @@ public class MeFragment extends BaseFragment {
         return App.get().getString(R.string.me_title);
     }
 
-    private void setupAuthListener() {
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                if (user != null) {
-                    // User is signed in
-                    nameTextView.setText(user.getDisplayName());
-                    emailTextView.setText(user.getEmail());
-
-                    FirebaseDatabase.getInstance().getReference("members").child(user.getUid()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (isVisible()) {
-                                DataSnapshot meetingCount = dataSnapshot.child("meeting_count");
-                                if (meetingCount != null) {
-                                    meetingCountTextView.setText(meetingCount.getValue().toString());
-                                }
-
-
-                                DataSnapshot committees = dataSnapshot.child("committees");
-                                List<String> selectedCommittees = new ArrayList<String>();
-                                for (DataSnapshot child : committees.getChildren()) {
-                                    if (child.getValue(Boolean.class)) {
-
-                                        if (!child.getKey().equalsIgnoreCase("eboard")) {
-                                            currentCommittee = child.getKey();
-                                        }
-                                        selectedCommittees.add(child.getKey());
-                                    }
-                                }
-
-                                String displayMessage = getCommitteeText(selectedCommittees);
-                                committeeTextView.setText(displayMessage);
-
-                                DataSnapshot onSlack = dataSnapshot.child("on_slack");
-                                if (onSlack != null && onSlack.getValue(Boolean.class)) {
-                                    onSlackTextView.setText(R.string.user_on_slack);
-                                } else {
-                                    onSlackTextView.setText(R.string.not_on_slack);
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {}
-                    });
-
-                } else {
-                    // User is signed out
-                    Log.d(LOG_TAG, "onAuthStateChanged:signed_out");
-                }
-            }
-        };
-    }
-
-    private String getCommitteeText(List<String> selectedCommittees) {
-        if (selectedCommittees.isEmpty()) {
-            return "Committee: None";
+    private void updateUserUi(UserInfo currentUser) {
+        if (nameTextView == null) {
+            return;
         }
 
-        if (selectedCommittees.contains("eboard")) {
-            return "Eboard";
+        nameTextView.setText(currentUser.getName());
+        emailTextView.setText(currentUser.getRowanEmail());
+
+
+        if (currentUser.getProfilePicture() != null) {
+            Picasso.with(getActivity())
+                    .load(currentUser.getProfilePicture())
+                    .placeholder(R.drawable.person)
+                    .into(profilePicImageView);
         }
 
-        if (selectedCommittees.contains("ai")) {
-            return "Committee: AI";
+        if (currentUser.getOnSlack()) {
+            onSlackTextView.setText(R.string.user_on_slack);
+        } else {
+            onSlackTextView.setText(R.string.not_on_slack);
         }
 
-        if (selectedCommittees.contains("game")) {
-            return "Committee: Animation/Game";
-        }
+        committeeTextView.setText(currentUser.getCommitteeText());
 
-        return "Committee: " + capitalizeFirstLetterOfString(selectedCommittees.get(0));
-    }
+        meetingCountTextView.setText(""+currentUser.getMeetingCount());
 
-    private String capitalizeFirstLetterOfString(String str) {
-        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
     @OnClick({R.id.change_committee_button, R.id.committee_text_view})
@@ -241,7 +142,7 @@ public class MeFragment extends BaseFragment {
         String[] stringArray = getResources().getStringArray(R.array.committee_keys); //grab key names
         final String committee = stringArray[index]; //set string based on index of
 
-        Call<AttendanceResult> result = acmClient.setCommittees(googleAuthToken, committee);
+        Call<AttendanceResult> result = acmClient.setCommittees(userManager.getGoogleLoginToken(), committee);
         result.enqueue(new Callback<AttendanceResult>() {
             @Override
             public void onResponse(Call<AttendanceResult> call, Response<AttendanceResult> response) {
@@ -270,6 +171,7 @@ public class MeFragment extends BaseFragment {
         }
     }
 
+    @OnClick(R.id.profile_pic_image_view)
     protected void showProfilePictureToast() {
         Toast.makeText(getActivity(), "Change your slack profile picture to change the picture in the app", Toast.LENGTH_LONG).show();
     }
