@@ -13,15 +13,15 @@
         android:id="@+id/profile_badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:background="@color/accent"
         android:paddingBottom="30dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:paddingTop="30dp"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:paddingTop="30dp">
 
         <ImageView
             android:id="@+id/profile_pic_image_view"
@@ -38,31 +38,44 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/profile_pic_image_view"
             android:layout_centerHorizontal="true"
+            android:text="No Name"
             android:textColor="@color/white"
             android:textSize="35sp"
-            android:text="No Name"
-            tools:text="John Smith"/>
+            tools:text="John Smith"
+            />
 
+        <RelativeLayout
+            android:id="@+id/change_committee_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_text_view"
+            android:layout_centerHorizontal="true">
 
             <TextView
                 android:id="@+id/committee_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/name_text_view"
                 android:text="No Committee"
                 android:textColor="@color/white"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                />
 
-        <ImageView
-            android:id="@+id/change_committee_button"
-            android:src="@drawable/edit"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_alignBottom="@id/committee_text_view"
-            android:layout_toRightOf="@id/committee_text_view"/>
+            <ImageView
+                android:id="@+id/change_committee_button"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@id/committee_text_view"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/committee_text_view"
+                android:src="@drawable/edit"
+                />
+
+
+        </RelativeLayout>
+
+
+
 
     </RelativeLayout>
 

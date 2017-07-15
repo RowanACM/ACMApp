@@ -13,7 +13,7 @@ public interface AcmClient {
 
 
     @GET("set-committees")
-    Call setCommittees(@Query("token") String googleToken,
+    Call<ServerResponse> setCommittees(@Query("token") String googleToken,
                        @Query("committees") String committees);
 
     @GET("get-user-info")

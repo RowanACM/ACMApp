@@ -32,8 +32,7 @@ public class MeFragment extends BaseFragment {
 
     private static final String LOG_TAG = MeFragment.class.getSimpleName();
 
-    @Inject
-    UserManager userManager;
+    @Inject UserManager userManager;
     @Inject FirebaseAuth firebaseAuth;
     @Inject AcmClient acmClient;
 
@@ -44,8 +43,7 @@ public class MeFragment extends BaseFragment {
     @BindView(R.id.email_textview) TextView emailTextView;
     @BindView(R.id.profile_pic_image_view) ImageView profilePicImageView;
 
-    UserListener listener;
-    private String currentCommittee;
+    private UserListener listener;
 
     public MeFragment() {
 
@@ -126,10 +124,10 @@ public class MeFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.change_committee_button, R.id.committee_text_view})
+    @OnClick(R.id.change_committee_layout)
     protected void chooseCommittee() {
-        // custom dialog
-        final Dialog dialog = new ChooseCommitteeDialog(getActivity(), currentCommittee) {
+        // TODO Check the current committee
+        final Dialog dialog = new ChooseCommitteeDialog(getActivity(), null) {
             @Override
             public void onRadioButtonClicked(int index) {
                 onCommitteeChanged(index);
@@ -142,18 +140,19 @@ public class MeFragment extends BaseFragment {
         String[] stringArray = getResources().getStringArray(R.array.committee_keys); //grab key names
         final String committee = stringArray[index]; //set string based on index of
 
-        Call<AttendanceResult> result = acmClient.setCommittees(userManager.getGoogleLoginToken(), committee);
-        result.enqueue(new Callback<AttendanceResult>() {
+        Call<ServerResponse> serverResponseCall = acmClient.setCommittees(userManager.getGoogleLoginToken(), committee);
+        serverResponseCall.enqueue(new Callback<ServerResponse>() {
             @Override
-            public void onResponse(Call<AttendanceResult> call, Response<AttendanceResult> response) {
-
+            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                userManager.refreshCurrentUser();
             }
 
             @Override
-            public void onFailure(Call<AttendanceResult> call, Throwable t) {
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
 
             }
         });
+
 
     }
 
