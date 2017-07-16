@@ -124,65 +124,69 @@ function registeredForACM() {
 }
 
 function submitAttendance() {
-	var user = firebase.auth().currentUser;
-	if (user != null) {
-		console.log("SIGNING IN TO MEETING");
-		signingInToMeeting();
-	
-		$.get({
-		  url: "https://2dvdaw7sq1.execute-api.us-east-1.amazonaws.com/prod/attendance",
-		  type: "get", //send it through get method
-		  data: { 
-			uid: user.uid, 
-			name: user.displayName, 
-			email: user.email
-		  },
-		  success: function(response) {
-		  	switch(response) {
-    			case 100:
-        			// Signed in successfully. New member
-        			signedInToMeeting();
-        			document.getElementById("attendance").innerHTML = "Signed in successfully ✓<br/>Welcome to your first ACM Meeting. You should have received an email with more information about the club.";
-        			break;
-    			case 110:
-        			// Signed in successfully. Existing member
-        			signedInToMeeting();
-        			break;
-    			case 120:
-        			// Already signed in
-        			signedInToMeeting();
-        			break;
-        		case 130:
-        			// Already signed in
-        			registeredForACM();
-        			break;
-    			case 200:
-        			// Didn't sign in. Attendance disabled
-        			document.getElementById("meeting_button").style.visibility = "hidden";
-					document.getElementById("attendance").innerHTML = "You already registered for ACM";
-        			break;
-        		case 210:
-        			// Invalid input
-        			document.getElementById("meeting_button").style.visibility = "visible";
-					document.getElementById("attendance").innerHTML = "Error signing in. Try again. ERROR MESSAGE: INVALID INPUT";
-        			break;
-        		case 220:
-        			// Invalid input
-        			document.getElementById("meeting_button").style.visibility = "visible";
-					document.getElementById("attendance").innerHTML = "Error signing in. Try again. ERROR MESSAGE: UNKNOWN ERROR";
-        			break;
-    			default:
-    				// Invalid input
-        			document.getElementById("meeting_button").style.visibility = "visible";
-					document.getElementById("attendance").innerHTML = "Error signing in. Try again. ERROR MESSAGE: UNKNOWN ERROR";
-			}
-		  },
-		  error: function(xhr) {
-			//Do Something to handle error
-			alert("Connection Error: " + xhr);
-		  }
-		});
-  	}
+    var user = firebase.auth().currentUser;
+    if (user != null) {
+        console.log("SIGNING IN TO MEETING");
+        signingInToMeeting();
+
+        firebase.auth().currentUser.getToken( /* forceRefresh */ true).then(function(idToken) {
+
+            $.get({
+                url: "https://api.rowanacm.org/prod/sign-in",
+                type: "get", //send it through get method
+                data: {
+                    token: idToken
+                },
+                success: function(response) {
+                    console.log(response);
+                    switch (response["response_code"]) {
+                        case 100:
+                            // Signed in successfully. New member
+                            signedInToMeeting();
+                            document.getElementById("attendance").innerHTML = "Signed in successfully ✓<br/>Welcome to your first ACM Meeting. You should have received an email with more information about the club.";
+                            break;
+                        case 110:
+                            // Signed in successfully. Existing member
+                            signedInToMeeting();
+                            break;
+                        case 120:
+                            // Already signed in
+                            signedInToMeeting();
+                            break;
+                        case 130:
+                            // Already signed in
+                            registeredForACM();
+                            break;
+                        case 200:
+                            // Didn't sign in. Attendance disabled
+                            document.getElementById("meeting_button").style.visibility = "hidden";
+                            document.getElementById("attendance").innerHTML = "You already registered for ACM";
+                            break;
+                        case 210:
+                            // Invalid input
+                            document.getElementById("meeting_button").style.visibility = "visible";
+                            document.getElementById("attendance").innerHTML = "Error signing in. Try again. ERROR MESSAGE: INVALID INPUT";
+                            break;
+                        case 220:
+                            // Invalid input
+                            document.getElementById("meeting_button").style.visibility = "visible";
+                            document.getElementById("attendance").innerHTML = "Error signing in. Try again. ERROR MESSAGE: UNKNOWN ERROR";
+                            break;
+                        default:
+                            // Invalid input
+                            document.getElementById("meeting_button").style.visibility = "visible";
+                            document.getElementById("attendance").innerHTML = "Error signing in. Try again. ERROR MESSAGE: UNKNOWN ERROR";
+                    }
+                },
+                error: function(xhr) {
+                    //Do Something to handle error
+                    alert("Connection Error: " + xhr);
+                }
+            });
+        }).catch(function(error) {
+            // Handle error
+        });
+    }
 }
 
 

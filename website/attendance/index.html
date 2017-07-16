@@ -6,6 +6,8 @@
 		<meta name="google-signin-cookiepolicy" content="single_host_origin">
 		<meta name="google-signin-scope" content="profile email">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet"
+          href="node_modules/material-components-web/dist/material-components-web.css">
 
 		<title>ACM Sign-In</title>
     	<link rel="shortcut icon" href="img/rowan_acm_logo.png">
@@ -20,7 +22,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<script src="https%3A%2F%2Fwww.google.com%2Fjsapi%3Fautoload%3D%7B%27modules%27%3A%5B%7B%27name%27%3A%27visualization%27%2C%27version%27%3A%271.1%27%2C%27packages%27%3A%5B%27corechart%27%5D%7D%5D%7D"></script>
 		<script src="https://www.gstatic.com/charts/loader.js"></script>
-		<script src="Scripts/attendance.js"></script>
+		<script src="scripts/attendance.js"></script>
 		<script>
   		    google.charts.load('current', {packages: ['corechart']});
   		    google.charts.setOnLoadCallback(null);
@@ -44,30 +46,68 @@
 			</div>
 		</header>
 		<div class="body">
-			<p id="attendance">Sign in to your Google account <br /> (Rowan Email Address)</p>
-			<button type="button" class="animated infinite tada" id="meeting_button" onclick="submitAttendance()">MEETING SIGN IN</button>
+			<p id="attendance" class="mdc-typography--display1">Sign in to your Google account (Rowan Email Address)</p>
+			<button type="button" class="animated infinite tada mdc-button
+                   mdc-button--raised
+                   mdc-button--primary
+                   mdc-ripple-surface" id="meeting_button" onclick="submitAttendance()">MEETING SIGN IN</button>
 			<div class="g-signin2" id="google_sign_in" data-onsuccess="onSignIn"></div>
-			<button type="button" id="sign_out" onclick="firebaseSignOut()">Google Sign Out</button>
+			<button type="button" id="sign_out" onclick="firebaseSignOut()" class="mdc-button
+                   mdc-button--raised
+                   mdc-button--primary
+                   mdc-ripple-surface"
+            data-mdc-auto-init="MDCRipple">Google Sign Out</button>
 		
-			<p id="signed_in">People signed in: Loading</p>
-			<p id="first_meeting">New members: Loading</p>
-			<p id="contribute"><a href="https://github.com/RowanACM/ACM_Site" target="_blank">Help code this website</a> </p>
+			<p id="signed_in" class="mdc-typography--display1">People signed in: Loading</p>
+			<p id="first_meeting" class="mdc-typography--display1">New members: Loading</p>
+			<p id="contribute"><a href="https://github.com/RowanACM/ACM_Site" target="_blank" class="mdc-button
+                   mdc-button--raised
+                   mdc-button--primary
+                   mdc-ripple-surface
+                   --mdl-theme-primary=f44336"
+            data-mdc-auto-init="MDCRipple">Help code this website</a> </p>
 			
 			<a href="https://twitter.com/RowanACM" class="twitter-follow-button" data-show-count="false">Follow @RowanACM</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-			<br/>
-			<div class="fb-page" data-href="https://www.facebook.com/rowanacm" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/rowanacm" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/rowanacm">Rowan ACM</a></blockquote></div>
+			
+			<div class="fb-like" data-href="https://www.facebook.com/rowanacm" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="false" style="vertical-align:top;zoom:1;*display:inline"></div>
 			
 			<br/>
-			<p id="admin_title">ADMIN</p>
-			<button id="get_attendance_button" onclick="exportAttendance()">Export current attendance</button>
-			<button id="get_all_attendance_button" onclick="exportAllMembers()">Export every meeting attendance</button>
-			<button id="get_members_button" onclick="exportPeople()">Export current members</button>
-			<button id="toggle_attendance_button" onclick="toggleAttendanceEnabled()">Toggle attendance enabled</button>
-			<p id="current_meeting_text">Current Meeting: </p>
-			<button id="change_current_meeting_button" onclick="changeCurrentMeeting()">Change current meeting</button>
+			<h3 id="admin_title" class="mdc-typography--display1">Admin</h3>
+			<button id="get_attendance_button" onclick="exportAttendance()" class="mdc-button
+                   mdc-button--raised
+                   mdc-button--primary
+                   mdc-ripple-surface"
+            data-mdc-auto-init="MDCRipple">Export current attendance</button>
+			<br/>
+			<button id="get_all_attendance_button" onclick="exportAllMembers()" class="mdc-button
+                   mdc-button--raised
+                   mdc-button--primary
+                   mdc-ripple-surface"
+            data-mdc-auto-init="MDCRipple">Export every meeting attendance</button>
+			<br/>
+			<button id="get_members_button" onclick="exportPeople()" class="mdc-button
+                   mdc-button--raised
+                   mdc-button--primary
+                   mdc-ripple-surface"
+            data-mdc-auto-init="MDCRipple">Export current members</button>
+			<br/>
+			<button id="toggle_attendance_button" onclick="toggleAttendanceEnabled()" class="mdc-button
+                   mdc-button--raised
+                   mdc-button--primary
+                   mdc-ripple-surface"
+            data-mdc-auto-init="MDCRipple">Toggle attendance enabled</button>
 			
+			<p id="current_meeting_text" class="mdc-typography--display1">Current Meeting: </p>
+			<button id="change_current_meeting_button" onclick="changeCurrentMeeting()" class="mdc-button
+                   mdc-button--raised
+                   mdc-button--primary
+                   mdc-ripple-surface"
+            data-mdc-auto-init="MDCRipple">Change current meeting</button>
 			
+	
 			
 		</div>
 	</body>
+	<script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+<script>mdc.autoInit()</script>
 </html>

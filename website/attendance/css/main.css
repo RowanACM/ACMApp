@@ -27,6 +27,7 @@ header {
 }
 .body {
     padding-left: 40px;
+    padding-bottom: 40px;
 }
 .body_first_half {
     width: 49%;
@@ -48,31 +49,51 @@ header {
 }
 #sign_out {
     visibility: hidden;
+    margin-bottom: 15px;
+    --mdc-theme-primary: #8e8e8e;
 }
 #admin_title {
     visibility: hidden;
+    margin-bottom: 20px;
+}
+#signed_in {
+    margin: 10px;
+}
+#first_meeting {
+    margin: 10px;
 }
 #get_attendance_button {
     visibility: hidden;
+    margin-bottom: 5px;
 }
 #toggle_attendance_button {
     visibility: hidden;
+    margin-bottom: 5px;
 }
 #current_meeting_text {
     visibility: hidden;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 #change_current_meeting_button {
     visibility: hidden;
+    margin-bottom: 5px;
 }
 #get_members_button {
     visibility: hidden;
+    margin-bottom: 5px;
 }
 #get_all_attendance_button {
     visibility: hidden;
+    margin-bottom: 5px;
 }
-
+#contribute {
+	--mdc-theme-primary: #8e8e8e;
+	margin-top: 15px;
+	margin-bottom: 25px;
+}
 #attendance {
-    font-size: 15px;
+    
 }
 a {
     color: rgb(30, 30, 30);
