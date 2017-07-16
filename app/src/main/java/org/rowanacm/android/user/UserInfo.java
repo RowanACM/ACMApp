@@ -1,6 +1,8 @@
 package org.rowanacm.android.user;
 
 
+import java.util.List;
+
 public class UserInfo {
 
     private String phone_number;
@@ -16,6 +18,7 @@ public class UserInfo {
     private String rowan_email;
     private int meeting_count;
     private String committee_string;
+    private List<TodoItem> todo_list;
 
     public UserInfo() {
     }
@@ -68,11 +71,11 @@ public class UserInfo {
         this.name = name;
     }
 
-    public String getSlack_username() {
+    public String getSlackUsername() {
         return slack_username;
     }
 
-    public void setSlack_username(String slack_username) {
+    public void setSlackUsername(String slack_username) {
         this.slack_username = slack_username;
     }
 
@@ -92,11 +95,11 @@ public class UserInfo {
         this.is_eboard = isEboard;
     }
 
-    public boolean getOn_github() {
+    public boolean getOnGithub() {
         return on_github;
     }
 
-    public void setOn_github(boolean on_github) {
+    public void setOnGithub(boolean on_github) {
         this.on_github = on_github;
     }
 
@@ -124,6 +127,14 @@ public class UserInfo {
         this.committee_string = committee_text;
     }
 
+    public List<TodoItem> getTodoList() {
+        return todo_list;
+    }
+
+    public void setTodoList(List<TodoItem> todo_list) {
+        this.todo_list = todo_list;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -148,7 +159,9 @@ public class UserInfo {
             return false;
         if (rowan_email != null ? !rowan_email.equals(userInfo.rowan_email) : userInfo.rowan_email != null)
             return false;
-        return committee_string != null ? committee_string.equals(userInfo.committee_string) : userInfo.committee_string == null;
+        if (committee_string != null ? !committee_string.equals(userInfo.committee_string) : userInfo.committee_string != null)
+            return false;
+        return todo_list != null ? todo_list.equals(userInfo.todo_list) : userInfo.todo_list == null;
 
     }
 
@@ -167,6 +180,7 @@ public class UserInfo {
         result = 31 * result + (rowan_email != null ? rowan_email.hashCode() : 0);
         result = 31 * result + meeting_count;
         result = 31 * result + (committee_string != null ? committee_string.hashCode() : 0);
+        result = 31 * result + (todo_list != null ? todo_list.hashCode() : 0);
         return result;
     }
 
@@ -186,6 +200,7 @@ public class UserInfo {
                 ", rowan_email='" + rowan_email + '\'' +
                 ", meeting_count=" + meeting_count +
                 ", committee_string='" + committee_string + '\'' +
+                ", todo_list=" + todo_list +
                 '}';
     }
 }

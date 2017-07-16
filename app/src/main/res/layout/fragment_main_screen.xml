@@ -146,22 +146,6 @@
                 android:layout_alignTop="@id/facebook_button"
                 android:layout_toRightOf="@id/facebook_button"/>
 
-            <TextView
-                android:id="@+id/app_installed_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/facebook_button"
-                android:layout_marginTop="20dp"
-                android:text="This app is installed"/>
-
-            <CheckBox
-                android:id="@+id/uninstall_check"
-                android:layout_below="@id/app_installed_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:enabled="true"/>
-
         </RelativeLayout>
 
     </RelativeLayout>

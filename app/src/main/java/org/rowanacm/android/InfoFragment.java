@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,9 +30,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import org.rowanacm.android.firebase.RemoteConfig;
+import org.rowanacm.android.user.TodoItem;
+import org.rowanacm.android.user.UserInfo;
+import org.rowanacm.android.user.UserListener;
+import org.rowanacm.android.user.UserManager;
 import org.rowanacm.android.utils.ExternalAppUtils;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
@@ -59,16 +63,19 @@ public class InfoFragment extends BaseFragment {
     @Inject DatabaseReference database;
     @Inject GoogleApiClient googleApiClient;
     @Inject AcmClient acmClient;
+    @Inject UserManager userManager;
 
     @BindView(R.id.attendance_layout) ViewGroup attendanceLayout;
     @BindView(R.id.attendance_textview) TextView attendanceTextView;
     @BindView(R.id.attendance_button) Button meetingButton;
     @BindView(R.id.header_image_view) ImageView headerImageView;
+    @BindView(R.id.new_member_instructions) TextView newMemberInstructions;
 
     private ProgressDialog progressDialog;
 
     private FirebaseAuth.AuthStateListener authListener;
     private ValueEventListener attendanceListener;
+    private UserListener userListener;
 
     private enum AttendanceMode {HIDDEN, PROMPT_GOOGLE, PROMPT_MEETING, SIGNED_IN}
 
@@ -130,6 +137,29 @@ public class InfoFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         firebaseAuth.addAuthStateListener(authListener);
+
+        userListener = new UserListener() {
+            @Override
+            public void onUserChanged(UserInfo currentUser) {
+                if (currentUser == null) {
+                    return;
+                }
+                List<TodoItem> todoList = currentUser.getTodoList();
+                String todoStr = "Instructions for new members:\n";
+                todoStr += "• Download this app ✔\n";
+                for (TodoItem todoItem : todoList) {
+                    todoStr += "• " + todoItem.getText();
+                    if (todoItem.isCompleted()) {
+                        todoStr += " ✔";
+                    }
+                    todoStr += "\n";
+                 }
+                 newMemberInstructions.setText(todoStr);
+
+            }
+        };
+
+        userManager.addUserListener(userListener);
     }
 
     @Override
@@ -138,6 +168,7 @@ public class InfoFragment extends BaseFragment {
         if (firebaseAuth != null) {
             firebaseAuth.removeAuthStateListener(authListener);
         }
+        userManager.removeUserListener(userListener);
     }
 
     @OnClick(R.id.attendance_button)
@@ -349,13 +380,6 @@ public class InfoFragment extends BaseFragment {
     @Override
     public String getTitle() {
         return App.get().getString(R.string.info_title);
-    }
-
-    @OnClick(R.id.uninstall_check)
-    public void uninstall(CheckBox checkBox) {
-        if (!checkBox.isChecked()) {
-           ExternalAppUtils.uninstallThisApp(getActivity());
-        }
     }
 
     @OnClick(R.id.facebook_button)
