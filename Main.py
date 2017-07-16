@@ -55,7 +55,10 @@ def main(event, context):
     return {
         "isBase64Encoded": True,
         "statusCode": 200,
-        "headers": {"Cache-Control": "public,max-age=" + str(cache_length) + ",only-if-cached,max-stale"},
+        "headers": {"Cache-Control": "public,max-age=" + str(cache_length) + ",only-if-cached,max-stale",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "*",
+                    "Access-Control-Allow-Headers": "*"},
         "body": json.dumps(response)
     }
 
@@ -110,7 +113,10 @@ def get_user_info(event, context):
     token = params["token"]
 
     try:
-        return User.get_member_info(user_id_token=token)
+        result = User.get_member_info(user_id_token=token)
+        if result is not None:
+            return result
+        return {"message": "The token is invalid or expired", "status": "ERROR"}
     except Exception as e:
         return {"message": "An unknown error occurred " + str(e), "status": "ERROR"}
 
