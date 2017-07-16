@@ -1,4 +1,4 @@
-package org.rowanacm.android.user;
+package org.rowanacm.android.authentication;
 
 public abstract class UserListener {
 

@@ -1,4 +1,4 @@
-package org.rowanacm.android.user;
+package org.rowanacm.android.authentication;
 
 import android.support.annotation.NonNull;
 
@@ -22,8 +22,7 @@ import retrofit2.Response;
 
 public class UserManager {
 
-    @Inject
-    AcmClient acmClient;
+    @Inject AcmClient acmClient;
     @Inject FirebaseAuth firebaseAuth;
 
     private FirebaseUser firebaseUser;

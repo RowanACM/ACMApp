@@ -1,10 +1,16 @@
-package org.rowanacm.android;
+package org.rowanacm.android.injection;
 
+import org.rowanacm.android.AdminFragment;
+import org.rowanacm.android.App;
+import org.rowanacm.android.AppModule;
+import org.rowanacm.android.InfoFragment;
+import org.rowanacm.android.MainTabActivity;
+import org.rowanacm.android.MeFragment;
 import org.rowanacm.android.announcement.AnnouncementListFragment;
 import org.rowanacm.android.announcement.CreateAnnouncementDialog;
 import org.rowanacm.android.settings.SettingsActivity;
 import org.rowanacm.android.settings.SettingsFragment;
-import org.rowanacm.android.user.UserManager;
+import org.rowanacm.android.authentication.UserManager;
 
 import javax.inject.Singleton;
 

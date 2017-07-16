@@ -14,9 +14,9 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
-import org.rowanacm.android.user.UserInfo;
-import org.rowanacm.android.user.UserListener;
-import org.rowanacm.android.user.UserManager;
+import org.rowanacm.android.authentication.UserInfo;
+import org.rowanacm.android.authentication.UserListener;
+import org.rowanacm.android.authentication.UserManager;
 import org.rowanacm.android.utils.ExternalAppUtils;
 
 import javax.inject.Inject;

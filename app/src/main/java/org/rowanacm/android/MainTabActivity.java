@@ -30,9 +30,9 @@ import com.google.firebase.database.DatabaseReference;
 
 import org.rowanacm.android.announcement.CreateAnnouncementDialog;
 import org.rowanacm.android.settings.SettingsActivity;
-import org.rowanacm.android.user.UserInfo;
-import org.rowanacm.android.user.UserListener;
-import org.rowanacm.android.user.UserManager;
+import org.rowanacm.android.authentication.UserInfo;
+import org.rowanacm.android.authentication.UserListener;
+import org.rowanacm.android.authentication.UserManager;
 import org.rowanacm.android.utils.ViewUtils;
 
 import javax.inject.Inject;

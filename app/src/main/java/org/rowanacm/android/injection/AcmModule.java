@@ -1,4 +1,4 @@
-package org.rowanacm.android;
+package org.rowanacm.android.injection;
 
 import android.content.Context;
 
@@ -12,8 +12,12 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import org.rowanacm.android.AcmClient;
+import org.rowanacm.android.AdminManager;
+import org.rowanacm.android.BuildConfig;
+import org.rowanacm.android.R;
 import org.rowanacm.android.firebase.RemoteConfig;
-import org.rowanacm.android.user.UserManager;
+import org.rowanacm.android.authentication.UserManager;
 
 import javax.inject.Singleton;
 

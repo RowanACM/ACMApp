@@ -5,6 +5,10 @@ import android.app.Application;
 import com.google.firebase.crash.FirebaseCrash;
 import com.squareup.leakcanary.LeakCanary;
 
+import org.rowanacm.android.injection.AcmComponent;
+import org.rowanacm.android.injection.AppModule;
+import org.rowanacm.android.injection.DaggerAcmComponent;
+
 
 public class App extends Application {
 

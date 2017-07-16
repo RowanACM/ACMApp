@@ -1,6 +1,8 @@
-package org.rowanacm.android;
+package org.rowanacm.android.injection;
 
 import android.content.Context;
+
+import org.rowanacm.android.App;
 
 import javax.inject.Singleton;
 
