@@ -1,10 +1,12 @@
 package org.rowanacm.android.announcement;
 
 import android.support.annotation.NonNull;
+import android.text.format.DateUtils;
 
 import org.rowanacm.android.Searchable;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * An message by Rowan ACM.
@@ -58,6 +60,12 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
                 (subj != null && subj.toLowerCase().contains(search))           ||
                 (text != null && text.toLowerCase().contains(search))           ||
                 (title != null && title.toLowerCase().contains(search));
+    }
+
+    public String getRelativeDate() {
+        long timestamp = getTimestamp() * 1000;
+        long now = new Date().getTime();
+        return DateUtils.getRelativeTimeSpanString(timestamp, now, DateUtils.SECOND_IN_MILLIS).toString();
     }
 
     public String getAuthor() {

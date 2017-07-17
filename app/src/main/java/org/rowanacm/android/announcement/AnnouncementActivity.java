@@ -2,7 +2,7 @@ package org.rowanacm.android.announcement;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,8 +12,6 @@ import com.squareup.picasso.Picasso;
 
 import org.rowanacm.android.R;
 import org.rowanacm.android.utils.ExternalAppUtils;
-
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,18 +49,31 @@ public class AnnouncementActivity extends AppCompatActivity {
         titleTextView.setText(announcement.getTitle());
         announcementTextView.setText(announcement.getText());
         committeeTextView.setText(announcement.getCommittee());
-        dateTextView.setText(getRelativeDate(announcement));
+        dateTextView.setText(announcement.getRelativeDate());
         if (announcement.getUrl() == null) {
             urlButton.setVisibility(View.GONE);
         }
 
         setTitle(announcement.getCommittee());
 
+        /*
         if (announcement.getImageUrl() != null) {
             loadHeaderImage();
         } else {
             announcementImageView.setVisibility(View.GONE);
         }
+        */
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                supportFinishAfterTransition();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -76,12 +87,6 @@ public class AnnouncementActivity extends AppCompatActivity {
                 .load(announcement.getImageUrl())
                 .fit()
                 .into(announcementImageView);
-    }
-
-    private String getRelativeDate(Announcement announcement) {
-        long timestamp = announcement.getTimestamp() * 1000;
-        long now = new Date().getTime();
-        return DateUtils.getRelativeTimeSpanString(timestamp, now, DateUtils.SECOND_IN_MILLIS).toString();
     }
 
     @OnClick(R.id.announcement_url_button)
