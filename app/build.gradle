@@ -44,6 +44,9 @@ android {
         }
         debug {
             signingConfig signingConfigs.debug
+
+            applicationIdSuffix '.dev'
+            versionNameSuffix '-dev'
         }
     }
     lintOptions {
