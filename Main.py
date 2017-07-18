@@ -12,6 +12,8 @@ import ids
 import ManageCommittee
 import User
 import os
+import Annoucements
+
 
 os.environ['TZ'] = 'US/Eastern'
 
@@ -39,6 +41,9 @@ def main(event, context):
         cache_length = NO_CACHE
     elif event["resource"] == "/get-user-info":
         response = get_user_info(event, context)
+        cache_length = NO_CACHE
+    elif event["resource"] == "/get-announcements":
+        response = get_announcements(event, context)
         cache_length = NO_CACHE
     elif event["resource"] == "/post-announcement":
         response = sign_in(event, context)
@@ -117,6 +122,20 @@ def get_user_info(event, context):
         if result is not None:
             return result
         return {"message": "The token is invalid or expired", "status": "ERROR"}
+    except Exception as e:
+        return {"message": "An unknown error occurred " + str(e), "status": "ERROR"}
+
+
+def get_announcements(event, context):
+    params = event["queryStringParameters"]
+
+    #token = params["token"]
+
+    try:
+        result = Annoucements.get_announcements()
+        if result is not None:
+            return result
+        return {"message": "An unknown error occurred", "status": "ERROR"}
     except Exception as e:
         return {"message": "An unknown error occurred " + str(e), "status": "ERROR"}
 
