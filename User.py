@@ -65,7 +65,7 @@ def get_member_info(user_id_token=None, uid=None):
 
     phone_number = None
 
-    return {"name": name,
+    user = {"name": name,
             "rowan_email": rowan_email,
             "phone_number": phone_number,
             "is_eboard": is_eboard,
@@ -80,3 +80,18 @@ def get_member_info(user_id_token=None, uid=None):
             "committee_string": committee_text,
             "member_since": "September 2016",       # TODO
             "uid": uid}
+
+    user["todo_list"] = get_user_todo_list(user)
+
+    return user
+
+
+def get_user_todo_list(user):
+    todo_list = []
+    todo_list.append({"text": "Attend your first meeting", "completed": user["meeting_count"] > 0})
+    todo_list.append({"text": "Sign in to the meeting", "completed": user["meeting_count"] > 0})
+    todo_list.append({"text": "Sign up for Slack", "completed": user["on_slack"]})
+    todo_list.append({"text": "Choose a committee", "completed": len(user["committee_list"]) > 0})
+    todo_list.append({"text": "Join our Github organization", "completed": user["on_github"]})
+
+    return todo_list

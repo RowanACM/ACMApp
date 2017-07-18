@@ -47,7 +47,7 @@ def main(event, context):
         response = github_sign_up(event, context)
         cache_length = NO_CACHE
     else:
-        response = {"status": "ERROR"}
+        response = {"status": "ERROR", "message": "Resource not specified"}
         cache_length = NO_CACHE
 
     print("RETURNING", response)
