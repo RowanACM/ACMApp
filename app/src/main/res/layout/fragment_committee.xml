@@ -1,128 +1,212 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:nestedScrollingEnabled="true">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="org.rowanacm.android.CommitteeFragment">
+        >
 
-        <TextView
-            android:layout_width="wrap_content"
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="serif"
-            android:text="App Committee"
-            android:textSize="25sp"/>
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:context="org.rowanacm.android.CommitteeFragment">
 
-        <TextView
-            android:layout_width="wrap_content"
+
+            <ImageView
+                android:id="@+id/app_committee_logo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/app_committee"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_toRightOf="@id/app_committee_logo"
+                android:layout_alignTop="@id/app_committee_logo"
+                android:layout_alignBottom="@id/app_committee_logo"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="serif"
+                android:text="App Committee"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/app_committee_logo"
+                android:layout_marginTop="10dp"
+                android:text="The best committee in ACM."/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="Instructions for setting up Android Studio:\n1. Download it.\n2. Set it up"/>
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:context="org.rowanacm.android.CommitteeFragment">
 
-        <TextView
-            android:layout_width="wrap_content"
+
+            <ImageView
+                android:id="@+id/web_committee_logo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/web_committee"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_toRightOf="@id/web_committee_logo"
+                android:layout_alignTop="@id/web_committee_logo"
+                android:layout_alignBottom="@id/web_committee_logo"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="serif"
+                android:text="Web Dev"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/web_committee_logo"
+                android:layout_marginTop="10dp"
+                android:text="Made rowanacm.org"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="serif"
-            android:text="Animation/Game Design"
-            android:textSize="25sp"/>
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:context="org.rowanacm.android.CommitteeFragment">
 
-        <TextView
-            android:layout_width="wrap_content"
+
+            <ImageView
+                android:id="@+id/game_committee_logo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/game_committee"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_toRightOf="@id/game_committee_logo"
+                android:layout_alignTop="@id/game_committee_logo"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="serif"
+                android:text="Animation/Game\nDesign"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/game_committee_logo"
+                android:layout_marginTop="0dp"
+                android:text="The largest committee in ACM. Also has the longest name of any committee in ACM and causes a whole bunch of problems when formatting."/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="The quick brown fox jumped over the lazy dog."/>
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:context="org.rowanacm.android.CommitteeFragment">
 
-        <TextView
-            android:layout_width="wrap_content"
+
+            <ImageView
+                android:id="@+id/robotics_committee_logo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/robotics_committee"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_toRightOf="@id/robotics_committee_logo"
+                android:layout_alignTop="@id/robotics_committee_logo"
+                android:layout_alignBottom="@id/robotics_committee_logo"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="serif"
+                android:text="Robotics Committee"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/robotics_committee_logo"
+                android:layout_marginTop="10dp"
+                android:text="Learn to make a robot that will eventually enslave mankind"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="serif"
-            android:text="Web Dev"
-            android:textSize="25sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="The quick brown fox jumped over the lazy dog."/>
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="serif"
-            android:text="Robotics"
-            android:textSize="25sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="The quick brown fox jumped over the lazy dog."/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="serif"
-            android:text="AI"
-            android:textSize="25sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="The quick brown fox jumped over the lazy dog."/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="serif"
-            android:text="Other Clubs at Rowan"
-            android:textSize="20sp"/>
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="serif"
-            android:text="ACM-W"
-            android:textSize="20sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="The quick brown fox jumped over the lazy dog."/>
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:context="org.rowanacm.android.CommitteeFragment">
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="serif"
-            android:text="IEEE"
-            android:textSize="20sp"/>
+            <ImageView
+                android:id="@+id/ai_committee_logo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/ai_committee"
+                />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="100dp"
-            android:text="The quick brown fox jumped over the lazy dog."/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_toRightOf="@id/ai_committee_logo"
+                android:layout_alignTop="@id/ai_committee_logo"
+                android:layout_alignBottom="@id/ai_committee_logo"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="serif"
+                android:text="AI Committee"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ai_committee_logo"
+                android:layout_marginTop="10dp"
+                android:text="To be honest, I'm not really sure what this commitee does"/>
+
+        </RelativeLayout>
+
+
 
 
     </LinearLayout>
