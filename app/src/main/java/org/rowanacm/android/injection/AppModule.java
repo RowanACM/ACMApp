@@ -20,7 +20,13 @@ public class AppModule {
 
     @Provides
     @Singleton
-    Context providesAcmApplication() {
+    Context providesContext() {
+        return app;
+    }
+
+    @Provides
+    @Singleton
+    App providesAcmApplication() {
         return app;
     }
 

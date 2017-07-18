@@ -14,15 +14,18 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import org.rowanacm.android.AcmClient;
 import org.rowanacm.android.AdminManager;
+import org.rowanacm.android.App;
 import org.rowanacm.android.BuildConfig;
 import org.rowanacm.android.R;
-import org.rowanacm.android.firebase.RemoteConfig;
 import org.rowanacm.android.authentication.UserManager;
+import org.rowanacm.android.firebase.RemoteConfig;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -104,19 +107,39 @@ public class AcmModule {
 
     @Provides
     @Singleton
-    AcmClient providesAttendanceClient() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.rowanacm.org/prod/")
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        return retrofit.create(AcmClient.class);
+    UserManager providesUserManager(FirebaseAuth firebaseAuth) {
+        return new UserManager();
     }
 
     @Provides
     @Singleton
-    UserManager providesUserManager(FirebaseAuth firebaseAuth) {
-        return new UserManager();
+    Cache providesOkHttpCache(App application) {
+        int cacheSize = 10 * 1024 * 1024; // 10 MiB
+        return new Cache(application.getCacheDir(), cacheSize);
+    }
+
+    @Provides
+    @Singleton
+    OkHttpClient providesOkHttpClient(Cache cache) {
+        return new OkHttpClient.Builder()
+                .cache(cache)
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    Retrofit providesRetrofit(OkHttpClient okHttpClient) {
+        return new Retrofit.Builder()
+                .baseUrl("https://api.rowanacm.org/prod/")
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    AcmClient providesAcmClient(Retrofit retrofit) {
+        return retrofit.create(AcmClient.class);
     }
 }
