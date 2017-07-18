@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.rowanacm.android.R;
 import org.rowanacm.android.SearchableAdapter;
 
@@ -72,13 +74,16 @@ public class AnnouncementAdapter extends SearchableAdapter<AnnouncementAdapter.A
             nameTextView.setText(announcement.getTitle());
 
             TextView descriptionTextView = holder.bodyTextView;
-            descriptionTextView.setText(announcement.getText());
+            descriptionTextView.setText(announcement.getSnippet());
 
             TextView committeeTextView = holder.committeeTextView;
             committeeTextView.setText(announcement.getCommittee());
 
             TextView dateTextView = holder.dateTextView;
             dateTextView.setText(announcement.getRelativeDate());
+
+            ImageView imageView = holder.imageView;
+            Picasso.with(imageView.getContext()).load(announcement.getIcon()).into(imageView);
 
             CardView cardView = holder.cardView;
             cardView.setOnClickListener(new View.OnClickListener() {

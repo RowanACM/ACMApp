@@ -13,22 +13,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.firebase.crash.FirebaseCrash;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
 import com.squareup.picasso.Picasso;
 
+import org.rowanacm.android.AcmClient;
 import org.rowanacm.android.App;
 import org.rowanacm.android.BaseFragment;
 import org.rowanacm.android.R;
-import org.rowanacm.android.firebase.ChildListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AnnouncementListFragment extends BaseFragment {
 
@@ -36,7 +36,7 @@ public class AnnouncementListFragment extends BaseFragment {
 
     SearchView searchView;
 
-    @Inject DatabaseReference database;
+    @Inject AcmClient acmClient;
 
     @BindView(R.id.announcement_recycler_view) RecyclerView recyclerView;
 
@@ -62,7 +62,21 @@ public class AnnouncementListFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupRecyclerView();
-        announcementsListener();
+
+        Call<List<Announcement>> announcements = acmClient.getAnnouncements();
+        announcements.enqueue(new Callback<List<Announcement>>() {
+            @Override
+            public void onResponse(Call<List<Announcement>> call, Response<List<Announcement>> response) {
+                for (Announcement announcement : response.body()) {
+                    addAnnouncement(announcement);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Announcement>> call, Throwable t) {
+
+            }
+        });
     }
 
     // TODO: There is a memory leak caused by the searchview
@@ -97,30 +111,16 @@ public class AnnouncementListFragment extends BaseFragment {
         return App.get().getString(R.string.title_activity_announcement);
     }
 
-    public ChildEventListener announcementsListener() {
-        try {
-            return database.child("announcements")
-                    .addChildEventListener(new ChildListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                    Announcement announcement = dataSnapshot.getValue(Announcement.class);
-                    addAnnouncement(announcement);
-                }
-            });
-        } catch (Exception e) {
-            FirebaseCrash.report(e);
-            return null;
-        }
-    }
+
     public void addAnnouncement(Announcement announcement) {
         adapter.addItem(announcement);
-        if (announcement.getImageUrl() != null && announcement.getImageUrl().length() > 0) {
+        if (announcement.getIcon() != null && announcement.getIcon().length() > 0) {
             preloadAnnouncementImage(announcement);
         }
     }
 
     private void preloadAnnouncementImage(Announcement announcement) {
-        Picasso.with(getActivity()).load(announcement.getImageUrl()).fetch();
+        Picasso.with(getActivity()).load(announcement.getIcon()).fetch();
     }
 
     private void setupRecyclerView() {

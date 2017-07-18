@@ -1,6 +1,9 @@
 package org.rowanacm.android;
 
+import org.rowanacm.android.announcement.Announcement;
 import org.rowanacm.android.authentication.UserInfo;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,5 +22,11 @@ public interface AcmClient {
 
     @GET("get-user-info")
     Call<UserInfo> getUserInfo(@Query("token") String googleToken);
+
+
+    @GET("get-announcements")
+    Call<List<Announcement>> getAnnouncements();
+
+
 
 }

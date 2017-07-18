@@ -34,7 +34,6 @@
             android:layout_height="60dp"
             android:layout_alignParentTop="true"
             android:scaleType="fitCenter"
-            android:src="@mipmap/ic_launcher"
             tools:src="@mipmap/ic_launcher"
             android:transitionName="announcement_image"
             />

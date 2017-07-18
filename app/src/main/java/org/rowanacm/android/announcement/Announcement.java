@@ -14,29 +14,10 @@ import java.util.Date;
  */
 
 public class Announcement implements Serializable, Comparable<Announcement>, Searchable {
-    private String author;
-    private String committee;
-    private String date;
-    private String subj;
-    private String text;
-    private String title;
+    private String committee, icon, title, text, snippet, url;
     private long timestamp;
-    private String imageUrl;
-    private String url;
 
     public Announcement() {
-    }
-
-    public Announcement(String author, String committee, String date, String subj, String text, String title, long timestamp, String imageUrl, String url) {
-        this.author = author;
-        this.committee = committee;
-        this.date = date;
-        this.subj = subj;
-        this.text = text;
-        this.title = title;
-        this.timestamp = timestamp;
-        this.imageUrl = imageUrl;
-        this.url = url;
     }
 
     /**
@@ -55,9 +36,9 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         }
 
         search = search.toLowerCase();
-        return  (author != null && author.toLowerCase().contains(search))       ||
+        return  (snippet != null && snippet.toLowerCase().contains(search))       ||
                 (committee != null && committee.toLowerCase().contains(search)) ||
-                (subj != null && subj.toLowerCase().contains(search))           ||
+                (url != null && url.toLowerCase().contains(search))           ||
                 (text != null && text.toLowerCase().contains(search))           ||
                 (title != null && title.toLowerCase().contains(search));
     }
@@ -68,14 +49,6 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         return DateUtils.getRelativeTimeSpanString(timestamp, now, DateUtils.SECOND_IN_MILLIS).toString();
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getCommittee() {
         return committee;
     }
@@ -84,28 +57,12 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         this.committee = committee;
     }
 
-    public String getDate() {
-        return date;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getSubj() {
-        return subj;
-    }
-
-    public void setSubj(String subj) {
-        this.subj = subj;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public String getTitle() {
@@ -116,20 +73,20 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         this.title = title;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public String getText() {
+        return text;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getSnippet() {
+        return snippet;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setSnippet(String snippet) {
+        this.snippet = snippet;
     }
 
     public String getUrl() {
@@ -140,6 +97,14 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         this.url = url;
     }
 
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -148,30 +113,38 @@ public class Announcement implements Serializable, Comparable<Announcement>, Sea
         Announcement that = (Announcement) o;
 
         if (timestamp != that.timestamp) return false;
-        if (author != null ? !author.equals(that.author) : that.author != null) return false;
         if (committee != null ? !committee.equals(that.committee) : that.committee != null)
             return false;
-        if (date != null ? !date.equals(that.date) : that.date != null) return false;
-        if (subj != null ? !subj.equals(that.subj) : that.subj != null) return false;
-        if (text != null ? !text.equals(that.text) : that.text != null) return false;
+        if (icon != null ? !icon.equals(that.icon) : that.icon != null) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        if (imageUrl != null ? !imageUrl.equals(that.imageUrl) : that.imageUrl != null)
-            return false;
+        if (text != null ? !text.equals(that.text) : that.text != null) return false;
+        if (snippet != null ? !snippet.equals(that.snippet) : that.snippet != null) return false;
         return url != null ? url.equals(that.url) : that.url == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = author != null ? author.hashCode() : 0;
-        result = 31 * result + (committee != null ? committee.hashCode() : 0);
-        result = 31 * result + (date != null ? date.hashCode() : 0);
-        result = 31 * result + (subj != null ? subj.hashCode() : 0);
-        result = 31 * result + (text != null ? text.hashCode() : 0);
+        int result = committee != null ? committee.hashCode() : 0;
+        result = 31 * result + (icon != null ? icon.hashCode() : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
-        result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
+        result = 31 * result + (text != null ? text.hashCode() : 0);
+        result = 31 * result + (snippet != null ? snippet.hashCode() : 0);
         result = 31 * result + (url != null ? url.hashCode() : 0);
+        result = 31 * result + (int) (timestamp ^ (timestamp >>> 32));
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Announcement{" +
+                "committee='" + committee + '\'' +
+                ", icon='" + icon + '\'' +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", snippet='" + snippet + '\'' +
+                ", url='" + url + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }

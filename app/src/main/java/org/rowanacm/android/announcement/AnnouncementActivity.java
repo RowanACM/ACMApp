@@ -2,6 +2,7 @@ package org.rowanacm.android.announcement;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +47,11 @@ public class AnnouncementActivity extends AppCompatActivity {
             announcement = (Announcement) extras.getSerializable(ANNOUNCEMENT_EXTRA_KEY);
         }
 
+        if (announcement == null) {
+            Log.e(LOG_TAG, "Announcement is null");
+            supportFinishAfterTransition();
+        }
+
         titleTextView.setText(announcement.getTitle());
         announcementTextView.setText(announcement.getText());
         committeeTextView.setText(announcement.getCommittee());
@@ -54,15 +60,7 @@ public class AnnouncementActivity extends AppCompatActivity {
             urlButton.setVisibility(View.GONE);
         }
 
-        setTitle(announcement.getCommittee());
-
-        /*
-        if (announcement.getImageUrl() != null) {
-            loadHeaderImage();
-        } else {
-            announcementImageView.setVisibility(View.GONE);
-        }
-        */
+        Picasso.with(this).load(announcement.getIcon()).into(announcementImageView);
     }
 
     @Override
@@ -84,7 +82,7 @@ public class AnnouncementActivity extends AppCompatActivity {
 
     private void loadHeaderImage() {
         Picasso.with(this)
-                .load(announcement.getImageUrl())
+                .load(announcement.getIcon())
                 .fit()
                 .into(announcementImageView);
     }

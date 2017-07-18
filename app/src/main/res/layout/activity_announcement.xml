@@ -20,7 +20,6 @@
             android:layout_marginLeft="12dp"
             android:layout_marginTop="12dp"
             android:scaleType="fitCenter"
-            android:src="@mipmap/ic_launcher"
             android:transitionName="announcement_image"
             tools:src="@mipmap/ic_launcher"
             />
@@ -92,6 +91,7 @@
 
         <Button
             android:id="@+id/announcement_url_button"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/announcement_text_view"
