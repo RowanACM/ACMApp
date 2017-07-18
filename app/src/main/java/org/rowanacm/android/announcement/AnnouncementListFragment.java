@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,12 +21,15 @@ import org.rowanacm.android.App;
 import org.rowanacm.android.BaseFragment;
 import org.rowanacm.android.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import okhttp3.Cache;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,8 +41,10 @@ public class AnnouncementListFragment extends BaseFragment {
     SearchView searchView;
 
     @Inject AcmClient acmClient;
+    @Inject Cache cache;
 
     @BindView(R.id.announcement_recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.announcement_swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 
     public AnnouncementListFragment() {
 
@@ -61,15 +67,30 @@ public class AnnouncementListFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupRecyclerView();
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                clearCache();
+                getAnnouncements();
+            }
+        });
+
+        setupRecyclerView();
+        getAnnouncements();
+    }
+
+    private void getAnnouncements() {
         Call<List<Announcement>> announcements = acmClient.getAnnouncements();
         announcements.enqueue(new Callback<List<Announcement>>() {
             @Override
             public void onResponse(Call<List<Announcement>> call, Response<List<Announcement>> response) {
+                adapter.clear();
                 for (Announcement announcement : response.body()) {
                     addAnnouncement(announcement);
                 }
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -130,6 +151,21 @@ public class AnnouncementListFragment extends BaseFragment {
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(adapter);
+        }
+    }
+
+    private void clearCache() {
+        try {
+            Iterator<String> iterator = cache.urls();
+            while (iterator.hasNext()) {
+                String url = iterator.next();
+                if (url.contains("get-announcements")) {
+                    iterator.remove();
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

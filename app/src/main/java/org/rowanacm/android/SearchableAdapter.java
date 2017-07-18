@@ -72,5 +72,12 @@ public abstract class SearchableAdapter<K extends RecyclerView.ViewHolder, T ext
         }
     }
 
+    public void clear() {
+        list.clear();
+        listAll.clear();
+
+        notifyDataSetChanged();
+    }
+
 
 }
