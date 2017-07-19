@@ -8,7 +8,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,10 +28,10 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 
 import org.rowanacm.android.announcement.CreateAnnouncementDialog;
-import org.rowanacm.android.settings.SettingsActivity;
 import org.rowanacm.android.authentication.UserInfo;
 import org.rowanacm.android.authentication.UserListener;
 import org.rowanacm.android.authentication.UserManager;
+import org.rowanacm.android.settings.SettingsActivity;
 import org.rowanacm.android.utils.ViewUtils;
 
 import javax.inject.Inject;
@@ -40,14 +39,13 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * The main activity of the app. Contains a view pager with
  * two fragments, InfoFragment and AnnouncementFragment
  */
 public class MainTabActivity extends AppCompatActivity {
-
-    private static final String LOG_TAG = MainTabActivity.class.getSimpleName();
 
     @Inject DatabaseReference database;
     @Inject FirebaseAuth firebaseAuth;
@@ -203,19 +201,17 @@ public class MainTabActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(MainTabActivity.this, "Unable to sign in. Try again later.", Toast.LENGTH_LONG).show();
-                        Log.d(LOG_TAG, "onFailure: " + e);
+                        Timber.w(e, "Error signing in to firebase");
                     }
                 })
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(LOG_TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Log.w(LOG_TAG, "signInWithCredential", task.getException());
+                            Timber.w(task.getException(), "Sign in was not successful");
                             Toast.makeText(MainTabActivity.this, "Unable to sign in. Try again later.", Toast.LENGTH_LONG).show();
                         }
                     }

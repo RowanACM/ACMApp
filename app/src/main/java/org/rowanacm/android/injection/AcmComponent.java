@@ -2,6 +2,7 @@ package org.rowanacm.android.injection;
 
 import org.rowanacm.android.AdminFragment;
 import org.rowanacm.android.App;
+import org.rowanacm.android.BaseFragment;
 import org.rowanacm.android.InfoFragment;
 import org.rowanacm.android.MainTabActivity;
 import org.rowanacm.android.MeFragment;
@@ -25,6 +26,7 @@ public interface AcmComponent {
     void inject(SettingsActivity settingsActivity);
     void inject(SettingsFragment settingsFragment);
 
+    void inject(BaseFragment baseFragment);
     void inject(AdminFragment adminFragment);
     void inject(InfoFragment infoFragment);
     void inject(MeFragment meFragment);

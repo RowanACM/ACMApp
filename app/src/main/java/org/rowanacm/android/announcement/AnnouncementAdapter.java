@@ -23,8 +23,6 @@ import static butterknife.ButterKnife.findById;
 
 public class AnnouncementAdapter extends SearchableAdapter<AnnouncementAdapter.AnnouncementViewHolder, Announcement> {
 
-    private static final String LOG_TAG = AnnouncementAdapter.class.getSimpleName();
-
     private Fragment fragment;
 
     public class AnnouncementViewHolder extends RecyclerView.ViewHolder {

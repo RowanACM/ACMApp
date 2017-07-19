@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
@@ -30,8 +31,7 @@ import retrofit2.Response;
 
 public class MeFragment extends BaseFragment {
 
-    private static final String LOG_TAG = MeFragment.class.getSimpleName();
-
+    @Inject FirebaseAnalytics firebaseAnalytics;
     @Inject UserManager userManager;
     @Inject FirebaseAuth firebaseAuth;
     @Inject AcmClient acmClient;
@@ -162,6 +162,12 @@ public class MeFragment extends BaseFragment {
     @OnClick(R.id.slack_button)
     protected void openSlack() {
         if (ExternalAppUtils.isAppInstalled(getActivity(), "com.Slack")) {
+
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "slack");
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "button");
+            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
             Uri uri = Uri.parse("slack://open");
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);

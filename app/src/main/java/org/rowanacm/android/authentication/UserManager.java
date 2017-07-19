@@ -1,9 +1,11 @@
 package org.rowanacm.android.authentication;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
@@ -24,9 +26,10 @@ public class UserManager {
 
     @Inject AcmClient acmClient;
     @Inject FirebaseAuth firebaseAuth;
+    @Inject FirebaseAnalytics firebaseAnalytics;
 
     private FirebaseUser firebaseUser;
-    private UserInfo currentUser;
+    private @Nullable UserInfo currentUser;
     private String googleLoginToken;
 
     private List<UserListener> userListeners = new ArrayList<>();
@@ -92,8 +95,9 @@ public class UserManager {
         return currentUser;
     }
 
-    public void setCurrentUser(UserInfo currentUser) {
+    public void setCurrentUser(@Nullable UserInfo currentUser) {
         this.currentUser = currentUser;
+        updateFirebaseAnalyticsInfo();
         for (UserListener userListener : userListeners) {
             userListener.onUserChanged(currentUser);
         }
@@ -119,5 +123,12 @@ public class UserManager {
 
             }
         });
+    }
+
+    private void updateFirebaseAnalyticsInfo() {
+        if (currentUser != null) {
+            firebaseAnalytics.setUserProperty("rowan_email", currentUser.getRowanEmail());
+            firebaseAnalytics.setUserProperty("name", currentUser.getName());
+        }
     }
 }

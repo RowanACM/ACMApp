@@ -2,7 +2,6 @@ package org.rowanacm.android.announcement;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,9 +16,9 @@ import org.rowanacm.android.utils.ExternalAppUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 public class AnnouncementActivity extends AppCompatActivity {
-    private static final String LOG_TAG = Announcement.class.getSimpleName();
 
     public static final String ANNOUNCEMENT_EXTRA_KEY = "announcement";
     private static final String ANNOUNCEMENT_INSTANT_STATE_KEY = "announcement";
@@ -48,8 +47,9 @@ public class AnnouncementActivity extends AppCompatActivity {
         }
 
         if (announcement == null) {
-            Log.e(LOG_TAG, "Announcement is null");
+            Timber.e("Announcement is null");
             supportFinishAfterTransition();
+            return;
         }
 
         titleTextView.setText(announcement.getTitle());
@@ -78,13 +78,6 @@ public class AnnouncementActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(ANNOUNCEMENT_INSTANT_STATE_KEY, announcement);
         super.onSaveInstanceState(outState);
-    }
-
-    private void loadHeaderImage() {
-        Picasso.with(this)
-                .load(announcement.getIcon())
-                .fit()
-                .into(announcementImageView);
     }
 
     @OnClick(R.id.announcement_url_button)
