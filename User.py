@@ -33,11 +33,12 @@ def get_member_info(user_id_token=None, uid=None):
         github_username = Github.get_github_username(member["email"])
         myfirebase.put("members/" + uid, "github-username", github_username)
 
-    committees = myfirebase.get("members/" + uid, "committees")
     my_committees = []
-    for key, value in committees.iteritems():
-        if value:
-            my_committees.append(key)
+    committees = myfirebase.get("members/" + uid, "committees")
+    if committees is not None:
+        for committee_name, joined_committee in committees.iteritems():
+            if joined_committee:
+                my_committees.append(committee_name)
 
     committee_text = "No committee selected"
     if "eboard" in my_committees:
