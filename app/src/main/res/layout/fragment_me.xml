@@ -1,167 +1,175 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:paddingBottom="@dimen/activity_vertical_margin"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="@dimen/activity_vertical_margin"
-              tools:context="org.rowanacm.android.MeFragment">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.rowanacm.android.MeFragment"
+    android:nestedScrollingEnabled="true"
+    >
 
     <RelativeLayout
-        android:id="@+id/profile_badge"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:background="@color/accent"
-        android:paddingBottom="30dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:paddingTop="30dp">
-
-        <ImageView
-            android:id="@+id/profile_pic_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:src="@drawable/person"
-            />
-
-        <TextView
-            android:id="@+id/name_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/profile_pic_image_view"
-            android:layout_centerHorizontal="true"
-            android:text="No Name"
-            android:textColor="@color/white"
-            android:textSize="35sp"
-            tools:text="John Smith"
-            />
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        >
 
         <RelativeLayout
-            android:id="@+id/change_committee_layout"
+            android:id="@+id/profile_badge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/name_text_view"
-            android:layout_centerHorizontal="true">
-
-            <TextView
-                android:id="@+id/committee_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:text="No Committee"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@color/accent"
+            android:paddingBottom="30dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="30dp">
 
             <ImageView
-                android:id="@+id/change_committee_button"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignBottom="@id/committee_text_view"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/committee_text_view"
-                android:src="@drawable/edit"
+                android:id="@+id/profile_pic_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:src="@drawable/person"
                 />
+
+            <TextView
+                android:id="@+id/name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profile_pic_image_view"
+                android:layout_centerHorizontal="true"
+                android:text="No Name"
+                android:textColor="@color/white"
+                android:textSize="35sp"
+                tools:text="John Smith"
+                />
+
+            <RelativeLayout
+                android:id="@+id/change_committee_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name_text_view"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/committee_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:text="No Committee"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    />
+
+                <ImageView
+                    android:id="@+id/change_committee_button"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignBottom="@id/committee_text_view"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/committee_text_view"
+                    android:src="@drawable/edit"
+                    />
+
+
+            </RelativeLayout>
 
 
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/member_since_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_badge"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Member since"
+            android:textColor="#b71c1c"
+            android:textSize="18sp"/>
 
+
+        <TextView
+            android:id="@+id/member_since_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/meeting_count_textview"
+            android:layout_alignStart="@+id/meeting_count_textview"
+            android:layout_below="@+id/profile_badge"
+            android:text="Unknown"
+            android:textColor="@color/primary_text"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/meeting_count_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/member_since_title"
+            android:layout_marginRight="10dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Meetings attended"
+            android:textColor="#b71c1c"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/meeting_count_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/member_since_text_view"
+            android:layout_toEndOf="@+id/meeting_count_title"
+            android:layout_toRightOf="@+id/meeting_count_title"
+            android:text="0"
+            android:textColor="@color/primary_text"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/email_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/member_since_title"
+            android:layout_alignStart="@+id/member_since_title"
+            android:layout_below="@+id/meeting_count_title"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Rowan email"
+            android:textColor="#b71c1c"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/email_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/meeting_count_textview"
+            android:layout_alignStart="@+id/meeting_count_textview"
+            android:layout_below="@+id/meeting_count_textview"
+            android:layout_marginBottom="20dp"
+            android:text="Unknown"
+            android:textColor="@color/primary_text"
+            android:textSize="18sp"/>
+
+
+        <TextView
+            android:id="@+id/on_slack_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/email_textview"
+            android:text="You are on slack"/>
+
+        <Button
+            android:id="@+id/slack_button"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/on_slack_textview"
+            android:text="Open slack"/>
 
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/member_since_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:text="Member since"
-        android:textColor="#b71c1c"
-        android:textSize="18sp"
-        android:layout_below="@+id/profile_badge"/>
-
-
-    <TextView
-        android:id="@+id/member_since_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/meeting_count_textview"
-        android:layout_alignStart="@+id/meeting_count_textview"
-        android:layout_below="@+id/profile_badge"
-        android:text="Unknown"
-        android:textColor="@color/primary_text"
-        android:textSize="18sp"/>
-
-    <TextView
-        android:id="@+id/meeting_count_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/member_since_title"
-        android:layout_marginRight="10dp"
-        android:fontFamily="sans-serif-condensed"
-        android:text="Meetings attended"
-        android:textColor="#b71c1c"
-        android:textSize="18sp"/>
-
-    <TextView
-        android:id="@+id/meeting_count_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/member_since_text_view"
-        android:layout_toEndOf="@+id/meeting_count_title"
-        android:layout_toRightOf="@+id/meeting_count_title"
-        android:text="0"
-        android:textColor="@color/primary_text"
-        android:textSize="18sp"/>
-
-    <TextView
-        android:id="@+id/email_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:text="Rowan email"
-        android:textColor="#b71c1c"
-        android:textSize="18sp"
-        android:layout_below="@+id/meeting_count_title"
-        android:layout_alignLeft="@+id/member_since_title"
-        android:layout_alignStart="@+id/member_since_title"/>
-
-    <TextView
-        android:id="@+id/email_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/meeting_count_textview"
-        android:layout_alignStart="@+id/meeting_count_textview"
-        android:layout_below="@+id/meeting_count_textview"
-        android:layout_marginBottom="20dp"
-        android:text="Unknown"
-        android:textColor="@color/primary_text"
-        android:textSize="18sp"/>
-
-
-    <TextView
-        android:id="@+id/on_slack_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/email_textview"
-        android:text="You are on slack"/>
-
-    <Button
-        android:id="@+id/slack_button"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Open slack"
-        android:layout_below="@id/on_slack_textview"/>
-
-
-</RelativeLayout>
+</ScrollView>

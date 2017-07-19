@@ -1,28 +1,37 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-             tools:context="org.rowanacm.android.AdminFragment">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:nestedScrollingEnabled="true"
+    >
 
-    <TextView
-        android:id="@+id/attendance_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="The attendance is being auto-managed. Attendance will be automatically enabled on Fridays and you will be sent an email on Saturday."
-        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="org.rowanacm.android.AdminFragment">
 
-    <Button
-        android:id="@+id/create_announcement_button"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/attendance_message"
-        android:enabled="false"
-        android:text="Create Announcement (Coming soon)"
-        />
+        <TextView
+            android:id="@+id/attendance_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The attendance is being auto-managed. Attendance will be automatically enabled on Fridays and you will be sent an email on Saturday."
+            />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/create_announcement_button"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/attendance_message"
+            android:enabled="false"
+            android:text="Create Announcement (Coming soon)"
+            />
+
+    </RelativeLayout>
+
+</ScrollView>
