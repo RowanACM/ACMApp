@@ -295,12 +295,6 @@ function determineIfAdmin() {
 
 function showAdminViews() {
 	document.getElementById("admin_title").style.visibility = "visible";
-	document.getElementById("get_attendance_button").style.visibility = "visible";
-	document.getElementById("get_all_attendance_button").style.visibility = "visible";
-	document.getElementById("get_members_button").style.visibility = "visible";
-	document.getElementById("toggle_attendance_button").style.visibility = "visible";
-	document.getElementById("current_meeting_text").style.visibility = "visible";
-	document.getElementById("change_current_meeting_button").style.visibility = "visible";
 }
 
 function toggleAttendanceEnabled() {
@@ -325,99 +319,6 @@ function download(filename, text) {
     else {
         pom.click();
     }
-}
-
-function changeCurrentMeeting() {
-	var meetingVal = prompt("Set current meeting (Ex. jan_23): ", currentMeeting);
-	if(meetingVal != null && meetingVal.length > 3)
-		firebase.database().ref('attendance').child("status").child("current").set(meetingVal);
-	
-}
-
-function exportAttendance() {
-	var exportRef = firebase.database().ref("members");
-	exportRef.once('value', function(snapshot) {
-		console.log("EXPORT RECEIVED");
-		var result = snapshot.val()
-		exportAttendance2(result);
-	}); 
-
-}
-
-function exportAllMembers() {
-	var exportRef = firebase.database().ref("members");
-	exportRef.once('value', function(snapshot) {
-		console.log("EXPORT RECEIVED");
-		var result = snapshot.val()
-		exportAllAttendance(result);
-	}); 
-
-}
-
-var temp;
-function exportPeople() {
-	var exportRef = firebase.database().ref("members");
-	exportRef.once('value', function(snapshot) {
-		console.log("EXPORT RECEIVED");
-		temp = snapshot;
-		var result = snapshot.val()
-		
-		var attendanceExport = "Name,Email,Meeting Count\n";
-		for(var member in result) {
-			var meeting_count = result[member]["meeting_count"];
-			if(meeting_count == "undefined")
-				meeting_count = 0;
-			attendanceExport += result[member]["name"] + "," + result[member]["email"] + "," + meeting_count + "\n";
-		}
-		var fileName = "acm_members.csv";
-		download(fileName, attendanceExport);
-	}); 
-
-}
-
-
-function exportAttendance2(members) {
-	var exportRef = firebase.database().ref("attendance").child(currentMeeting);
-	exportRef.once('value', function(snapshot) {
-		console.log("EXPORT RECEIVED");
-		result = snapshot.val()
-		
-		var attendanceExport = "Name,Email\n";
-		for(var member in result) {
-			//var meeting_count = members[result[member]["uid"]]["meeting_count"];
-			attendanceExport += result[member]["name"] + "," + result[member]["email"] + "\n";
-		
-		}
-		var fileName = "attendance_" + currentMeeting + ".csv";
-		download(fileName, attendanceExport);
-	}); 
-
-}
-
-
-function exportAllAttendance(members) {
-	var exportRef = firebase.database().ref("attendance");
-	exportRef.once('value', function(snapshot) {
-		console.log("EXPORT RECEIVED");
-		result = snapshot.val();
-			
-		for(var week in result) {
-			if(week != "status") {
-				console.log(week);
-		
-				var attendanceExport = "Name,Email\n";
-				for(var member in result[week]) {
-					if(members[member] != null) {
-						//var meeting_count = members[member]["meeting_count"];
-						attendanceExport += result[week][member]["name"] + "," + result[week][member]["email"] + "\n";
-					}
-				}
-				var fileName = "attendance_" + week + ".csv";
-				download(fileName, attendanceExport);
-			}
-		}
-	}); 
-
 }
 
 function updateGoogleToken() {
