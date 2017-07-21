@@ -6,35 +6,36 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-
+import org.rowanacm.android.AcmClient;
 import org.rowanacm.android.App;
 import org.rowanacm.android.R;
-
-import java.text.DateFormat;
-import java.util.Date;
+import org.rowanacm.android.ServerResponse;
+import org.rowanacm.android.authentication.UserManager;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CreateAnnouncementDialog extends AlertDialog.Builder {
 
-    @Inject FirebaseAuth firebaseAuth;
-    @Inject DatabaseReference databaseReference;
+    @Inject UserManager userManager;
+    @Inject AcmClient acmClient;
 
-    @BindView(R.id.author_edit_text) EditText authorEditText;
-    @BindView(R.id.subject_edit_text) EditText subjectEditText;
+    @BindView(R.id.title_edit_text) EditText titleEditText;
     @BindView(R.id.message_edit_text) EditText messageEditText;
     @BindView(R.id.committee_spinner) Spinner committeeSpinner;
+    @BindView(R.id.slack_check_box) CheckBox slackCheckBox;
 
-    public CreateAnnouncementDialog(Activity activity) {
+    public CreateAnnouncementDialog(final Activity activity) {
         super(activity);
         App.get().getAcmComponent().inject(this);
 
@@ -52,43 +53,31 @@ public class CreateAnnouncementDialog extends AlertDialog.Builder {
         setPositiveButton(R.string.create, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Announcement announcement = getInput();
-                DatabaseReference newRef = databaseReference.child("announcements").push();
-                newRef.setValue(announcement);
+                String title = titleEditText.getText().toString();
+                String message = messageEditText.getText().toString();
+
+                int committeePosition = committeeSpinner.getSelectedItemPosition();
+                String committeeId = activity.getResources().getStringArray(R.array.committee_keys)[committeePosition];
+
+                Call<ServerResponse> serverResponseCall = acmClient.postAnnouncement(userManager.getGoogleLoginToken(), title, message, committeeId, slackCheckBox.isChecked());
+                serverResponseCall.enqueue(new Callback<ServerResponse>() {
+                    @Override
+                    public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                        Toast.makeText(activity, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ServerResponse> call, Throwable t) {
+                        Toast.makeText(activity, "Unknown error", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
-
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            authorEditText.setText(currentUser.getDisplayName());
-        }
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,
                 R.array.committee_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         committeeSpinner.setAdapter(adapter);
     }
-
-    private Announcement getInput() {
-        String author = authorEditText.getText().toString();
-        String subject = subjectEditText.getText().toString();
-        String message = messageEditText.getText().toString();
-        String committee = committeeSpinner.getSelectedItem().toString();
-
-        // Date uses a timestamp with milliseconds. Dividing makes it match the system
-        long timestamp = new Date().getTime() / 1000;
-        String date = DateFormat.getDateTimeInstance().format(new Date());
-
-        /*
-        Announcement announcement = new Announcement();
-        announcement.setCommittee(committee);
-
-        return new Announcement(author, committee, date, subject, message, subject, timestamp, null, null);
-        */
-        return new Announcement();
-
-    }
-
-
 
 }

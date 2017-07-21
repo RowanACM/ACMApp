@@ -27,6 +27,13 @@ public interface AcmClient {
     @GET("get-announcements")
     Call<List<Announcement>> getAnnouncements();
 
+    @GET("post-announcement")
+    Call<ServerResponse> postAnnouncement(@Query("token") String googleToken,
+                                          @Query("title") String title,
+                                          @Query("body") String body,
+                                          @Query("committee") String committee,
+                                          @Query("also_post_on_slack") boolean alsoPostOnSlack);
+
 
 
 }
