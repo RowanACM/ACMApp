@@ -419,3 +419,9 @@ function exportAllAttendance(members) {
 	}); 
 
 }
+
+function updateGoogleToken() {
+	firebase.auth().currentUser.getToken( /* forceRefresh */ true).then(function(idToken) {
+		document.getElementById("google-token").innerHTML = "Google Token: " + idToken;                          
+	})
+}
