@@ -124,65 +124,69 @@ function registeredForACM() {
 }
 
 function submitAttendance() {
-	var user = firebase.auth().currentUser;
-	if (user != null) {
-		console.log("SIGNING IN TO MEETING");
-		signingInToMeeting();
-	
-		$.get({
-		  url: "https://2dvdaw7sq1.execute-api.us-east-1.amazonaws.com/prod/attendance",
-		  type: "get", //send it through get method
-		  data: { 
-			uid: user.uid, 
-			name: user.displayName, 
-			email: user.email
-		  },
-		  success: function(response) {
-		  	switch(response) {
-    			case 100:
-        			// Signed in successfully. New member
-        			signedInToMeeting();
-        			document.getElementById("attendance").innerHTML = "Signed in successfully ✓<br/>Welcome to your first ACM Meeting. You should have received an email with more information about the club.";
-        			break;
-    			case 110:
-        			// Signed in successfully. Existing member
-        			signedInToMeeting();
-        			break;
-    			case 120:
-        			// Already signed in
-        			signedInToMeeting();
-        			break;
-        		case 130:
-        			// Already signed in
-        			registeredForACM();
-        			break;
-    			case 200:
-        			// Didn't sign in. Attendance disabled
-        			document.getElementById("meeting_button").style.visibility = "hidden";
-					document.getElementById("attendance").innerHTML = "You already registered for ACM";
-        			break;
-        		case 210:
-        			// Invalid input
-        			document.getElementById("meeting_button").style.visibility = "visible";
-					document.getElementById("attendance").innerHTML = "Error signing in. Try again. ERROR MESSAGE: INVALID INPUT";
-        			break;
-        		case 220:
-        			// Invalid input
-        			document.getElementById("meeting_button").style.visibility = "visible";
-					document.getElementById("attendance").innerHTML = "Error signing in. Try again. ERROR MESSAGE: UNKNOWN ERROR";
-        			break;
-    			default:
-    				// Invalid input
-        			document.getElementById("meeting_button").style.visibility = "visible";
-					document.getElementById("attendance").innerHTML = "Error signing in. Try again. ERROR MESSAGE: UNKNOWN ERROR";
-			}
-		  },
-		  error: function(xhr) {
-			//Do Something to handle error
-			alert("Connection Error: " + xhr);
-		  }
-		});
-  	}
+    var user = firebase.auth().currentUser;
+    if (user != null) {
+        console.log("SIGNING IN TO MEETING");
+        signingInToMeeting();
+
+        firebase.auth().currentUser.getToken( /* forceRefresh */ true).then(function(idToken) {
+
+            $.get({
+                url: "https://api.rowanacm.org/prod/sign-in",
+                type: "get", //send it through get method
+                data: {
+                    token: idToken
+                },
+                success: function(response) {
+                    console.log(response);
+                    switch (response["response_code"]) {
+                        case 100:
+                            // Signed in successfully. New member
+                            signedInToMeeting();
+                            document.getElementById("attendance").innerHTML = "Signed in successfully ✓<br/>Welcome to your first ACM Meeting. You should have received an email with more information about the club.";
+                            break;
+                        case 110:
+                            // Signed in successfully. Existing member
+                            signedInToMeeting();
+                            break;
+                        case 120:
+                            // Already signed in
+                            signedInToMeeting();
+                            break;
+                        case 130:
+                            // Already signed in
+                            registeredForACM();
+                            break;
+                        case 200:
+                            // Didn't sign in. Attendance disabled
+                            document.getElementById("meeting_button").style.visibility = "hidden";
+                            document.getElementById("attendance").innerHTML = "You already registered for ACM";
+                            break;
+                        case 210:
+                            // Invalid input
+                            document.getElementById("meeting_button").style.visibility = "visible";
+                            document.getElementById("attendance").innerHTML = "Error signing in. Try again. ERROR MESSAGE: INVALID INPUT";
+                            break;
+                        case 220:
+                            // Invalid input
+                            document.getElementById("meeting_button").style.visibility = "visible";
+                            document.getElementById("attendance").innerHTML = "Error signing in. Try again. ERROR MESSAGE: UNKNOWN ERROR";
+                            break;
+                        default:
+                            // Invalid input
+                            document.getElementById("meeting_button").style.visibility = "visible";
+                            document.getElementById("attendance").innerHTML = "Error signing in. Try again. ERROR MESSAGE: UNKNOWN ERROR";
+                    }
+                },
+                error: function(xhr) {
+                    //Do Something to handle error
+                    alert("Connection Error: " + xhr);
+                }
+            });
+        }).catch(function(error) {
+            // Handle error
+        });
+    }
 }
 
 
@@ -291,12 +295,6 @@ function determineIfAdmin() {
 
 function showAdminViews() {
 	document.getElementById("admin_title").style.visibility = "visible";
-	document.getElementById("get_attendance_button").style.visibility = "visible";
-	document.getElementById("get_all_attendance_button").style.visibility = "visible";
-	document.getElementById("get_members_button").style.visibility = "visible";
-	document.getElementById("toggle_attendance_button").style.visibility = "visible";
-	document.getElementById("current_meeting_text").style.visibility = "visible";
-	document.getElementById("change_current_meeting_button").style.visibility = "visible";
 }
 
 function toggleAttendanceEnabled() {
@@ -323,95 +321,8 @@ function download(filename, text) {
     }
 }
 
-function changeCurrentMeeting() {
-	var meetingVal = prompt("Set current meeting (Ex. jan_23): ", currentMeeting);
-	if(meetingVal != null && meetingVal.length > 3)
-		firebase.database().ref('attendance').child("status").child("current").set(meetingVal);
-	
-}
-
-function exportAttendance() {
-	var exportRef = firebase.database().ref("members");
-	exportRef.once('value', function(snapshot) {
-		console.log("EXPORT RECEIVED");
-		var result = snapshot.val()
-		exportAttendance2(result);
-	}); 
-
-}
-
-function exportAllMembers() {
-	var exportRef = firebase.database().ref("members");
-	exportRef.once('value', function(snapshot) {
-		console.log("EXPORT RECEIVED");
-		var result = snapshot.val()
-		exportAllAttendance(result);
-	}); 
-
-}
-
-var temp;
-function exportPeople() {
-	var exportRef = firebase.database().ref("members");
-	exportRef.once('value', function(snapshot) {
-		console.log("EXPORT RECEIVED");
-		temp = snapshot;
-		var result = snapshot.val()
-		
-		var attendanceExport = "Name,Email,Meeting Count\n";
-		for(var member in result) {
-			var meeting_count = result[member]["meeting_count"];
-			if(meeting_count == "undefined")
-				meeting_count = 0;
-			attendanceExport += result[member]["name"] + "," + result[member]["email"] + "," + meeting_count + "\n";
-		}
-		var fileName = "acm_members.csv";
-		download(fileName, attendanceExport);
-	}); 
-
-}
-
-
-function exportAttendance2(members) {
-	var exportRef = firebase.database().ref("attendance").child(currentMeeting);
-	exportRef.once('value', function(snapshot) {
-		console.log("EXPORT RECEIVED");
-		result = snapshot.val()
-		
-		var attendanceExport = "Name,Email\n";
-		for(var member in result) {
-			//var meeting_count = members[result[member]["uid"]]["meeting_count"];
-			attendanceExport += result[member]["name"] + "," + result[member]["email"] + "\n";
-		
-		}
-		var fileName = "attendance_" + currentMeeting + ".csv";
-		download(fileName, attendanceExport);
-	}); 
-
-}
-
-
-function exportAllAttendance(members) {
-	var exportRef = firebase.database().ref("attendance");
-	exportRef.once('value', function(snapshot) {
-		console.log("EXPORT RECEIVED");
-		result = snapshot.val();
-			
-		for(var week in result) {
-			if(week != "status") {
-				console.log(week);
-		
-				var attendanceExport = "Name,Email\n";
-				for(var member in result[week]) {
-					if(members[member] != null) {
-						//var meeting_count = members[member]["meeting_count"];
-						attendanceExport += result[week][member]["name"] + "," + result[week][member]["email"] + "\n";
-					}
-				}
-				var fileName = "attendance_" + week + ".csv";
-				download(fileName, attendanceExport);
-			}
-		}
-	}); 
-
+function updateGoogleToken() {
+	firebase.auth().currentUser.getToken( /* forceRefresh */ true).then(function(idToken) {
+		document.getElementById("google-token").innerHTML = "Google Token: " + idToken;                          
+	})
 }
