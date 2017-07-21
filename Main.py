@@ -44,9 +44,9 @@ def main(event, context):
         cache_length = NO_CACHE
     elif event["resource"] == "/get-announcements":
         response = get_announcements(event, context)
-        cache_length = NO_CACHE
+        cache_length = SHORT_CACHE
     elif event["resource"] == "/post-announcement":
-        response = sign_in(event, context)
+        response = post_announcement(event, context)
         cache_length = NO_CACHE
     elif event["resource"] == "/github-sign-up":
         response = github_sign_up(event, context)
@@ -136,6 +136,38 @@ def get_announcements(event, context):
         if result is not None:
             return result
         return {"message": "An unknown error occurred", "status": "ERROR"}
+    except Exception as e:
+        return {"message": "An unknown error occurred " + str(e), "status": "ERROR"}
+
+
+def post_announcement(event, context):
+    params = event["queryStringParameters"]
+
+    token = params.get("token")
+    title = params.get("title")
+    body = params.get("body")
+
+    if token is None or title is None or body is None:
+        return {"message": "You must include a title, body, and token", "status": "ERROR"}
+
+    committee = params.get("committee")
+    also_post_on_slack = params.get("also_post_on_slack")
+
+    try:
+        user = User.get_member_info(user_id_token=token)
+        if user is None:
+            return {"message": "The token is invalid or expired", "status": "ERROR"}
+    except Exception as e:
+        return {"message": "An unknown error occurred " + str(e), "status": "ERROR"}
+
+    if not user["is_admin"]:
+        return {"message": "You must be an admin to post announcements", "status": "ERROR"}
+
+    name = user["name"]
+
+    try:
+        Annoucements.make_announcement(title=title, body=body, committee=committee, author=name, also_post_on_slack=also_post_on_slack)
+        return {"message": "Announcement posted", "status": "OK"}
     except Exception as e:
         return {"message": "An unknown error occurred " + str(e), "status": "ERROR"}
 

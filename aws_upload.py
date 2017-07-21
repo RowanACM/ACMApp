@@ -16,7 +16,7 @@ subprocess.call(["cp", "-r", ".", filepath])
 for item in pip_to_install:
     subprocess.call(["pip", "install", item, "-t", filepath])
 
-subprocess.call(["zip", "-r", zippath, "."], cwd=filepath)
+subprocess.call(["zip", "--quiet", "-r", zippath, "."], cwd=filepath)
 subprocess.call(["rm", "-r", filepath])
 
 print("UPLOADING...")

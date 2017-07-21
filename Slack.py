@@ -1,5 +1,6 @@
 import slacker
 import ids
+import ManageCommittee
 
 
 def invite_to_slack(email):
@@ -39,3 +40,25 @@ def invite_user_to_channel(channel_id, email):
         ids.adminbot.channels.invite(channel_id, slack_user_id)
     except slacker.Error as e:
         pass
+
+
+def post_announcement_on_slack(announcement):
+    committee_id = announcement["committee_id"]
+    _, slack_channel_id = ManageCommittee.get_committee_info(committee_id)
+
+    url = announcement["url"]
+    if url is None:
+        url = "https://rowanacm.org"
+
+    ids.slackbot.chat.post_message(
+        channel=slack_channel_id,
+        username="ACM Bot",
+        icon_url=announcement["icon"],
+        attachments=[
+            {"title_link": url,
+             "title": announcement["title"],
+             "text":announcement["text"],
+             "author_name": announcement["author"],
+             "ts": announcement["timestamp"]
+             }
+        ])
