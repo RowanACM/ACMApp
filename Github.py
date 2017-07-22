@@ -3,6 +3,7 @@ from github import NamedUser
 from joblib import Parallel, delayed
 import multiprocessing
 import ids
+import github
 
 
 acm = ids.github.get_organization("rowanacm")
@@ -101,3 +102,23 @@ def get_github_username(email):
         if check_github_member(member, email):
             return member._login.value
     return None
+
+
+def add_to_members(member, role="member"):
+    """
+    :calls: `PUT /orgs/:org/memberships/:user <http://developer.github.com/v3/orgs/members>`_
+    :param member: :class:`github.NamedUser.NamedUser`
+    :param role: string
+    :rtype: None
+    """
+    assert isinstance(role, (str, unicode)), role
+    assert isinstance(member, github.NamedUser.NamedUser), member
+    url_parameters = {
+        "role": role,
+    }
+    headers, data = acm._requester.requestJsonAndCheck(
+        "PUT",
+        acm.url + "/memberships/" + member._identity, parameters=url_parameters
+    )
+
+    print("OK")

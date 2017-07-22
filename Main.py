@@ -92,9 +92,9 @@ def github_sign_up(event, context):
     params = event["queryStringParameters"]
 
     try:
-        response_code = Github.add_username_to_members(params["username"])
-        return {"message": "You have been added to the Github organization. Welcome to ACM!", "status": "OK",
-                "github_response": response_code}
+        user = ids.github.get_user(params["username"])
+        Github.add_to_members(user)
+        return {"message": "You have been added to the Github organization. Check your email to accept the invitation.", "status": "OK"}
     except github.GithubException as e:
         return {"message": "Oh no! Something went wrong.", "status": "ERROR", "github_response": str(e)}
 
