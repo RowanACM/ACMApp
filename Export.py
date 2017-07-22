@@ -8,11 +8,17 @@ p = inflect.engine()
 
 myfirebase = ids.myfirebase
 
+
 def export_attendance():
     current = myfirebase.get('/attendance/status/current', None)
     signed_in_people = myfirebase.get('/attendance/' + current, None)
 
     to_write = []
+
+    # Nobody signed in to the meeting. Quit without sending an email.
+    if signed_in_people is None:
+        return None
+
     for uid, details in signed_in_people.iteritems():
         detail_person = myfirebase.get("/members/" + uid, None)
         details["meeting_count"] = detail_person["meeting_count"]
