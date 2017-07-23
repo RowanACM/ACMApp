@@ -50,7 +50,7 @@
 
             <Button
                 android:id="@+id/attendance_button"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/ButtonTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/attendance_textview"
@@ -90,7 +90,7 @@
 
             <Button
                 android:id="@+id/calendar_button"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/ButtonTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add to calendar"
@@ -115,7 +115,7 @@
 
             <Button
                 android:id="@+id/contact_eboard_button"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/ButtonTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/contact_eboard"
@@ -131,7 +131,7 @@
 
             <Button
                 android:id="@+id/facebook_button"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/ButtonTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Facebook"
@@ -139,7 +139,7 @@
 
             <Button
                 android:id="@+id/twitter_button"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/ButtonTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Twitter"

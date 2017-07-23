@@ -22,14 +22,23 @@
             android:text="The attendance is being auto-managed. Attendance will be automatically enabled on Fridays and you will be sent an email on Saturday."
             />
 
-        <Button
-            android:id="@+id/create_announcement_button"
-            style="@style/Widget.AppCompat.Button.Colored"
+        <TextView
+            android:id="@+id/admin_questions_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/attendance_message"
-            android:enabled="false"
-            android:text="Create Announcement (Coming soon)"
+            android:layout_marginTop="10dp"
+            android:text="Have a question about the attendance? Email acm@rowan.edu"
+            />
+
+        <Button
+            android:id="@+id/create_announcement_button"
+            style="@style/ButtonTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/admin_questions_textview"
+            android:layout_marginTop="20dp"
+            android:text="Create Announcement"
             />
 
     </RelativeLayout>

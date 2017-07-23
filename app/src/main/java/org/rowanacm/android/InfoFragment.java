@@ -324,10 +324,8 @@ public class InfoFragment extends BaseFragment {
     protected void addToCalendar() {
         final int MEETING_LENGTH_MINUTES = 90;
 
-        // If you want the start times to show up, you have to set them
         Calendar startTime = Calendar.getInstance();
 
-        // Here we set a start time of Tuesday the 17th, 6pm
         startTime.set(2017, Calendar.SEPTEMBER, 8, 14, 0, 0);
         startTime.setTimeZone(TimeZone.getDefault());
 

@@ -102,7 +102,10 @@ public class MeFragment extends BaseFragment {
         }
 
         nameTextView.setText(currentUser.getName());
-        emailTextView.setText(currentUser.getRowanEmail());
+
+        String rowanEmail = currentUser.getRowanEmail();
+
+        emailTextView.setText(rowanEmail.replace("@students.rowan.edu", ""));
 
 
         if (currentUser.getProfilePicture() != null) {
