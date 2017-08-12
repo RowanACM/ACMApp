@@ -204,7 +204,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ai_committee_logo"
                 android:layout_marginTop="10dp"
-                android:text="To be honest, I'm not really sure what this commitee does"/>
+                android:text="To be honest, I'm not really sure what this committee does"/>
 
         </RelativeLayout>
 

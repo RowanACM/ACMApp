@@ -113,6 +113,7 @@ public class MeFragment extends BaseFragment {
             Picasso.with(getActivity())
                     .load(currentUser.getProfilePicture())
                     .placeholder(R.drawable.person)
+                    .transform(new CircleTransform())
                     .into(profilePicImageView);
         }
 
