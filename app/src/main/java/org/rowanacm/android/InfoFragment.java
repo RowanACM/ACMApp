@@ -34,6 +34,8 @@ import org.rowanacm.android.authentication.TodoItem;
 import org.rowanacm.android.authentication.UserInfo;
 import org.rowanacm.android.authentication.UserListener;
 import org.rowanacm.android.authentication.UserManager;
+import org.rowanacm.android.model.AttendanceResult;
+import org.rowanacm.android.model.CalendarItem;
 import org.rowanacm.android.utils.ExternalAppUtils;
 
 import java.util.Calendar;

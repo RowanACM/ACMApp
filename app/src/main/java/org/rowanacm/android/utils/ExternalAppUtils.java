@@ -12,7 +12,7 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 
-import org.rowanacm.android.CalendarItem;
+import org.rowanacm.android.model.CalendarItem;
 import org.rowanacm.android.R;
 
 

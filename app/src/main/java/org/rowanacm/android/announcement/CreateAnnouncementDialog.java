@@ -14,7 +14,7 @@ import android.widget.Toast;
 import org.rowanacm.android.AcmClient;
 import org.rowanacm.android.App;
 import org.rowanacm.android.R;
-import org.rowanacm.android.ServerResponse;
+import org.rowanacm.android.model.ServerResponse;
 import org.rowanacm.android.authentication.UserManager;
 
 import javax.inject.Inject;

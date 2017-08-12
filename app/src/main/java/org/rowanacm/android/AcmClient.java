@@ -2,6 +2,8 @@ package org.rowanacm.android;
 
 import org.rowanacm.android.announcement.Announcement;
 import org.rowanacm.android.authentication.UserInfo;
+import org.rowanacm.android.model.AttendanceResult;
+import org.rowanacm.android.model.ServerResponse;
 
 import java.util.List;
 

@@ -76,7 +76,7 @@ public class MainTabActivity extends AppCompatActivity {
         userListener = new UserListener() {
             @Override
             public void onUserChanged(UserInfo currentUser) {
-                if (currentUser != null && currentUser.getIsAdmin()) {
+                if (currentUser != null && currentUser.isAdmin()) {
                     showAdminFragment();
                     //fab.show();
                 } else {
@@ -96,7 +96,7 @@ public class MainTabActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                ViewUtils.setVisibility(fab, position == 1 && userManager.getCurrentUser() != null && userManager.getCurrentUser().getIsAdmin());
+                ViewUtils.setVisibility(fab, position == 1 && userManager.getCurrentUser() != null && userManager.getCurrentUser().isAdmin());
             }
         });
         tabLayout.setupWithViewPager(viewPager);
