@@ -91,7 +91,7 @@
 
         <Button
             android:id="@+id/announcement_url_button"
-            style="@style/ButtonTheme"
+            style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/announcement_text_view"
