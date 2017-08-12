@@ -7,7 +7,7 @@ filepath = "/Users/tyler/Desktop/awsupload"
 zippath = "/Users/tyler/Desktop/awsupload.zip"
 
 # TODO: Use the newest version of firebase-admin
-pip_to_install = ["python-firebase", "XlsxWriter", "inflect", "slacker", "pygithub", "joblib", "firebaseadmin==1.0.0"]
+pip_to_install = ["python-firebase", "XlsxWriter", "inflect", "slacker", "pygithub", "joblib", "firebase-admin==1.0.0"]
 
 subprocess.call(["rm", "-r", filepath])
 subprocess.call(["mkdir", filepath])
