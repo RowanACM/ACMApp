@@ -3,18 +3,15 @@ package org.rowanacm.android.settings;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.rowanacm.android.App;
 import org.rowanacm.android.R;
+import org.rowanacm.android.authentication.AuthUtil;
 import org.rowanacm.android.utils.ExternalAppUtils;
 
 import javax.inject.Inject;
@@ -63,7 +60,7 @@ public class SettingsFragment extends PreferenceFragment {
                 if (firebaseAuth.getCurrentUser() == null) {
                     google_sign_out.setTitle("Sign out");
                 } else {
-                    signOut();
+                    AuthUtil.signOutGoogle(googleApiClient);
                     google_sign_out.setTitle("Sign in");
                 }
                 return true;
@@ -84,18 +81,4 @@ public class SettingsFragment extends PreferenceFragment {
         googleApiClient.disconnect();
     }
 
-    private void signOut() {
-        if (googleApiClient.isConnected()) {
-            Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(
-                    new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(@NonNull Status status) {
-                            firebaseAuth.signOut();
-                            Toast.makeText(getActivity(), R.string.signed_out, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-        } else {
-            Toast.makeText(getActivity(), "Unable to sign out. Do you have an internet connection?", Toast.LENGTH_LONG).show();
-        }
-    }
 }
