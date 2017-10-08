@@ -24,11 +24,11 @@ android {
         }
     }
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "org.rowanacm.android"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 25     // TODO: Target Oreo
         versionCode 24
         versionName "0.2.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
