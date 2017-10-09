@@ -144,6 +144,8 @@
     <string name="acm_facebook_url">https://www.facebook.com/rowanacm</string>
     <string name="acm_twitter_url">https://www.twitter.com/rowanacm</string>
     <string name="admin_title">ADMIN</string>
+    <string name="robitics_committee_description">The Robotics committee intends to extend its members\' knowledge and skill by giving them lessons and experience in designing simple circuits, working with common sensors and actuators, and programmatically interacting with physical hardware in a meaningful way.</string>
+    <string name="robotics_committee_title">Robotics Committee</string>
 
     <string-array name="committee_array">
         <item>General</item>

@@ -157,7 +157,7 @@
                 android:gravity="center_vertical"
                 android:layout_marginLeft="20dp"
                 android:fontFamily="serif"
-                android:text="Robotics Committee"
+                android:text="@string/robotics_committee_title"
                 android:textSize="25sp"/>
 
             <TextView
@@ -165,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/robotics_committee_logo"
                 android:layout_marginTop="10dp"
-                android:text="Learn to make a robot that will eventually enslave mankind"/>
+                android:text="@string/robitics_committee_description"/>
 
         </RelativeLayout>
 
