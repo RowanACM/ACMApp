@@ -59,10 +59,10 @@ public class AcmModule {
     @Provides
     @Singleton
     GoogleSignInOptions providesGoogleSignInOptions(Context context) {
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         return new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(context.getString(R.string.default_web_client_id))
+                // TODO: Is there a way to allow both students.rowan.edu and rowan.edu to sign in?
+                .setHostedDomain("students.rowan.edu")
                 .requestEmail()
                 .build();
     }
