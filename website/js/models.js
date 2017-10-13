@@ -24,7 +24,7 @@ var addPost = function(snapshot, elementId) {
     '<div class="post-preview">' +
     ' <a href="#' + snapshot.key + '">' +
     '   <h2 class="post-title">' + snapshot.val().title + '</h2>' +
-    '   <p class="post-subtitle">' + snapshot.val().subj + '</p>' +
+    '   <p class="post-subtitle">' + snapshot.val().snippet + '</p>' +
     '  </a>' +
     '  <p class="post-meta">Posted by ' + snapshot.val().committee + ' on ' + d.toDateString() + '</p>' +
     '</div>'

@@ -4,11 +4,28 @@
   },
   "hosting": {
     "public": ".",
-    "rewrites": [
+    
+    "redirects": [
       {
-        "source": "**",
-        "destination": "/index.html"
-      }
+    	"source" : "/attendance",
+    	"destination" : "https://rowanacm.org/signin",
+    	"type" : 301
+  	  },
+  	  {
+    	"source" : "/app",
+    	"destination" : "https://rowanacm.org/app.html",
+    	"type" : 302
+  	  },
+  	  {
+    	"source" : "/committees",
+    	"destination" : "https://rowanacm.org/committees.html",
+    	"type" : 302
+  	  },
+  	  {
+    	"source" : "/eboard",
+    	"destination" : "https://rowanacm.org/eboard.html",
+    	"type" : 302
+  	  }
     ]
   }
 }

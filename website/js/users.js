@@ -46,7 +46,7 @@ initApp = function() {
                 '<span class="sr-only">Toggle navigation</span>' +
                 'Menu <i class="fa fa-bars"></i>' +
             '</button>' +
-            '<a class="navbar-brand" href="attendance/index.html">Attendance</a>' +
+            '<a class="navbar-brand" href="signin">Attendance</a>' +
         '</div>' +
         '<div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">' +
         '<ul class="nav navbar-nav navbar-right">' +
@@ -80,7 +80,7 @@ initApp = function() {
               '<span class="sr-only">Toggle navigation</span>' +
               'Menu <i class="fa fa-bars"></i>' +
           '</button>' +
-          '<a class="navbar-brand" href="attendance/index.html">Attendance</a>' +
+          '<a class="navbar-brand" href="signin">Attendance</a>' +
       '</div>' +
       '<div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">' +
           '<ul class="nav navbar-nav navbar-right">' +
