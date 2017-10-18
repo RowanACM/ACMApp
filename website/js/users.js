@@ -56,9 +56,10 @@ initApp = function() {
             '<li>' +
                 '<a href="committees.html">Committees</a>' +
             '</li>' +
-			'<li>' +
+			       '<li>' +
                 '<a href="eboard.html">Eboard</a>' +
             '</li>' +
+            '<li>' +
             '<a href="https://rowanacm.slack.com/">Slack</a>' +
             '</li>' +
             '<li>'
@@ -90,9 +91,12 @@ initApp = function() {
               '<li>' +
                 '<a href="committees.html">Committees</a>' +
               '</li>' +
-			  '<li>' +
+			        '<li>' +
                 '<a href="eboard.html">Eboard</a>' +
-            '</li>' +
+              '</li>' +
+              '<li>' +
+                '<a href="app_chooser.html">Apps</a>' +
+              '</li>' +
               '<li>' +
               '<a href="https://rowanacm.slack.com/">Slack</a>' +
               '</li>' +
