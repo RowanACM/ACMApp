@@ -326,3 +326,12 @@ function updateGoogleToken() {
 		document.getElementById("google-token").innerHTML = "Google Token: " + idToken;                          
 	})
 }
+
+firebase.database().ref('newusers/').on('value', function(snapshot) {
+    var names = "";
+    console.log(snapshot.val());
+    for (var uid in snapshot.val()) {
+        names += snapshot.val()[uid] + "\n"
+    }
+    document.getElementById("new_members").innerHTML = "Welcome New Members: " + names;
+});

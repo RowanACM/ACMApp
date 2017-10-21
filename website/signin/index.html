@@ -8,7 +8,7 @@
     <meta name="google-signin-scope" content="profile email">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet"
-          href="node_modules/material-components-web/dist/material-components-web.css">
+          href="../node_modules/material-components-web/dist/material-components-web.css">
 
     <title>ACM Sign-In</title>
     <link rel="shortcut icon" href="img/rowan_acm_logo.png">
@@ -60,15 +60,11 @@
                    mdc-button--primary
                    mdc-ripple-surface"
             data-mdc-auto-init="MDCRipple">Google Sign Out</button>
-		
-			<button type="button" id="btnProfLink" onclick="window.location.href='https://rowan.campuslabs.com/engage/organization/acm'" class="mdc-button
-                   mdc-button--raised
-                   mdc-button--primary
-                   mdc-ripple-surface"
-            data-mdc-auto-init="MDCRipple"> Join us on ProfLink!</button>
 			
 			<p id="signed_in" class="mdc-typography--display1">People signed in: Loading</p>
 			<p id="first_meeting" class="mdc-typography--display1">New members: Loading</p>
+            <p id="new_members">Welcome New Members: None</p>
+
 			<p id="contribute"><a href="https://github.com/RowanACM/ACM_Site" target="_blank" class="mdc-button
                    mdc-button--raised
                    mdc-button--primary
@@ -82,6 +78,12 @@
     <div class="fb-like" data-href="https://www.facebook.com/rowanacm" data-layout="button_count" data-action="like"
          data-size="small" data-show-faces="false" data-share="false"
          style="vertical-align:top;zoom:1;*display:inline"></div>
+
+    <button type="button" id="btnProfLink" onclick="window.location.href='https://rowan.campuslabs.com/engage/organization/acm'" class="mdc-button
+                   mdc-button--raised
+                   mdc-button--primary
+                   mdc-ripple-surface"
+            data-mdc-auto-init="MDCRipple"> Join us on ProfLink!</button>
 
     <br/>
     <h3 id="admin_title" class="mdc-typography--display0">Admin<br/>Auto-attendance is enabled. You will be sent an
