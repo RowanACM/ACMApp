@@ -52,19 +52,24 @@
     <button type="button" class="animated infinite tada mdc-button
                    mdc-button--raised
                    mdc-button--primary
-                   mdc-ripple-surface" id="meeting_button" onclick="submitAttendance()">MEETING SIGN IN
-    </button>
-    <div class="g-signin2" id="google_sign_in" data-onsuccess="onSignIn"></div>
-    <button type="button" id="sign_out" onclick="firebaseSignOut()" class="mdc-button
+                   mdc-ripple-surface" id="meeting_button" onclick="submitAttendance()">MEETING SIGN IN</button>
+			<div class="g-signin2" id="google_sign_in" data-onsuccess="onSignIn"></div>
+			
+			<button type="button" id="sign_out" onclick="firebaseSignOut()" class="mdc-button
                    mdc-button--raised
                    mdc-button--primary
                    mdc-ripple-surface"
-            data-mdc-auto-init="MDCRipple">Google Sign Out
-    </button>
-
-    <p id="signed_in" class="mdc-typography--display1">People signed in: Loading</p>
-    <p id="first_meeting" class="mdc-typography--display1">New members: Loading</p>
-    <p id="contribute"><a href="https://github.com/RowanACM/ACM_Site" target="_blank" class="mdc-button
+            data-mdc-auto-init="MDCRipple">Google Sign Out</button>
+		
+			<button type="button" id="btnProfLink" onclick="window.location.href='https://rowan.campuslabs.com/engage/organization/acm'" class="mdc-button
+                   mdc-button--raised
+                   mdc-button--primary
+                   mdc-ripple-surface"
+            data-mdc-auto-init="MDCRipple"> Join us on ProfLink!</button>
+			
+			<p id="signed_in" class="mdc-typography--display1">People signed in: Loading</p>
+			<p id="first_meeting" class="mdc-typography--display1">New members: Loading</p>
+			<p id="contribute"><a href="https://github.com/RowanACM/ACM_Site" target="_blank" class="mdc-button
                    mdc-button--raised
                    mdc-button--primary
                    mdc-ripple-surface
