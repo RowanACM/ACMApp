@@ -1,88 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="google-signin-client_id" content="536754237521-ioallp2ibqppaqn27pupvf8b9201mve4.apps.googleusercontent.com">
-		<meta name="google-signin-cookiepolicy" content="single_host_origin">
-		<meta name="google-signin-scope" content="profile email">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet"
+<head>
+    <meta charset="utf-8">
+    <meta name="google-signin-client_id"
+          content="536754237521-ioallp2ibqppaqn27pupvf8b9201mve4.apps.googleusercontent.com">
+    <meta name="google-signin-cookiepolicy" content="single_host_origin">
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
           href="node_modules/material-components-web/dist/material-components-web.css">
 
-		<title>ACM Sign-In</title>
-    	<link rel="shortcut icon" href="img/rowan_acm_logo.png">
-    	<link rel="stylesheet" href="css/main.css" type="text/css">
-		<link href="https://fonts.googleapis.com/css?family=Catamaran:700" rel="stylesheet" type="text/css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-		<script src="https://apis.google.com/js/platform.js" async defer></script>
-		<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-app.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-auth.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-database.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-		<script src="https%3A%2F%2Fwww.google.com%2Fjsapi%3Fautoload%3D%7B%27modules%27%3A%5B%7B%27name%27%3A%27visualization%27%2C%27version%27%3A%271.1%27%2C%27packages%27%3A%5B%27corechart%27%5D%7D%5D%7D"></script>
-		<script src="https://www.gstatic.com/charts/loader.js"></script>
-		<script src="scripts/attendance.js"></script>
-		<script>
-  		    google.charts.load('current', {packages: ['corechart']});
-  		    google.charts.setOnLoadCallback(null);
-		</script>
-		<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-	</head>
-	<body>
-		<header onclick="location.href='https://rowanacm.org';">
-			<div id="wrapper" style="text-align: center">    
-    			<div class="header_center" style="display: inline-block;">
-    				<img class="logo" src="img/rowan_acm_logo_small.png" alt="Rowan ACM Logo">
-					<h1 class="main_header">Rowan ACM</h1>	
-    			</div>
-			</div>
-		</header>
-		<div class="body">
-			<p id="attendance" class="mdc-typography--display1">Sign in to your Google account (Rowan Email Address)</p>
-			<button type="button" class="animated infinite tada mdc-button
+    <title>ACM Sign-In</title>
+    <link rel="shortcut icon" href="img/rowan_acm_logo.png">
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-database.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https%3A%2F%2Fwww.google.com%2Fjsapi%3Fautoload%3D%7B%27modules%27%3A%5B%7B%27name%27%3A%27visualization%27%2C%27version%27%3A%271.1%27%2C%27packages%27%3A%5B%27corechart%27%5D%7D%5D%7D"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="js/attendance.js"></script>
+    <script>
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(null);
+    </script>
+    <script>(function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    </script>
+</head>
+<body>
+<header onclick="location.href='https://rowanacm.org';">
+    <div id="wrapper" style="text-align: center">
+        <div class="header_center" style="display: inline-block;">
+            <img class="logo" src="img/rowan_acm_logo_small.png" alt="Rowan ACM Logo">
+            <h1 class="main_header">Rowan ACM</h1>
+        </div>
+    </div>
+</header>
+<div class="body">
+    <p id="attendance" class="mdc-typography--display1">Sign in to your Google account (Rowan Email Address)</p>
+    <button type="button" class="animated infinite tada mdc-button
                    mdc-button--raised
                    mdc-button--primary
-                   mdc-ripple-surface" id="meeting_button" onclick="submitAttendance()">MEETING SIGN IN</button>
-			<div class="g-signin2" id="google_sign_in" data-onsuccess="onSignIn"></div>
-			<button type="button" id="sign_out" onclick="firebaseSignOut()" class="mdc-button
+                   mdc-ripple-surface" id="meeting_button" onclick="submitAttendance()">MEETING SIGN IN
+    </button>
+    <div class="g-signin2" id="google_sign_in" data-onsuccess="onSignIn"></div>
+    <button type="button" id="sign_out" onclick="firebaseSignOut()" class="mdc-button
                    mdc-button--raised
                    mdc-button--primary
                    mdc-ripple-surface"
-            data-mdc-auto-init="MDCRipple">Google Sign Out</button>
-		
-			<p id="signed_in" class="mdc-typography--display1">People signed in: Loading</p>
-			<p id="first_meeting" class="mdc-typography--display1">New members: Loading</p>
-			<p id="contribute"><a href="https://github.com/RowanACM/ACM_Site" target="_blank" class="mdc-button
+            data-mdc-auto-init="MDCRipple">Google Sign Out
+    </button>
+
+    <p id="signed_in" class="mdc-typography--display1">People signed in: Loading</p>
+    <p id="first_meeting" class="mdc-typography--display1">New members: Loading</p>
+    <p id="contribute"><a href="https://github.com/RowanACM/ACM_Site" target="_blank" class="mdc-button
                    mdc-button--raised
                    mdc-button--primary
                    mdc-ripple-surface
                    --mdl-theme-primary=f44336"
-            data-mdc-auto-init="MDCRipple">Help code this website</a> </p>
-			
-			<a href="https://twitter.com/RowanACM" class="twitter-follow-button" data-show-count="false">Follow @RowanACM</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-			
-			<div class="fb-like" data-href="https://www.facebook.com/rowanacm" data-layout="button_count" data-action="like" data-size="small" data-show-faces="false" data-share="false" style="vertical-align:top;zoom:1;*display:inline"></div>
-			
-			<br/>
-			<h3 id="admin_title" class="mdc-typography--display0">Admin<br/>Auto-attendance is enabled. You will be sent an email with the attendance every Saturday.</h3>
-			
-			<p id="current_meeting_text" class="mdc-typography--display1">Current Meeting: </p>
-			
-            
-            <p id="google-token" onclick="updateGoogleToken()">Google Token:</p>
-			
-	
-			
-		</div>
-	</body>
-	<script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+                          data-mdc-auto-init="MDCRipple">Help code this website</a></p>
+
+    <a href="https://twitter.com/RowanACM" class="twitter-follow-button" data-show-count="false">Follow @RowanACM</a>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+    <div class="fb-like" data-href="https://www.facebook.com/rowanacm" data-layout="button_count" data-action="like"
+         data-size="small" data-show-faces="false" data-share="false"
+         style="vertical-align:top;zoom:1;*display:inline"></div>
+
+    <br/>
+    <h3 id="admin_title" class="mdc-typography--display0">Admin<br/>Auto-attendance is enabled. You will be sent an
+        email with the attendance every Saturday.</h3>
+
+    <p id="current_meeting_text" class="mdc-typography--display1">Current Meeting: </p>
+    <p id="google-token" onclick="updateGoogleToken()">Google Token:</p>
+
+</div>
+
+<script src="../node_modules/material-components-web/dist/material-components-web.js"></script>
 <script>mdc.autoInit()</script>
+
+</body>
+
 </html>
