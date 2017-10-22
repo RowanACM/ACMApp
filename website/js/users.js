@@ -62,7 +62,6 @@ initApp = function() {
             '<li>' +
             '<a href="https://rowanacm.slack.com/">Slack</a>' +
             '</li>' +
-            '<li>'
             '<li>' +
                 '<a href="dashboard.html">Dashboard</a>' +
             '</li>' +
