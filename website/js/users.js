@@ -55,7 +55,7 @@ initApp = function() {
 };
 
 var navTitle = function () {
-    return'<a class=" mdl-layout-title mdl-navigation__link" href="index.html">ACM</a>'
+    return '<img class="mdl-layout--large-screen-only" style="height: 50px; width: 50px; margin-left: -70px" src="favicon.ico"/>' +'<a class=" mdl-layout-title mdl-navigation__link" href="index.html">ACM</a>'
 }
 
 var navLinks = function (user) {
