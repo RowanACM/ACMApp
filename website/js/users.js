@@ -59,7 +59,8 @@ var navTitle = function () {
 }
 
 var navLinks = function (user) {
-    return '<a class="mdl-navigation__link" href="committees.html">Committees</a>' +
+    return '<a class="mdl-navigation__link" href="signin/">Attendance</a>' +
+        '<a class="mdl-navigation__link" href="committees.html">Committees</a>' +
         '<a class="mdl-navigation__link" href="eboard.html">Eboard</a>' +
         '<a class="mdl-navigation__link" href="https://rowanacm.slack.com/">Slack</a>' +
         '<a class="mdl-navigation__link" href="app_chooser.html">Download App</a>'+
