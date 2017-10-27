@@ -24,97 +24,57 @@ initApp = function() {
 
   //this should become more dynamic, with more intuitive control/interfacing.
   firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-        // User is signed in. Below are properties of the user.
-        displayName = user.displayName;
-        email = user.email;
-        emailVerified = user.emailVerified;
-        photoURL = user.photoURL;
-        uid = user.uid;
-        providerData = user.providerData;
 
-        // this is for more user/site control
-        user.getToken().then(function(accessToken) {
-          document.getElementById("email_test").innerHTML= "email: <u>" + email + "</u>";
-        });
-
-        // update navbar
-        var navBar = document.getElementById("navContainer");
-        navBar.innerHTML =
-        '<div class="navbar-header page-scroll">' +
-            '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">' +
-                '<span class="sr-only">Toggle navigation</span>' +
-                'Menu <i class="fa fa-bars"></i>' +
-            '</button>' +
-            '<a class="navbar-brand" href="signin">Attendance</a>' +
-        '</div>' +
-        '<div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">' +
-        '<ul class="nav navbar-nav navbar-right">' +
-            '<li>' +
-                '<a href="index.html">Home</a>' +
-            '</li>' +
-            '<li>' +
-                '<a href="committees.html">Committees</a>' +
-            '</li>' +
-			       '<li>' +
-                '<a href="eboard.html">Eboard</a>' +
-            '</li>' +
-            '<li>' +
-            '<a href="https://rowanacm.slack.com/">Slack</a>' +
-            '</li>' +
-            '<li>' +
-                '<a href="dashboard.html">Dashboard</a>' +
-            '</li>' +
-            '<li>' +
-                '<a href="index.html" onclick="signOut();">Sign out</a>' +
-            '</li>' +
-        '</ul>'+
-        '</div>';
-
-        // if !user
-    } else {
       var navBar = document.getElementById("navContainer");
+      navBar.className = "mdl-layout mdl-js-layout mdl-layout--fixed-header"
       navBar.innerHTML =
-      '<div class="navbar-header page-scroll">' +
-          '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">' +
-              '<span class="sr-only">Toggle navigation</span>' +
-              'Menu <i class="fa fa-bars"></i>' +
-          '</button>' +
-          '<a class="navbar-brand" href="signin">Attendance</a>' +
-      '</div>' +
-      '<div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">' +
-          '<ul class="nav navbar-nav navbar-right">' +
-              '<li>' +
-                  '<a href="index.html">Home</a>' +
-              '</li>' +
-              '<li>' +
-                '<a href="committees.html">Committees</a>' +
-              '</li>' +
-			        '<li>' +
-                '<a href="eboard.html">Eboard</a>' +
-              '</li>' +
-              '<li>' +
-                '<a href="app_chooser.html">Apps</a>' +
-              '</li>' +
-              '<li>' +
-              '<a href="https://rowanacm.slack.com/">Slack</a>' +
-              '</li>' +
-              '<li>' +
-                  '<a href="login.html">Login</a>' +
-              '</li>' +
-              '<li>' +
-                  '<a href="register.html">Register</a>' +
-              '</li>' +
+        <!-- Always shows a header, even in smaller screens. -->
 
-
-          '</ul>' +
-      '</div>';
-    }
+            '<header class="mdl-layout__header">'+
+            '<div class="mdl-layout__header-row">'+
+            navTitle() +
+            '<!-- Add spacer, to align navigation to the right -->' +
+        '<div class="mdl-layout-spacer"></div>'+
+            '<!-- Navigation. We hide it in small screens. -->'+
+        '<nav class="mdl-navigation mdl-layout--large-screen-only">'+
+            navLinks()+
+            '</nav> '+
+      '</div>'+
+                ' </header>'+
+    '<div class="mdl-layout__drawer mdl-layout--small-screen-only" >'+
+            navTitle()+
+            '<nav class="mdl-navigation">'+
+            navLinks(user)+
+            '</nav>'+
+           '</div>'
+        ;
     // catch error
   }, function(error) {
     console.log(error);
   });
 };
+
+var navTitle = function () {
+    return'<a class=" mdl-layout-title mdl-navigation__link" href="index.html">ACM</a>'
+}
+
+var navLinks = function (user) {
+    return '<a class="mdl-navigation__link" href="committees.html">Committees</a>' +
+        '<a class="mdl-navigation__link" href="eboard.html">Eboard</a>' +
+        '<a class="mdl-navigation__link" href="https://rowanacm.slack.com/">Slack</a>' +
+        '<a class="mdl-navigation__link" href="app_chooser.html">Download App</a>'+
+        signInDependantNavLinks(user != null);
+}
+
+var signInDependantNavLinks = function (signedIn) {
+        if(signedIn){
+            return '<a class="mdl-navigation__link" href="index.html" onclick="signOut();">Sign out</a>';
+        } else {
+            return '<a class="mdl-navigation__link" href="login.html">Sign in</a>';
+        }
+
+
+}
 
 // login function
 var login = function(){
