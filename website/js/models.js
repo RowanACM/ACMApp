@@ -21,13 +21,13 @@ var addPost = function(snapshot, elementId) {
   var d = new Date(Number(snapshot.val().timestamp) * 1000);
 
   $(elementId).prepend(
-    '<div class="post-preview">' +
+    '<div class="post-preview card">' +
     ' <a href="#' + snapshot.key + '">' +
     '   <h2 class="post-title">' + snapshot.val().title + '</h2>' +
     '   <p class="post-subtitle">' + snapshot.val().snippet + '</p>' +
     '  </a>' +
     '  <p class="post-meta">Posted by ' + snapshot.val().committee + ' on ' + d.toDateString() + '</p>' +
-    '</div>'
+	'</div>'
     );
 };
 
@@ -36,11 +36,11 @@ var setPost = function(snapshot) {
   var d = new Date(Number(snapshot.val().timestamp) * 1000);
 
   $("#postDiv").html(
-    '<div class="post-preview">' +
+    '<div class="post-preview card">' +
     '  <h1>' + snapshot.val().title + '</h1>' +
     '  <p class="post-meta">Posted by ' + snapshot.val().committee + ' on ' + d.toDateString() + '</p>' +
     '  <p>' + snapshot.val().text + '</p>' +
-    '</div>');
+	'</div>');
 };
 
 var switchView = function() {
