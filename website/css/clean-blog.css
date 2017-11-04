@@ -236,12 +236,19 @@ hr.small {
     margin: 0;
     font-weight: 300;
     margin-bottom: 10px;
+    text-align: left;
+    word-wrap: break-word;
+
 }
 .post-preview > .post-meta {
     color: #777777;
     font-size: 18px;
     font-style: italic;
+    float: right;
     margin-top: 0;
+    margin-right: 5px;
+
+
 }
 .post-preview > .post-meta > a {
     text-decoration: none;
