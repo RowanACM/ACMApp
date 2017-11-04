@@ -1,0 +1,106 @@
+/*
+   Home Page Style Sheet
+   Author: Steven Bruman
+   Date:   10/26/2017
+
+   Filename:         Index.css
+   Supporting Files: none
+
+*/
+
+/* Section Styles */
+
+body {
+	margin: 0 auto;
+	padding: 0px;
+	width: 98%;
+	font-family: Times New Roman, Times, serif;
+	/*background-color: rgb(50,50,50);*/
+	background-color: white;
+}
+
+header {
+	clear: left;	
+	width: 100%;
+	text-align: center;
+	/*background-color: rgb(200, 200, 200);*/
+	margin: 0 auto;
+	background-color: blue;
+	color: white;
+		box-shadow: 0 4px 8px 4px #999999;
+
+	/*border: 8px; 
+	border-style: groove; 
+	border-color: rgb(47, 0, 118);
+
+	-moz-border-radius: 25px;
+	-webkit-border-radius: 25px;
+	border-radius: 25px;*/
+}
+
+footer {
+	clear: left;
+	width: 90%;
+	text-align: center;
+	margin-top: 5px;
+	margin: 0 auto;
+}
+
+footer address {
+	width: 100%;
+	clear: left;
+	font-size: 0.8em;
+	background-color: rgb(70, 70, 70);
+	color: white;
+}
+
+.row {
+	width: 75%;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.card1 {
+	width: 47%;
+	float: left;
+	margin: 0 auto;
+	padding: 10px;
+}
+
+.card2 {
+	width: 47%;
+	float: right;
+	margin: 0 auto;
+	padding: 10px;
+}
+
+.card {
+	margin: 15px auto;
+	width: 80%;
+	text-align: center;
+	overflow: auto;
+	background-color: white;
+	box-shadow: 0 4px 8px 4px #999999;
+}
+
+.left {
+	width: 25%;
+	float: left;
+}
+
+.name {
+	width: 90%;
+	text-align: center;
+}
+
+.descript {
+	width: 65%;
+	float: right;
+	text-align: center;
+	margin: 5%;
+}
+
+.profilepic {
+	width: 90%;
+	padding: 5px;
+}
