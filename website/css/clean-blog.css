@@ -236,19 +236,12 @@ hr.small {
     margin: 0;
     font-weight: 300;
     margin-bottom: 10px;
-    text-align: left;
-    word-wrap: break-word;
-
 }
 .post-preview > .post-meta {
     color: #777777;
     font-size: 18px;
     font-style: italic;
-    float: right;
     margin-top: 0;
-    margin-right: 5px;
-
-
 }
 .post-preview > .post-meta > a {
     text-decoration: none;
@@ -259,7 +252,6 @@ hr.small {
     color: #0085A1;
     text-decoration: underline;
 }
-
 @media only screen and (min-width: 768px) {
     .post-preview > a > .post-title {
         font-size: 36px;
@@ -342,9 +334,6 @@ footer .copyright {
 form .row:first-child .floating-label-form-group {
     border-top: 1px solid #eeeeee;
 }
-.grey_body{
-    background-color: #eee;
-}
 .btn {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-transform: uppercase;
@@ -424,13 +413,4 @@ body {
 }
 .nav-logo-image{
     height: 80%;
-}
-.card {
-	margin: 15px auto;
-	padding: 5px;
-	width: 100%;
-	text-align: center;
-	overflow: auto;
-	background-color: white;
-	box-shadow: 0 4px 8px 4px #999999;
 }
