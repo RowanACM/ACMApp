@@ -1,0 +1,6 @@
+framework module Pods_ACM {
+  umbrella header "Pods-ACM-umbrella.h"
+
+  export *
+  module * { export * }
+}
