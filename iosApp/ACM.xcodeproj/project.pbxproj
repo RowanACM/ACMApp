@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		37B62F162A8EFDDDE6D0D8B2 /* Pods_ACMUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C77F1AA1475C32415FB3435 /* Pods_ACMUITests.framework */; };
 		771F5357C13167886BE1D17C /* Pods_ACMTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06EBD765A64B0C2DE5A05272 /* Pods_ACMTests.framework */; };
+		BD1B8BDD1FC282D700BF7696 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BD1B8BD61FC282D700BF7696 /* GoogleService-Info.plist */; };
 		BD2AF2701E5A29870035C184 /* AuthUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2AF26F1E5A29870035C184 /* AuthUtils.swift */; };
 		BD37F2B31E5929A4007A20E7 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD37F2B21E5929A3007A20E7 /* UserData.swift */; };
 		BD9F0C7A1E5D39EB00159107 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9F0C791E5D39EB00159107 /* ProfileViewController.swift */; };
@@ -105,6 +106,7 @@
 		65F0965C1077FF531659124E /* Pods-ACM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACM.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ACM/Pods-ACM.debug.xcconfig"; sourceTree = "<group>"; };
 		762CD4C506D82117203029FE /* Pods_ACM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ACM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E29250CEAE01A87346CF2F0 /* Pods-ACMTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ACMTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ACMTests/Pods-ACMTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BD1B8BD61FC282D700BF7696 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BD2AF26F1E5A29870035C184 /* AuthUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthUtils.swift; sourceTree = "<group>"; };
 		BD37F2B21E5929A3007A20E7 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		BD454E091F0AF44C00002B07 /* ACM.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ACM.entitlements; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 		BDFC96191E3315DA001D5670 /* ACM */ = {
 			isa = PBXGroup;
 			children = (
+				BD1B8BD61FC282D700BF7696 /* GoogleService-Info.plist */,
 				BD454E091F0AF44C00002B07 /* ACM.entitlements */,
 				BDFC96661E33B424001D5670 /* AnnouncementViewController.swift */,
 				BDFC965E1E33228C001D5670 /* BaseViewController.swift */,
@@ -455,6 +458,7 @@
 			files = (
 				BDFC96251E3315DA001D5670 /* LaunchScreen.storyboard in Resources */,
 				BDFC96491E33186C001D5670 /* GoogleService-Info.plist in Resources */,
+				BD1B8BDD1FC282D700BF7696 /* GoogleService-Info.plist in Resources */,
 				BDFC96221E3315DA001D5670 /* Assets.xcassets in Resources */,
 				BDFC96201E3315DA001D5670 /* Main.storyboard in Resources */,
 			);
