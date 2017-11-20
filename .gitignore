@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Built application files
 *.apk
 *.ap_
@@ -53,3 +54,9 @@ google-services.json
 freeline.py
 freeline/
 freeline_project_description.json
+=======
+node_modules
+.DS_Store
+firebase-debug.log
+website/firebase-debug.log
+>>>>>>> old_b/master
