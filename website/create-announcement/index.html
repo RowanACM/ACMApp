@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ACM</title>
+    <link rel="shortcut icon" href="img/rowan_acm_logo.png">
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-database.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https%3A%2F%2Fwww.google.com%2Fjsapi%3Fautoload%3D%7B%27modules%27%3A%5B%7B%27name%27%3A%27visualization%27%2C%27version%27%3A%271.1%27%2C%27packages%27%3A%5B%27corechart%27%5D%7D%5D%7D"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="postAnnouncement.js"></script>
+    <script>
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(null);
+    </script>
+    <script>(function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+    <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
+    <script>mdc.autoInit()</script>
+</head>
+<body>
+<div class="body">
+    <p class="mdc-typography--display1">Create Announcement</p>
+    <p class="mdc-typography--display3">Go to the attendance, sign in, scroll down and click on "Google Token" at the
+        bottom of the page. Copy the google token. The token can be used more than once, but expires after 15
+        minutes</p>
+    <p class="mdc-typography--display3">Committee must be either general, app, web, ai, robotics, or game</p>
+
+    <p> Title: <textarea id="title" rows="3" cols="50"></textarea></p>
+    <p> Text: <textarea id="text" rows="5" cols="50"></textarea></p>
+    <p> Committee: <textarea id="committee" rows="1" cols="20"></textarea></p>
+    <input type="checkbox" id="slack">Also post on slack<br>
+    <p> Your google token: <textarea id="token" rows="5" cols="50"></textarea></p>
+
+    <button type="button" id="create" onclick="post()">Create</button>
+
+</div>
+</body>
+</html>

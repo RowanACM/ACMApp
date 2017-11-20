@@ -1,0 +1,134 @@
+body {
+    margin: 0;
+    font-family: 'Catamaran', sans-serif;
+    color: rgb(30, 30, 30);
+}
+header {
+    background-color: rgb(66, 133, 244);
+    -webkit-box-shadow: 0px 4px 37px 2px rgba(0, 0, 0, 0.49);
+    -moz-box-shadow: 0px 4px 37px 2px rgba(0, 0, 0, 0.49);
+    box-shadow: 0px 4px 37px 2px rgba(0, 0, 0, 0.49);
+}
+.header_center {
+    margin: 0 auto;
+    padding-bottom: 15px;
+}
+.logo {
+    width: 100px;
+    height: 100px;
+    margin-top: 12px;
+    float: left;
+}
+.main_header {
+    margin: 20px 0px 0px 0px;
+    font-size: 55px;
+    color: white;
+    width: 400px
+}
+.body {
+    padding-left: 40px;
+    padding-bottom: 40px;
+}
+.body_first_half {
+    width: 49%;
+    float: left;
+    margin-top: 40px;
+    text-align: center;
+}
+.body_second_half {
+    width: 49%;
+    float: right;
+    margin-top: 40px;
+}
+#title {
+    margin: 0 auto;
+    font-size: 35px;
+}
+#meeting_button {
+    visibility: hidden;
+}
+#sign_out {
+    visibility: hidden;
+    margin-bottom: 15px;
+    --mdc-theme-primary: #8e8e8e;
+}
+#admin_title {
+    visibility: hidden;
+    margin-bottom: 20px;
+}
+#signed_in {
+    margin: 10px;
+}
+#first_meeting {
+    margin: 10px;
+}
+#get_attendance_button {
+    visibility: hidden;
+    margin-bottom: 5px;
+}
+#toggle_attendance_button {
+    visibility: hidden;
+    margin-bottom: 5px;
+}
+#current_meeting_text {
+    visibility: hidden;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+#change_current_meeting_button {
+    visibility: hidden;
+    margin-bottom: 5px;
+}
+#get_members_button {
+    visibility: hidden;
+    margin-bottom: 5px;
+}
+#get_all_attendance_button {
+    visibility: hidden;
+    margin-bottom: 5px;
+}
+#contribute {
+	--mdc-theme-primary: #8e8e8e;
+	margin-top: 15px;
+	margin-bottom: 25px;
+}
+#attendance {
+    
+}
+a {
+    color: rgb(30, 30, 30);
+}
+#piechart {
+    width: 100%;
+    height: 350px;
+}
+#footer {
+    margin-top: 40%;
+    clear: both;
+    text-align: center;
+    float: left;
+    padding: 20px;
+    border-top: 2px solid black;
+    width: 100%;
+}
+@media screen and (max-width: 481px) {
+    .logo {
+        width: 65px;
+        height: 65px;
+        margin-top: 12px;
+        float: left;
+    }
+    .main_header {
+        margin: 20px 0px 0px 0px;
+        font-size: 25px;
+        color: white;
+        width: 250px
+    }
+    .body {
+        padding-left: 15px;
+    }
+}
+
+#google-token {
+    font-size: 7px;
+}

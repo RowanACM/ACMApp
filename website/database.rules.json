@@ -1,0 +1,76 @@
+{
+  "rules": {
+      
+    "announcements": {
+    	// Anyone can read annoucements
+      	".read": true,
+      	// Only admins can create announcements
+      	".write": "root.child('members').child(auth.uid).child('admin').val() == true"
+    }, 
+      
+    "attendance": {
+      
+      ".read": "root.child('members').child(auth.uid).child('admin').val() == true",
+     
+    	"status": {    
+			
+			// enabled is a boolean for whether the attendance is enabled
+			// Anyone can read from it. Only admins can change it
+			// Must be a boolean
+			"enabled": {
+				".read": true,
+				".write": "root.child('members').child(auth.uid).child('admin').val() == true",
+				".validate": "newData.isBoolean()"
+			},
+	  
+			// current is the root of the current attendance.
+			// Anyone can read from it. Only admins can change it
+			"current": {
+				".read": true,
+				".write": "root.child('members').child(auth.uid).child('admin').val() == true"
+			},
+		
+			"new_member_count": {
+			  ".read": true,
+			  ".write": false
+			},
+		  
+			"signed_in_count": {
+			  ".read": true,
+			  ".write": false
+			},
+		
+			".read": true
+        
+    	},
+      
+      	// The meeting attendance. The key is the uid and the value is the person's name
+      	"$meeting": {
+        	"$uid": {
+          	".read": "$uid == auth.uid",
+          	".write": "root.child('attendance').child('enabled').val() == true && root.child('attendance').child('current').val() == $meeting && $uid == auth.uid"
+        	},
+            
+          ".read": "root.child('members').child(auth.uid).child('admin').val() == true",
+          ".write": "root.child('members').child(auth.uid).child('admin').val() == true"
+      	}
+        
+    },
+      
+    "members": {
+      
+      // You can only read your own member information
+      // Only change it if you are an admin
+      "$uid": {
+          ".read": "$uid == auth.uid",
+          ".write": "$uid == auth.uid && data.child('admin').val() == true"
+        },
+        
+        ".read": "root.child('members').child(auth.uid).child('admin').val() == true",
+        ".write": "root.child('members').child(auth.uid).child('admin').val() == true"
+    },
+    
+    ".read": false,
+    ".write": false
+  }
+}
