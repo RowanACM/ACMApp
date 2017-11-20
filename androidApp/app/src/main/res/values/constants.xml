@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="rc_header_image">header_image</string>
+
+    <!-- URLS -->
+    <string name="changelog_url">https://github.com/RowanACM/ACMAppAndroid/commits/master</string>
+    <string name="github_app_url">https://github.com/RowanACM/ACMAppAndroid</string>
+    <string name="bug_report_url">https://github.com/RowanACM/ACMAppAndroid/issues</string>
+    <string name="committees_url">https://rowanacm.org/committees.html</string>
+    <string name="privacy_policy_url">https://rowanacm.org/privacy-policy-android.html</string>
+    <string name="play_store_url">https://play.google.com/store/apps/details?id=org.rowanacm.android</string>
+
+    <string name="acm_email_address">acm@rowan.edu</string>
+
+</resources>

@@ -1,0 +1,115 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.github.triplet.play'
+apply plugin: 'com.google.firebase.firebase-perf'
+
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+    signingConfigs {
+        debug {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+        release {
+            keyAlias keystoreProperties['prodKeyAlias']
+            keyPassword keystoreProperties['prodKeyPassword']
+            storeFile file(keystoreProperties['prodStoreFile'])
+            storePassword keystoreProperties['prodStorePassword']
+        }
+    }
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
+    defaultConfig {
+        applicationId "org.rowanacm.android"
+        minSdkVersion 16
+        targetSdkVersion 25     // TODO: Target Oreo
+        versionCode 24
+        versionName "0.2.4"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            // Before enabling Proguard, you must update the proguard rules to include Firebase
+            // See https://travis-ci.org/RowanACM/ACMAppAndroid/builds/203307727
+            minifyEnabled false
+            
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.debug
+
+            applicationIdSuffix '.dev'
+            versionNameSuffix '-dev'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    // You can change supportLibVersion and googlePlayServicesVersion in the project level build.gradle
+
+    compile "com.android.support:cardview-v7:$supportLibVersion"
+    compile "com.android.support:appcompat-v7:$supportLibVersion"
+    compile "com.android.support:design:$supportLibVersion"
+    compile "com.android.support:customtabs:$supportLibVersion"
+    compile "com.android.support:support-v4:$supportLibVersion"
+    compile "com.android.support:support-vector-drawable:$supportLibVersion"
+
+    compile "com.google.android.gms:play-services-auth:$googlePlayServicesVersion"
+    compile "com.google.firebase:firebase-core:$googlePlayServicesVersion"
+    compile "com.google.firebase:firebase-database:$googlePlayServicesVersion"
+    compile "com.google.firebase:firebase-messaging:$googlePlayServicesVersion"
+    compile "com.google.firebase:firebase-auth:$googlePlayServicesVersion"
+    compile "com.google.firebase:firebase-crash:$googlePlayServicesVersion"
+    compile "com.google.firebase:firebase-config:$googlePlayServicesVersion"
+    compile "com.google.firebase:firebase-perf:$googlePlayServicesVersion"
+
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile 'com.google.code.gson:gson:2.8.0'
+
+    // Butter knife
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    // Leak canary
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+
+    // Dagger
+    compile "com.google.dagger:dagger:2.10"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.10"
+    provided 'javax.annotation:jsr250-api:1.0'
+
+    compile 'com.jakewharton.timber:timber:4.5.1'
+
+    testCompile 'junit:junit:4.12'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+}
+
+if (System.getenv("CI")) {
+    play {
+        jsonFile = file('rowan-acm-service-account.json')
+    }
+}
+
+apply plugin: 'com.google.gms.google-services'
