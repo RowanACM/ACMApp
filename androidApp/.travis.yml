@@ -1,0 +1,22 @@
+language: android
+jdk: oraclejdk8
+    
+before_install:
+    # Unencypt the keystore files
+    - openssl aes-256-cbc -K $encrypted_b2f7ee7d0bbd_key -iv $encrypted_b2f7ee7d0bbd_iv -in travis_ci_secrets.tar.enc -out travis_ci_secrets.tar -d
+    - tar xvf travis_ci_secrets.tar
+    - mv rowan-acm-service-account.json app
+    
+script:
+    # Accept the licenses. See http://stackoverflow.com/questions/38096225/automatically-accept-all-sdk-licences
+    # This will break when Google updates the license text
+    - mkdir "$ANDROID_HOME/licenses" || true
+    - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+    - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
+    
+    # Compile and test the app
+    - ./gradlew test --quiet
+    
+    # If the commit message contains DEPLOYALPHA, deploy the apk to the Play Store
+    - test "${TRAVIS_COMMIT_MESSAGE#*DEPLOYALPHA}" != "$TRAVIS_COMMIT_MESSAGE" && echo "DEPLOYALPHA found in $TRAVIS_COMMIT_MESSAGE" && ./gradlew publishApkRelease || true
+    
