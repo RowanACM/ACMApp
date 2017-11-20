@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Built application files
 *.apk
 *.ap_
@@ -53,3 +54,29 @@ google-services.json
 freeline.py
 freeline/
 freeline_project_description.json
+=======
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+app/src/main/res/values/ids.xml
+RowanAcmAndroid.jks
+app/app-release.apk
+
+app/google-services.json
+
+app/app.iml
+
+.idea/dictionaries/Tyler.xml
+
+.idea/encodings.xml
+
+.idea/gradle.xml
+
+keys.json
+
+keystore.properties
+>>>>>>> old_c/master

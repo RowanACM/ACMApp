@@ -1,0 +1,17 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="notifications_meetings"
+        android:title="Meeting Reminders" />
+
+    <MultiSelectListPreference
+        android:defaultValue="@array/empty_array"
+        android:enabled="true"
+        android:entries="@array/committee_array"
+        android:entryValues="@array/committee_array"
+        android:key="committeeNotificationList"
+        android:persistent="true"
+        android:title="Committee Notifications" />
+
+</PreferenceScreen>

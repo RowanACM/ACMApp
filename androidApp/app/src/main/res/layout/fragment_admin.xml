@@ -1,0 +1,46 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:nestedScrollingEnabled="true"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="org.rowanacm.android.AdminFragment">
+
+        <TextView
+            android:id="@+id/attendance_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The attendance is being auto-managed. Attendance will be automatically enabled on Fridays and you will be sent an email on Saturday."
+            />
+
+        <TextView
+            android:id="@+id/admin_questions_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/attendance_message"
+            android:layout_marginTop="10dp"
+            android:text="Have a question about the attendance? Email acm@rowan.edu"
+            />
+
+        <Button
+            android:id="@+id/create_announcement_button"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/admin_questions_textview"
+            android:layout_marginTop="20dp"
+            android:text="Create Announcement"
+            />
+
+    </RelativeLayout>
+
+</ScrollView>
