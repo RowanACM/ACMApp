@@ -1,0 +1,101 @@
+{
+  "project_info": {
+    "project_number": "536754237521",
+    "firebase_url": "https://rowan-acm.firebaseio.com",
+    "project_id": "rowan-acm",
+    "storage_bucket": "rowan-acm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536754237521:android:41b8529ee1947bf8",
+        "android_client_info": {
+          "package_name": "org.rowanacm.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536754237521-rk2gq9rra4e3qbpecsmhipb42pkvm9ll.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.rowanacm.android",
+            "certificate_hash": "5abad89c374b8cd595d81524d6e6286986e5ed85"
+          }
+        },
+        {
+          "client_id": "536754237521-ra9trji3jtg701c212jj0cna7p6tsgs8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.rowanacm.android",
+            "certificate_hash": "0fc4e6f9cdc65b1789f06c4d8e0b3fadc1d81772"
+          }
+        },
+        {
+          "client_id": "536754237521-ioallp2ibqppaqn27pupvf8b9201mve4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnBqWyDRRjUudHdjJ-Tuk82DMutKwoefg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "536754237521-ioallp2ibqppaqn27pupvf8b9201mve4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "536754237521-7i9si1ti378014fr8ajfjvriharnv6a7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.rowanacm.ios"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536754237521:android:61155db3b4738162",
+        "android_client_info": {
+          "package_name": "org.rowanacm.android.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536754237521-ioallp2ibqppaqn27pupvf8b9201mve4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnBqWyDRRjUudHdjJ-Tuk82DMutKwoefg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
