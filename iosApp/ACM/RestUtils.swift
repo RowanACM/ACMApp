@@ -9,16 +9,13 @@
 import Foundation
 import FirebaseAuth
 class RestUtils{
-    static func memberSignin(currentUser:FIRUser,completion:@escaping (String)->()) {
+    static func memberSignin(idToken:String,completion:@escaping (String)->()) {
         
-        var query = "https://2dvdaw7sq1.execute-api.us-east-1.amazonaws.com/prod/attendance?uid=" //server Url
+        var query = "https://api.rowanacm.org/prod/sign-in?token=" //server Url
         
         //append request to url
-        query = query + currentUser.uid + "&name="
-        let displayname =  currentUser.displayName!.replacingOccurrences(of: " ", with: "%20")
-        query = query +  displayname + "&email="
-        query = query +  currentUser.email!
-        
+        query = query + idToken
+        print(query)
         let url = URL(string: query)
         
         
