@@ -59,7 +59,15 @@ class MainViewController: BaseViewController,  GIDSignInUIDelegate, GIDSignInDel
         MainViewController.meetingSignInWaiting = true
         meetingSignInBtn.isEnabled = false
         if(MainViewController.meetingSignInWaiting){
-            RestUtils.memberSignin(currentUser: UserData.user, completion: { (response) in
+            let currentUser = FIRAuth.auth()?.currentUser
+            currentUser?.getTokenForcingRefresh(true) {idToken, error in
+                if let error = error {
+                    // Handle error
+                    return;
+                }
+                
+                
+                RestUtils.memberSignin(idToken: idToken!, completion: { (response) in
                 DispatchQueue.main.async {
                     print("This is run on the main queue, after the previous code in outer block")
                     
@@ -90,11 +98,15 @@ class MainViewController: BaseViewController,  GIDSignInUIDelegate, GIDSignInDel
                         signInTxt  = "I HAVE NO IDEA WHAT HAPPENED!!!! 💔 \n But I can tell you it wasn't good."
                         
                     default:
+                        signInTxt  = "I HAVE NO IDEA WHAT HAPPENED!!!! 💔 \n But I can tell you it wasn't good."
                         break
                     }
                     self.signInLbl.text = signInTxt
                 }
             })
+                // Send token to your backend via HTTPS
+                // ...
+            }
             
         }
     }
