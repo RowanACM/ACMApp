@@ -63,7 +63,7 @@ var navLinks = function (user) {
         '<a class="mdl-navigation__link" href="committees.html">Committees</a>' +
         '<a class="mdl-navigation__link" href="eboard.html">Eboard</a>' +
         '<a class="mdl-navigation__link" href="https://rowanacm.slack.com/">Slack</a>' +
-        '<a class="mdl-navigation__link" href="app_chooser.html">Download App</a>'+
+        '<a class="mdl-navigation__link" href="app">Download App</a>'+
         '<a class="mdl-navigation__link" href=" https://rowan.campuslabs.com/engage/organization/acm">ProfLink</a>'+
 
 

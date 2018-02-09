@@ -8,6 +8,13 @@
       	".write": "root.child('members').child(auth.uid).child('admin').val() == true"
     }, 
       
+      
+      "newusers": {
+      	".read": true,
+      	".write": false
+    }, 
+      
+      
     "attendance": {
       
       ".read": "root.child('members').child(auth.uid).child('admin').val() == true",
