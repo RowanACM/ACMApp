@@ -67,43 +67,23 @@ class MainViewController: BaseViewController,  GIDSignInUIDelegate, GIDSignInDel
                 }
                 
                 
-                RestUtils.memberSignin(idToken: idToken!, completion: { (response) in
-                DispatchQueue.main.async {
-                    print("This is run on the main queue, after the previous code in outer block")
-                    
-                    MainViewController.meetingSignInWaiting = false
-                    self.meetingSignInBtn.isEnabled = true
-                    self.meetingSignInBtn.isHidden = true
-                    self.signInLbl.isHidden = false
-                    var signInTxt = "Uh Oh, Sign-in was unsuccessful."
-                    switch response {
-                    case "100":
-                        signInTxt  = "Welcome to ACM! \n Have a happy first meeting. 😄"
-                    case "110":
-                        signInTxt  = "Sign-in successful. 😎 \n Welcome Back!"
+                RestUtils.memberSignin(idToken: idToken!, completion: { (responseDict) in
+                    DispatchQueue.main.async {
+                        print("This is run on the main queue, after the previous code in outer block")
+                        let responseDict = Utils.convertToDictionary(text: responseDict)
+                        if(responseDict?.keys.contains("message"))!{
+                            let response =   responseDict?["message"]
                         
-                    case "120":
-                        signInTxt  = "You are already signed in, no need to sign in again. 😁"
+                            MainViewController.meetingSignInWaiting = false
+                            self.meetingSignInBtn.isEnabled = true
+                            self.meetingSignInBtn.isHidden = true
+                            self.signInLbl.isHidden = false
+                            var signInTxt = "Uh Oh, Sign-in was unsuccessful."
+                            self.signInLbl.text = response as! String
+                        }
                         
-                    case "130":
-                        signInTxt  = "Response registered? 😕 Not sure what this is, someone ask tyler."
-                        
-                    case "200":
-                        signInTxt  = "OH NO! 😱 Attendance sign in is disabled - Sorry."
-                        
-                    case "210":
-                        signInTxt  = "Invalid Input \n 👽 Try your Rowan Email"
-                        
-                    case "220":
-                        signInTxt  = "I HAVE NO IDEA WHAT HAPPENED!!!! 💔 \n But I can tell you it wasn't good."
-                        
-                    default:
-                        signInTxt  = "I HAVE NO IDEA WHAT HAPPENED!!!! 💔 \n But I can tell you it wasn't good."
-                        break
                     }
-                    self.signInLbl.text = signInTxt
-                }
-            })
+                })
                 // Send token to your backend via HTTPS
                 // ...
             }

@@ -44,21 +44,21 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MainScreenBanner" translatesAutoresizingMaskIntoConstraints="NO" id="wLV-0q-wjj">
-                                <rect key="frame" x="0.0" y="68" width="375" height="200"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="200"/>
                                 <color key="backgroundColor" red="0.98097487779095704" green="1" blue="0.078072637403542866" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="Oow-bG-26g"/>
                                 </constraints>
                             </imageView>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tOo-LH-hWx">
-                                <rect key="frame" x="133" y="276" width="109" height="30"/>
+                                <rect key="frame" x="133" y="272" width="109" height="30"/>
                                 <state key="normal" title="Meeting Sign-In"/>
                                 <connections>
                                     <action selector="meetingSignInPressed:" destination="Twr-Aw-zGJ" eventType="touchUpInside" id="z9J-QV-wq7"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dxp-E2-BVt">
-                                <rect key="frame" x="16" y="314" width="343" height="122"/>
+                                <rect key="frame" x="16" y="310" width="343" height="122"/>
                                 <string key="text">What is ACM?\nACM is the programming club at Rowan University. I don\'t know what else to put here so please open a pull request and add more info here.\n\nWhen do you meet?\nEvery Friday at 2–4 PM in Robinson 201 a/b.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -197,7 +197,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="56" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="P0W-Hx-e7g">
-                                <rect key="frame" x="16" y="18" width="343" height="600"/>
+                                <rect key="frame" x="16" y="14" width="343" height="604"/>
                                 <color key="backgroundColor" red="0.9156686230964467" green="0.9156686230964467" blue="0.9156686230964467" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AnnouncementTableViewCell" rowHeight="100" id="c1O-6f-naB" customClass="AnnouncementTableViewCell" customModule="ACM" customModuleProvider="target">
