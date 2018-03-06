@@ -24,11 +24,15 @@ var post = function() {
     var time = Date.now() / 1000;
 
     dataRef.push({
-      title: title,
-      subj: subject,
-      text: text,
-      committee: committee,
-      timestamp: time
+        title: title,
+        subj: subject,
+        snippet: text,
+        text: text,
+        committee_id: committee.toLowerCase(),
+        committee: committee,
+        timestamp: time,
+        author: 'Web Admin',
+        also_post_on_slack:true
     }, function(error) {
       if (error){
         showError("You don't have permission to post an announcement.");
