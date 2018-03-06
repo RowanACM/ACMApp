@@ -1,11 +1,15 @@
 import ids
 import time
 import Slack
+import requests
+import json
 
 myfirebase = ids.myfirebase
+FCM_KEY = 'AAAAfPkLsFE:APA91bH7vQ6_InhI1tBrr_k3tFCm7w3SvlU8Ba0FyrXE7GtOJN7dZEKctdW9Ota8mneIDeJA5Ddambw-ugyjbMZPyV9QkPtNft9z2FtIQ7WG_Ql7OHgYgnZ3dc8f-z334rTR8wjNkKDi'
 
 
-def make_announcement(title, body, author=None, snippet=None, committee=None, icon_url=None, url=None, also_post_on_slack=False):
+def make_announcement(title, body, author=None, snippet=None, committee=None, icon_url=None, url=None,
+                      also_post_on_slack=False):
     """
     Post an announcement on the website and app
     :param title: Title of the announcement
@@ -43,6 +47,8 @@ def make_announcement(title, body, author=None, snippet=None, committee=None, ic
 
     if also_post_on_slack:
         Slack.post_announcement_on_slack(announce)
+    # may want to add a param for notifying with the default true
+        sendNotification(title,snippet,committee)
 
 
 def get_shortened(text):
@@ -108,3 +114,21 @@ def get_committee_name(committee_id):
     elif committee_id == "game":
         return "Animation/Game Design"
     return None
+
+# sends notifcation to given subscribers with FCM
+def sendNotification(title, message, subject):
+    if title is None or message is None or subject is None:
+        return
+    headers = {'content-type': 'application/json', 'Authorization': 'key={}'.format(FCM_KEY)}
+    url = 'https://fcm.googleapis.com/fcm/send'
+    message = {
+        "to": "/topics/" + subject,
+        "notification": {
+            "title": title,
+            "body": message
+        }
+    }
+
+    requests.post(url,  data=json.dumps(message), headers=headers)
+
+
