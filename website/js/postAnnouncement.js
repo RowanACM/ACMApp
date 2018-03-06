@@ -22,29 +22,26 @@ var post = function() {
     showError("Committee is empty.");
   } else {
     var time = Date.now() / 1000;
+      firebase.auth().currentUser.getToken( /* forceRefresh */ true).then(function(idToken) {
+          var theUrl = "https://api.rowanacm.org/prod/post-announcement?token=" +idToken +"&title="+title+"&body="+text+"&committee="+committee
+          alert(theUrl);
 
-    dataRef.push({
-        title: title,
-        subj: subject,
-        snippet: text,
-        text: text,
-        committee_id: committee.toLowerCase(),
-        committee: committee,
-        timestamp: time,
-        author: 'Web Admin',
-        also_post_on_slack:true
-    }, function(error) {
-      if (error){
-        showError("You don't have permission to post an announcement.");
-      }
-      else {
-        showSuccess("You successfully posted an announcment.");
-        $('#title').val('');
-        $("#subject").val('');
-        $("#text").val('');
-        $("#committee").val('General');
-      }
-    });
+          function reqListener () {
+                  console.log(this.responseText);
+                  showSuccess(this.responseText);
+                  $('#title').val('');
+                  $("#subject").val('');
+                  $("#text").val('');
+                  $("#committee").val('General');
+          };
+
+          var oReq = new XMLHttpRequest();
+          oReq.addEventListener("load", reqListener);
+          oReq.open("GET", theUrl);
+          oReq.send();
+
+      });
+
   }
 };
 
