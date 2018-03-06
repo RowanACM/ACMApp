@@ -12,6 +12,11 @@
     	"type" : 301
   	  },
   	  {
+    	"source" : "/game",
+    	"destination" : "https://pong-game-tyler.firebaseapp.com/",
+    	"type" : 302
+  	  },
+  	  {
     	"source" : "/app",
     	"destination" : "https://rowanacm.org/app.html",
     	"type" : 302
