@@ -318,4 +318,8 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 
+tyler/android-proguard
+androidApp/keystore\.properties
+
 .DS_Store
+
