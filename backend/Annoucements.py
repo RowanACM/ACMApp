@@ -5,7 +5,7 @@ import requests
 import json
 
 myfirebase = ids.myfirebase
-FCM_KEY = 'AAAAfPkLsFE:APA91bH7vQ6_InhI1tBrr_k3tFCm7w3SvlU8Ba0FyrXE7GtOJN7dZEKctdW9Ota8mneIDeJA5Ddambw-ugyjbMZPyV9QkPtNft9z2FtIQ7WG_Ql7OHgYgnZ3dc8f-z334rTR8wjNkKDi'
+FCM_KEY = str(os.environ.get('FCM_KEY',''))
 
 
 def make_announcement(title, body, author=None, snippet=None, committee=None, icon_url=None, url=None,
